@@ -13,7 +13,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <Sidebar/>
       
 
-      <main className="w-[80%] md:w-screen h-screen bg-gray-200 overflow-y-auto flex flex-col"><Header/>{children}</main>
+      <main className="lg:w-[80%] w-full  h-screen bg-gray-200 overflow-y-auto flex flex-col">
+        <Header/>
+        {children}
+        </main>
     </div>
   );
 };
