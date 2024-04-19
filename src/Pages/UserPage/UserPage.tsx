@@ -1,5 +1,7 @@
 import { CiEdit } from "react-icons/ci";
 import correct from "../../../public/Correct.png"
+import { useState } from "react";
+import { Pagination } from "antd";
 
 const data = [
   { name: "Asad", email: "asad@gmail.com", status: "active", remove: true },
@@ -7,9 +9,28 @@ const data = [
   { name: "Asad", email: "asad@gmail.com", status: "not-active", remove: true },
   { name: "Asad", email: "asad@gmail.com", status: "active", remove: true },
   { name: "Asad", email: "asad@gmail.com", status: "active", remove: true },
+  { name: "Asad", email: "asad@gmail.com", status: "not-active", remove: true },
+  { name: "Asad", email: "asad@gmail.com", status: "active", remove: true },
+  { name: "Asad", email: "asad@gmail.com", status: "not-active", remove: true },
+  { name: "Asad", email: "asad@gmail.com", status: "active", remove: true },
+  { name: "Asad", email: "asad@gmail.com", status: "active", remove: true },
+  { name: "Asad", email: "asad@gmail.com", status: "not-active", remove: true },
+  { name: "Asad", email: "asad@gmail.com", status: "active", remove: true },
+  { name: "Asad", email: "asad@gmail.com", status: "not-active", remove: true },
+  { name: "Asad", email: "asad@gmail.com", status: "active", remove: true },
+  { name: "Asad", email: "asad@gmail.com", status: "not-active", remove: true },
 ];
 
 const UserPage: React.FC = () => {
+  const [currentPage , setCurrPage]= useState(1);
+ 
+  const handlePageChange = (page: number) => {
+    setCurrPage(page);
+  }
+  const pageSize = 6;
+  const totalItems = data.length;
+  const startIndex = (currentPage - 1) * pageSize;
+  const paginatedData = data.slice(startIndex, startIndex + pageSize);
   return (
     <div className="h-auto overflow-y-auto bg-white w-[95x%] relative m-4 rounded-lg  ">
         <div className="flex flex-col gap-4">
@@ -44,7 +65,7 @@ const UserPage: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                {data?.map((item) => (
+                {paginatedData?.map((item) => (
                   <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <td
                       scope="row"
@@ -95,6 +116,13 @@ const UserPage: React.FC = () => {
                 </tr> */}
               </tbody>
             </table>
+            <Pagination 
+              current={currentPage} 
+              onChange={handlePageChange} 
+              total={totalItems} // Total number of items
+              pageSize={pageSize} // Number of items per page
+              showSizeChanger={false} // Hide the size changer
+            />
           </div>
         </div>
   
