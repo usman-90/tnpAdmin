@@ -44,12 +44,12 @@ const LineBarGraph = () => {
       return 600; // Width for screen size below 1024px
     }
     else if ( screenWidth >= 1206 && screenWidth <= 1400) {
-      return 720; // Width for screen size below 1024px
+      return 720; 
     }
     else if ( screenWidth >= 1400 && screenWidth <= 1440) {
-      return 890; // Width for screen size below 1024px
+      return 890; 
     } else {
-      return 1100; // Default width
+      return 1000; // Default width
     }
   };
 

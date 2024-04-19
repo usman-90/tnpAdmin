@@ -9,6 +9,8 @@ const data = [
     { name: "Asad", email: "asad@gmail.com", flight: "Qatar",totalMembers:16 , price:10.62 },
     { name: "Asad", email: "asad@gmail.com", flight: "Qatar",totalMembers:16 , price:10.62 },
     { name: "Asad", email: "asad@gmail.com", flight: "Qatar",totalMembers:16 , price:10.62 },
+    { name: "Asad", email: "asad@gmail.com", flight: "Qatar",totalMembers:16 , price:10.62 },
+    { name: "Asad", email: "asad@gmail.com", flight: "Qatar",totalMembers:16 , price:10.62 },
     
   ];
 
@@ -17,7 +19,7 @@ const LastTrips: React.FC = ()=>{
     const handlePageChange = (page: number) => {
         setCurrPage(page);
       }
-      const pageSize = 6;
+      const pageSize = 8;
       const totalItems = data.length;
       const startIndex = (currPage - 1) * pageSize;
       const paginatedData = data.slice(startIndex, startIndex + pageSize);

@@ -16,7 +16,7 @@ const Price: React.FC = () => {
 
   return (
     <>
-      <h4>Price</h4>
+      <h4 className='font-bold mb-2 mt-2 pl-2 '>Price</h4>
       <Slider
         range
         marks={marks}
@@ -30,3 +30,4 @@ const Price: React.FC = () => {
 };
 
 export default Price;
+
