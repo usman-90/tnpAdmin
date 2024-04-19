@@ -7,6 +7,7 @@ import LastTrips from './Components/LastTrips/LastTrips';
 import Dashboard from './Pages/Dashboard/Dashboard';
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
+import Price from './Components/Price/Price';
 
 
 const queryClient = new QueryClient({
@@ -26,7 +27,8 @@ const App: React.FC = () => {
                     <Route path="/" element={<Layout />}>
                         <Route path="" element={<Dashboard />} />
                         <Route path="users" element={<UserPage />} />
-                        <Route path="users2" element={<LastTrips/>} />
+                        <Route path="users2" element={<Price/>} />
+                        
                     </Route>
                 </Routes>
             </QueryClientProvider>
