@@ -10,11 +10,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className="flex layout overflow-y-hidden sticky bg-gray-200 ">
     
-        <Sidebar/>
+        {/* <Sidebar/> */}
       
 
-      <main className="lg:w-[80%] w-full  h-screen bg-gray-200 overflow-y-auto flex flex-col">
-        <Header/>
+      <main className="p-4 w-full  h-screen bg-gray-200 overflow-y-auto flex flex-col">
+        {/* <Header/> */}
         {children}
         </main>
     </div>

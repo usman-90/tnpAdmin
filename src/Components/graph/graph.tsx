@@ -19,15 +19,20 @@ const LineBarGraph = () => {
   // Determine the width based on screen size
   const getWidth = () => {
     if (screenWidth < 450) {
-      return 350; // Width for screen size below 768px
+      return 350; 
     } 
     else if (screenWidth >= 425 && screenWidth <= 768) {
       return 650;
     }
-    else if (screenWidth < 1024) {
-      return 600; // Width for screen size below 1024px
-    } else {
-      return 800; // Default width
+    else if (screenWidth >= 768 && screenWidth < 1024) {
+      return 600;
+    }
+    else if ( screenWidth > 1030 && screenWidth <= 1205) {
+      return 700;
+    }
+    else if ( screenWidth > 1024 && screenWidth <= 1440) {
+      return 800; 
+  
     }
   };
 
