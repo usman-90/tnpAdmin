@@ -1,3 +1,5 @@
+import LastTrips from "../../Components/LastTrips/LastTrips";
+import TourBooking from "../../Components/TourBooking/TourBooking";
 import BoxComponent from "../../Components/box/Box";
 import LineBarGraph from "../../Components/graph/graph";
 import GradientProgressBar from "../../Components/progress/progress";
@@ -20,7 +22,7 @@ const Dashboard = () => {
                     <LineBarGraph />
 
                 </div>
-                <div className="lg:w-[30%]  w-full  bg-white p-2  rounded ">
+                <div className="lg:w-[30%]  w-full  bg-white p-2  rounded-md ">
 
                     <h2 className="text-xl font-bold mb-4 pl-2">Tours</h2>
                     <div className="items-center lg:items-start flex justify-center">
@@ -34,8 +36,11 @@ const Dashboard = () => {
 
 
             <div className="flex flex-col lg:flex-row  gap-2 justify-between">
-                <div className="lg:w-[30%]  w-full  bg-white p-2  rounded "></div>
+                <div className="lg:w-[30%]  w-full  bg-white p-2  rounded ">
+                    <TourBooking/>
+                </div>
                 <div className="lg:w-[70%]  w-full">
+                    <LastTrips/>
                      </div>
 
             </div>

@@ -9,11 +9,7 @@ const data = [
     { name: "Asad", email: "asad@gmail.com", flight: "Qatar",totalMembers:16 , price:10.62 },
     { name: "Asad", email: "asad@gmail.com", flight: "Qatar",totalMembers:16 , price:10.62 },
     { name: "Asad", email: "asad@gmail.com", flight: "Qatar",totalMembers:16 , price:10.62 },
-    // { name: "Asad", email: "asad@gmail.com", flight: "Qatar",totalMembers:16 , price:10.62 },
-    // { name: "Asad", email: "asad@gmail.com", flight: "Qatar",totalMembers:16 , price:10.62 },
-    // { name: "Asad", email: "asad@gmail.com", flight: "Qatar",totalMembers:16 , price:10.62 },
-    // { name: "Asad", email: "asad@gmail.com", flight: "Qatar",totalMembers:16 , price:10.62 },
-    // { name: "Asad", email: "asad@gmail.com", flight: "Qatar",totalMembers:16 , price:10.62 },
+    
   ];
 
 const LastTrips: React.FC = ()=>{
@@ -26,9 +22,9 @@ const LastTrips: React.FC = ()=>{
       const startIndex = (currPage - 1) * pageSize;
       const paginatedData = data.slice(startIndex, startIndex + pageSize);
     return(
-        <div className="w-full h-full bg-white p-4 flex flex-col gap-4 rounded-xl">
+        <div className="w-full  bg-white p-4 flex flex-col gap-4 rounded-xl">
             <div className="flex flex-row justify-between py-4">
-                <p className="font-medium text-lg">Last Trips</p>
+                <p className="text-xl font-bold mb-4 pl-2">Last Trips</p>
                 <Button className="flex flex-row bg-orange-400 text-white "><IoIosAdd size={20}/><p>Add</p></Button>
             </div>
             <div className="h-[0.5px] w-full bg-gray-400"></div>
