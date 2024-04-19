@@ -25,8 +25,8 @@ const App: React.FC = () => {
                 <Routes>
                     <Route path="/" element={<Layout />}>
                         <Route path="" element={<Dashboard />} />
-                        <Route path="users" element={<LastTrips />} />
-                        <Route path="users2" element={<UserPage />} />
+                        <Route path="users" element={<UserPage />} />
+                        <Route path="users2" element={<LastTrips/>} />
                     </Route>
                 </Routes>
             </QueryClientProvider>

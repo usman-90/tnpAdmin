@@ -71,7 +71,7 @@ const UserPage: React.FC = () => {
                       scope="row"
                       className=" text-gray-900 whitespace-nowrap dark:text-white pl-6 py-2 md:pr-0 pr-4 text-lg "
                     >
-                        <div className="flex flex-row gap-2"><p className="text-lg py-2 "> {item?.name}</p><div className="w-10 h-10 bg-gray-200 rounded-full"></div></div>
+                        <div className="flex flex-row gap-2"><div className="w-10 h-10 bg-gray-200 rounded-full"></div><p className="text-lg py-2 "> {item?.name}</p></div>
                      
                     </td>
                    
