@@ -8,10 +8,10 @@ interface GradientProgressBarProps {
 const GradientProgressBar: React.FC<GradientProgressBarProps> = ({ text }) => (
  
    
-    <div className='mt-3' style={{ position: 'relative', marginBottom: '1rem' }}>
+    <div className='mt-3 ' style={{ position: 'relative', marginBottom: '1rem' }}>
       <Progress
         type="circle"
-        width={300} // Set the size of the progress bar
+        width={270} // Set the size of the progress bar
         strokeWidth={20} // Set the width of the progress bar stroke
         strokeColor={{
           '0%': '#FFC107', // Yellow color at 0%

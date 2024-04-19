@@ -15,18 +15,31 @@ const Dashboard = () => {
                 <BoxComponent heading="Total Customers" value="24.590" tagText="+12.08%" />
                 <BoxComponent heading="Tour Packages" value="24.590 PKR" tagText="+12.08%" />
             </div>
-<div className="flex flex-col lg:flex-row  gap-2 justify-between">
-    <div className="lg:w-[70%] bg-pink-600 w-full items-center lg:items-start flex">
-            <LineBarGraph />
+            <div className="flex flex-col lg:flex-row  gap-2 justify-between">
+                <div className="lg:w-[70%]  w-full items-center lg:items-start flex">
+                    <LineBarGraph />
 
-    </div>
-    <div className="lg:w-[30%] h-54 w-full   justify-center items-center lg:items-start flex ">
-        <GradientProgressBar text="4078"/>
+                </div>
+                <div className="lg:w-[30%]  w-full  bg-white p-2  rounded ">
 
-    </div>
+                    <h2 className="text-xl font-bold mb-4 pl-2">Tours</h2>
+                    <div className="items-center lg:items-start flex justify-center">
 
-</div>
-            
+                        <GradientProgressBar text="4078" />
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div className="flex flex-col lg:flex-row  gap-2 justify-between">
+                <div className="lg:w-[30%]  w-full  bg-white p-2  rounded "></div>
+                <div className="lg:w-[70%]  w-full">
+                     </div>
+
+            </div>
+
         </div>
 
     )
