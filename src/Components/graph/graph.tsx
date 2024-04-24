@@ -1,5 +1,14 @@
 import { useEffect, useState } from "react";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
 const LineBarGraph = () => {
   // State to track the screen width
@@ -18,36 +27,27 @@ const LineBarGraph = () => {
 
   // Determine the width based on screen size
   const getWidth = () => {
-
-    if ( screenWidth >= 319 && screenWidth <= 375) {
+    if (screenWidth >= 319 && screenWidth <= 375) {
       return 230; // Width for screen size below 768px
-    } 
-    if ( screenWidth > 370 && screenWidth <= 425) {
+    }
+    if (screenWidth > 370 && screenWidth <= 425) {
       return 280; // Width for screen size below 768px
-    } 
-    else if (screenWidth > 425 &&  screenWidth <= 499 ) {
+    } else if (screenWidth > 425 && screenWidth <= 499) {
       return 380;
-    }
-    else if (screenWidth >= 500 && screenWidth <= 750) {
+    } else if (screenWidth >= 500 && screenWidth <= 750) {
       return 670;
-    }
-    else if (screenWidth >= 750 && screenWidth < 768) {
+    } else if (screenWidth >= 750 && screenWidth < 768) {
       return 727;
-    }
-    else if (screenWidth >= 768 && screenWidth <= 780) {
+    } else if (screenWidth >= 768 && screenWidth <= 780) {
       return 525; // Width for screen size below 1024px
-    }
-    else if (screenWidth >= 781 && screenWidth <= 1024) {
+    } else if (screenWidth >= 781 && screenWidth <= 1024) {
       return 530; // Width for screen size below 1024px
-    }
-    else if ( screenWidth >= 1030 && screenWidth <= 1205) {
+    } else if (screenWidth >= 1030 && screenWidth <= 1205) {
       return 600; // Width for screen size below 1024px
-    }
-    else if ( screenWidth >= 1206 && screenWidth <= 1400) {
-      return 720; 
-    }
-    else if ( screenWidth >= 1400 && screenWidth <= 1440) {
-      return 890; 
+    } else if (screenWidth >= 1206 && screenWidth <= 1400) {
+      return 720;
+    } else if (screenWidth >= 1400 && screenWidth <= 1440) {
+      return 890;
     } else {
       return 1000; // Default width
     }
@@ -70,22 +70,35 @@ const LineBarGraph = () => {
   ];
 
   return (
-    <div className="bg-white rounded-md p-1">
+    <div className="bg-white w-full rounded-md p-1 ">
       <h2 className="text-xl font-bold mb-4 pl-2">Report</h2>
-      <LineChart
-        width={getWidth()} // Set width based on screen size
-        height={300}
-        data={data}
-        margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="time" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Line type="monotone" dataKey="Hours" stroke="#00ADEE" strokeWidth={4} dot={false} />
-        <Line type="monotone" dataKey="Passenger" stroke="#FBAD17" strokeWidth={4} dot={false} />
-      </LineChart>
+      <ResponsiveContainer width={"100%"} height={300}>
+        <LineChart
+          width={getWidth()} // Set width based on screen size
+          height={300}
+          data={data}
+          margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="time" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Line
+            type="monotone"
+            dataKey="Hours"
+            stroke="#00ADEE"
+            strokeWidth={4}
+            dot={false}
+          />
+          <Line
+            type="monotone"
+            dataKey="Passenger"
+            stroke="#FBAD17"
+            strokeWidth={4}
+            dot={false}
+          />
+        </LineChart>
+      </ResponsiveContainer>
     </div>
   );
 };
