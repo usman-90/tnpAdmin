@@ -57,7 +57,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
   return (
     <>
       <Modal
-        title="Insert Package Details"
+        title="Add Package"
         centered
         visible={BoxState}
         onOk={() => {
@@ -65,19 +65,81 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
           BoxStateChange(false);
         }}
         onCancel={() => BoxStateChange(false)}
-        width={1000}
-      >
+        width={1000}>
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-          <label className="font-semibold">
-            Package Name:
-            <Input
-              type="text"
-              onChange={(e) => setPackageName(e.target.value)}
-              value={packageName}
-              required
-            />
-          </label>
-          <label className="font-semibold">
+          <div className="flex flex-wrap px-5 gap-2">
+            <label className="font-semibold w-44">
+              Package Name
+              <Input
+                style={{ marginTop: 5 }}
+                type="text"
+                onChange={(e) => setPackageName(e.target.value)}
+                value={packageName}
+                required
+              />
+            </label>
+            <label className="font-semibold w-44">
+              Package Persons
+              <Input
+                style={{ marginTop: 5 }}
+                type="text"
+                onChange={(e) => setPackageName(e.target.value)}
+                value={packageName}
+                required
+              />
+            </label>
+            <label className="font-semibold w-44">
+              Package Category
+              <Input
+                style={{ marginTop: 5 }}
+                type="text"
+                onChange={(e) => setPackageName(e.target.value)}
+                value={packageName}
+                required
+              />
+            </label>
+            <label className="font-semibold w-44">
+              Package Type
+              <Input
+                style={{ marginTop: 5 }}
+                type="text"
+                onChange={(e) => setPackageName(e.target.value)}
+                value={packageName}
+                required
+              />
+            </label>
+            <label className="font-semibold w-44">
+              Package Region
+              <Input
+                style={{ marginTop: 5 }}
+                type="text"
+                onChange={(e) => setPackageName(e.target.value)}
+                value={packageName}
+                required
+              />
+            </label>
+            <label className="font-semibold w-44">
+              Package Rates Normal
+              <Input
+                style={{ marginTop: 5 }}
+                type="text"
+                onChange={(e) => setPackageName(e.target.value)}
+                value={packageName}
+                required
+              />
+            </label>
+            <label className="font-semibold w-44">
+              Package Rates Deluxe
+              <Input
+                style={{ marginTop: 5 }}
+                type="text"
+                onChange={(e) => setPackageName(e.target.value)}
+                value={packageName}
+                required
+              />
+            </label>
+          </div>
+          {/* <label className="font-semibold">
             Package Description:
             <Input
               type="text"
@@ -85,76 +147,92 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
               value={packageDescription}
               required
             />
-          </label>
-          <label className="font-semibold">
-            Package Category ID:{" "}
-            <select
-              value={packageCategoryId}
-              onChange={(e) => setPackageCategoryId(e.target.value)}
-              required
-            >
-              <option value="">Select Category Type</option>
-              {/* Add options for package types */}
-            </select>
-          </label>
-          <label className="font-semibold">
-            Package Type ID:{" "}
-            <select
-              value={packageTypeId}
-              onChange={(e) => setPackageTypeId(e.target.value)}
-              required
-            >
-              <option value="">Select Package Type</option>
-              {/* Add options for package types */}
-            </select>
-          </label>
-          <label className="font-semibold">
-            Package Region ID:{" "}
-            <select
-              value={packageRegionId}
-              onChange={(e) => setPackageRegionId(e.target.value)}
-              required
-            >
-              <option value="">Select Package Region</option>
-              {/* Add options for package regions */}
-            </select>
-          </label>
-          <label className="font-semibold">
-            Package Duration:
-            <Input
-              type="number"
-              onChange={(e) => setPackageDuration(e.target.value)}
-              value={packageDuration}
-              required
-            />
-          </label>
-          <label className="font-semibold">
-            Package Rate Normal:
-            <Input
-              type="number"
-              onChange={(e) => setPackageRateNormal(e.target.value)}
-              value={packageRateNormal}
-              required
-            />
-          </label>
-          <label className="font-semibold">
-            Package Rate Deluxe:
-            <Input
-              type="number"
-              onChange={(e) => setPackageRateDeluxe(e.target.value)}
-              value={packageRateDeluxe}
-              required
-            />
-          </label>
-          <label className="font-semibold">
-            Package Total Persons:
-            <Input
-              type="number"
-              onChange={(e) => setPackageTotalPersons(e.target.value)}
-              value={packageTotalPersons}
-              required
-            />
-          </label>
+          </label> */}
+
+          <div>
+            <h2 className="text-lg font-semibold">Package itinerates</h2>
+            <label className="font-semibold flex px-5 flex-col pt-5">
+              Days
+              <Input
+                style={{ width: 144, marginTop: 5 }}
+                type="number"
+                onChange={(e) => setPackageName(e.target.value)}
+                value={packageName}
+                required
+              />
+            </label>
+            <div className="flex gap-52 px-5 mt-5">
+              <label className="font-semibold w-44">
+                Event description
+                <Input
+                  style={{
+                    height: 100,
+                    width: 320,
+                    marginRight: 10,
+                    marginTop: 5,
+                  }}
+                  type="text"
+                  onChange={(e) => setPackageName(e.target.value)}
+                  value={packageName}
+                  required
+                />
+              </label>
+              <label className="font-semibold h-36 w-44">
+                Description
+                <Input
+                  style={{ height: 100, width: 320, marginTop: 5 }}
+                  type="text"
+                  onChange={(e) => setPackageName(e.target.value)}
+                  value={packageName}
+                  required
+                />
+              </label>
+            </div>
+            <div>
+              <div>
+                <h2 className="text-lg font-semibold">Package include</h2>
+                <label className="font-semibold px-5 py-2 flex flex-col">
+                  Packages
+                  <Input
+                    style={{ width: 144, marginTop: 5 }}
+                    type="text"
+                    onChange={(e) => setPackageName(e.target.value)}
+                    value={packageName}
+                    required
+                  />
+                </label>
+              </div>
+              <div>
+                <h2 className="text-lg font-semibold mt-5">Package Exclude</h2>
+                <label className="font-semibold px-5 py-2 flex flex-col">
+                  Packages
+                  <Input
+                    style={{ width: 144, marginTop: 5 }}
+                    type="text"
+                    onChange={(e) => setPackageName(e.target.value)}
+                    value={packageName}
+                    required
+                  />
+                </label>
+              </div>
+              <div>
+                <h2 className="text-lg font-semibold mt-5">Package Images</h2>
+                <label className="font-semibold px-5">
+                  <Input
+                    style={{
+                      width: 240,
+                      padding: "25px 10px",
+                      marginTop: 10,
+                    }}
+                    type="file"
+                    onChange={(e) => setPackageName(e.target.value)}
+                    value={packageName}
+                    required
+                  />
+                </label>
+              </div>
+            </div>
+          </div>
         </form>
       </Modal>
     </>
