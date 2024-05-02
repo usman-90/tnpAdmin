@@ -1,25 +1,8 @@
 import { CiEdit } from "react-icons/ci";
 import correct from "../../../public/Correct.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Pagination } from "antd";
-
-const data = [
-  { name: "Asad", email: "asad@gmail.com", status: "active", remove: true },
-  { name: "Asad", email: "asad@gmail.com", status: "active", remove: true },
-  { name: "Asad", email: "asad@gmail.com", status: "not-active", remove: true },
-  { name: "Asad", email: "asad@gmail.com", status: "active", remove: true },
-  { name: "Asad", email: "asad@gmail.com", status: "active", remove: true },
-  { name: "Asad", email: "asad@gmail.com", status: "not-active", remove: true },
-  { name: "Asad", email: "asad@gmail.com", status: "active", remove: true },
-  { name: "Asad", email: "asad@gmail.com", status: "not-active", remove: true },
-  { name: "Asad", email: "asad@gmail.com", status: "active", remove: true },
-  { name: "Asad", email: "asad@gmail.com", status: "active", remove: true },
-  { name: "Asad", email: "asad@gmail.com", status: "not-active", remove: true },
-  { name: "Asad", email: "asad@gmail.com", status: "active", remove: true },
-  { name: "Asad", email: "asad@gmail.com", status: "not-active", remove: true },
-  { name: "Asad", email: "asad@gmail.com", status: "active", remove: true },
-  { name: "Asad", email: "asad@gmail.com", status: "not-active", remove: true },
-];
+import axios from "axios";
 
 const UserPage: React.FC = () => {
   const [currentPage, setCurrPage] = useState(1);
@@ -27,10 +10,21 @@ const UserPage: React.FC = () => {
   const handlePageChange = (page: number) => {
     setCurrPage(page);
   };
-  const pageSize = 6;
-  const totalItems = data.length;
-  const startIndex = (currentPage - 1) * pageSize;
-  const paginatedData = data.slice(startIndex, startIndex + pageSize);
+  const [data, setData] = useState([]);
+  const pageSize = 10;
+  const totalItems = data?.length;
+  const fetchData = async () => {
+    console.log("hitting", process);
+    let res = await axios.get(
+      `${process.env.REACT_APP_SERVER_URL}/getUsers?page=${currentPage}`
+    );
+    setData(res.data.data);
+    console.log("hitted");
+    console.log(res.data.data);
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <div className="h-auto overflow-y-auto bg-white w-[95x%] relative m-4 rounded-lg  ">
       <div className="flex flex-col gap-4">
@@ -49,13 +43,16 @@ const UserPage: React.FC = () => {
             <thead className="text-xs text-gray-700 uppercase ">
               <tr className="border-b  border-gray-300 ">
                 <td scope="col" className="pl-6 px-4 py-4 text-lg">
-                  Name
+                  First Name
+                </td>
+                <td scope="col" className="pl-6 px-4 py-4 text-lg">
+                  Last Name
                 </td>
                 <td scope="col" className="px-4 py-4 text-lg">
                   Email
                 </td>
                 <td scope="col" className="px-4 py-4 text-lg">
-                  Status
+                  Login Count
                 </td>
                 <td scope="col" className="px-4 py-4 text-lg">
                   Remove
@@ -63,21 +60,27 @@ const UserPage: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {paginatedData?.map((item) => (
+              {data?.map((item: any) => (
                 <tr className="bg-white border-b hover:bg-gray-50">
                   <td
                     scope="row"
                     className=" text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg "
                   >
-                    <div className="flex flex-row gap-2">
-                      <div className="w-10 h-10 bg-gray-200 rounded-full"></div>
-                      <p className="text-lg py-2 "> {item?.name}</p>
-                    </div>
+                    <p className="text-lg py-2 "> {item?.name}</p>
+                  </td>
+                  <td
+                    scope="row"
+                    className=" text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg "
+                  >
+                    <p className="text-lg py-2 "> {item?.lname}</p>
                   </td>
 
                   <td className="  pl-4 md:pr-0 pr-4 text-lg">{item.email}</td>
+                  <td className="  pl-4 md:pr-0 pr-4 text-lg">
+                    {item.login_count}
+                  </td>
 
-                  <td
+                  {/* <td
                     className={` pl-4  py-2 md:pr-0 pr-4 text-lg ${
                       item.status == "active"
                         ? "text-green-500"
@@ -85,8 +88,8 @@ const UserPage: React.FC = () => {
                     }`}
                   >
                     {item?.status == "active" ? "Active" : "Not Active"}
-                  </td>
-                  
+                  </td> */}
+
                   <td className="  pl-4 py-2 md:pr-0 pr-4">
                     <img src={correct} height={25} width={25} />
                   </td>
