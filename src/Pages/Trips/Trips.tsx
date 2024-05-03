@@ -1,12 +1,15 @@
-import { CiEdit } from "react-icons/ci";
 import { useEffect, useState } from "react";
 import { Pagination } from "antd";
 import axios from "axios";
 import { ImCancelCircle } from "react-icons/im";
 import { Toast } from "../../Components/SideToast";
 import Loader from "../../Components/loader";
+import { Button} from "antd";
+import { RiAddLine } from "react-icons/ri";
+import TripInsertionBox from "../../Components/TripComp/TripInsertionBox";
 
 const UserPage: React.FC = () => {
+  const [openBox, setOpenBox] = useState(false);
   const [currentPage, setCurrPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -55,10 +58,19 @@ const UserPage: React.FC = () => {
         <div className="flex flex-col gap-4">
           <div className="flex flex-row justify-between  m-4  ">
             <h1 className="sm:text-xl text-lg font-semibold">Trips</h1>
-            <button className="flex flex-row gap-2 border-0 decoration-none bg-transparent shadow-xs">
+            {/* <button className="flex flex-row gap-2 border-0 decoration-none bg-transparent shadow-xs">
               <p className="sm:block hidden">Edit</p>
               <CiEdit color="orange" size={22} />
-            </button>
+            </button> */}
+
+<Button
+          className="bg-[#FBAD17] h-8 w-20 text-white font-semibold flex items-center justify-center"
+          icon={<RiAddLine size={23} className="pt-0.5" />}
+          onClick={() => setOpenBox(true)}>
+          Add
+        </Button>
+        <TripInsertionBox BoxState={openBox} BoxStateChange={setOpenBox} fetchData={fetchData}/>
+
           </div>
           <div className="w-full h-[0.8px] bg-gray-300"></div>
         </div>
