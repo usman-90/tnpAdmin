@@ -10,17 +10,17 @@ const UserPage: React.FC = () => {
   const [currentPage, setCurrPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [data, setData] = useState([]);
 
   const handlePageChange = (page: number) => {
     setCurrPage(page);
   };
-  const [data, setData] = useState([]);
   const pageSize = 10;
   const totalItems = data?.length;
   const fetchData = async () => {
     setLoading(true);
     let res = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL}/getTrips?page=${currentPage}&limit=${pageSize}`
+      `${process.env.REACT_APP_SERVER_URL}/admin/getTrips?page=${currentPage}&limit=${pageSize}`
     );
     setData(res.data.data);
     setLoading(false);
@@ -28,7 +28,7 @@ const UserPage: React.FC = () => {
   const DeleteTrip = async (id: number) => {
     setDeleting(true);
     await axios
-      .delete(`${process.env.REACT_APP_SERVER_URL}/getTrips?id=${id}`)
+      .delete(`${process.env.REACT_APP_SERVER_URL}/admin/getTrips?id=${id}`)
       .then((res) => {
         Toast.fire({
           icon: "success",

@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   define: {
     "process.env": {
-      REACT_APP_SERVER_URL: "http://localhost:3000/pages/api/admin",
+      REACT_APP_SERVER_URL: "http://localhost:3000/pages/api",
     },
   },
 });
