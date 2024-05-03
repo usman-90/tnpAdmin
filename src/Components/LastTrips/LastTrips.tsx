@@ -31,10 +31,10 @@ const LastTrips: React.FC = ()=>{
             </div>
             <div className="h-[0.5px] w-full bg-gray-400"></div>
             <div className="relative overflow-x-auto  justify-center items-center  ">
-            <table className="text-md  text-left   text-gray-500 dark:text-gray-400 m-auto   lg:w-full md:w-full h-full">
-              <thead className="text-xs text-gray-700 uppercase  dark:bg-gray-700 dark:text-gray-400">
-                <tr className=" ">
-                  <td scope="col" className="pl-6 px-4 py-4 font-medium ">
+            <table className="text-md bg-white dark:bg-white-400   text-left   text-gray-500 dark:text-black m-auto   lg:w-full md:w-full h-full">
+              <thead className="text-xs text-gray-700 uppercase  dark:bg-white-700 dark:text-black">
+                <tr className=" dark:bg-white-700 dark:text-black  ">
+                  <td scope="col" className="pl-6 px-4 py-4 font-medium  dark:bg-white-400">
                     <div className="flex flex-row">
                     Member<BiSortAlt2 size={17}/>
                     </div>
@@ -58,9 +58,9 @@ const LastTrips: React.FC = ()=>{
                   
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="dark:bg-white-400 dark:text-black">
                 {paginatedData?.map((item) => (
-                  <tr className="bg-white dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                  <tr className="bg-white dark:bg-white-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-50">
                     <td
                       scope="row"
                       className=" text-gray-900 whitespace-nowrap dark:text-white pl-6 py-2 md:pr-0 pr-4 text-lg "
