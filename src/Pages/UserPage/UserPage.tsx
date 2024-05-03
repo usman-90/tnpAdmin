@@ -1,9 +1,8 @@
-import { CiEdit } from "react-icons/ci";
-import correct from "../../../public/Correct.png";
 import { useEffect, useState } from "react";
 import { Pagination } from "antd";
 import axios from "axios";
-
+import { ImCancelCircle } from "react-icons/im";
+import { Toast } from "../../Components/SideToast";
 const UserPage: React.FC = () => {
   const [currentPage, setCurrPage] = useState(1);
 
@@ -14,26 +13,37 @@ const UserPage: React.FC = () => {
   const pageSize = 10;
   const totalItems = data?.length;
   const fetchData = async () => {
-    console.log("hitting", process);
     let res = await axios.get(
       `${process.env.REACT_APP_SERVER_URL}/getUsers?page=${currentPage}`
     );
     setData(res.data.data);
-    console.log("hitted");
-    console.log(res.data.data);
   };
   useEffect(() => {
     fetchData();
   }, []);
+  const DeleteUser = async (id: number) => {
+    await axios
+      .delete(`${process.env.REACT_APP_SERVER_URL}/getUsers?id=${id}`)
+      .then((res) => {
+        Toast.fire({
+          icon: "success",
+          title: "User Deleted successfully",
+        });
+      })
+      .catch((err) => {
+        Toast.fire({
+          icon: "error",
+          title: err.response.data,
+        });
+      });
+
+    fetchData();
+  };
   return (
     <div className="h-auto overflow-y-auto bg-white w-[95x%] relative m-4 rounded-lg  ">
       <div className="flex flex-col gap-4">
         <div className="flex flex-row justify-between  m-4  ">
           <h1 className="sm:text-xl text-lg font-semibold">Users</h1>
-          <button className="flex flex-row gap-2 border-0 decoration-none bg-transparent shadow-xs">
-            <p className="sm:block hidden">Edit</p>
-            <CiEdit color="orange" size={22} />
-          </button>
         </div>
         <div className="w-full h-[0.8px] bg-gray-300"></div>
       </div>
@@ -91,7 +101,9 @@ const UserPage: React.FC = () => {
                   </td> */}
 
                   <td className="  pl-4 py-2 md:pr-0 pr-4">
-                    <img src={correct} height={25} width={25} />
+                    <button onClick={() => DeleteUser(item.id)}>
+                      <ImCancelCircle className="text-red-700 hover:text-red-500 text-2xl" />
+                    </button>
                   </td>
                 </tr>
               ))}

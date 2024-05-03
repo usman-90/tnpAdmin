@@ -1,8 +1,9 @@
 import { CiEdit } from "react-icons/ci";
-import correct from "../../../public/Correct.png";
 import { useEffect, useState } from "react";
 import { Pagination } from "antd";
 import axios from "axios";
+import { ImCancelCircle } from "react-icons/im";
+import { Toast } from "../../Components/SideToast";
 
 const UserPage: React.FC = () => {
   const [currentPage, setCurrPage] = useState(1);
@@ -19,8 +20,24 @@ const UserPage: React.FC = () => {
       `${process.env.REACT_APP_SERVER_URL}/getTrips?page=${currentPage}`
     );
     setData(res.data.data);
-    console.log("hitted");
-    console.log(res.data.data);
+  };
+  const DeleteTrip = async (id: number) => {
+    await axios
+      .delete(`${process.env.REACT_APP_SERVER_URL}/getTrips?id=${id}`)
+      .then((res) => {
+        Toast.fire({
+          icon: "success",
+          title: "Trip Deleted successfully",
+        });
+      })
+      .catch((err) => {
+        Toast.fire({
+          icon: "error",
+          title: err.response.data,
+        });
+      });
+
+    fetchData();
   };
   useEffect(() => {
     fetchData();
@@ -89,7 +106,9 @@ const UserPage: React.FC = () => {
                   </td>
 
                   <td className="  pl-4 py-2 md:pr-0 pr-4">
-                    <img src={correct} height={25} width={25} />
+                    <button onClick={() => DeleteTrip(item.trip_id)}>
+                      <ImCancelCircle className="text-red-700 hover:text-red-500 text-2xl" />
+                    </button>
                   </td>
                 </tr>
               ))}
