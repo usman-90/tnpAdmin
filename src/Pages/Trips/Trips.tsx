@@ -117,8 +117,8 @@ const UserPage: React.FC = () => {
           <Pagination
             current={currentPage}
             onChange={handlePageChange}
-            total={totalItems} // Total number of items
             pageSize={pageSize} // Number of items per page
+            total={totalItems} // Total number of items
             showSizeChanger={false} // Hide the size changer
           />
         </div>
