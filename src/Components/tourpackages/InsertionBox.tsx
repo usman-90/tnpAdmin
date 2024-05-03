@@ -157,29 +157,50 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
   const handleSubmit = async (event: any) => {
     event.preventDefault(); // Prevent the default form submission behavior
 
-    const newPackage = {
-      package_name: packageName,
-      package_total_persons: packageTotalPersons,
-      package_category_id: packageCategoryId,
-      package_type_id: packageTypeId,
-      package_region_id: packageRegionId,
-      package_description: packageDescription,
-      package_rate_normal: packageRateNormal,
-      package_rate_deluxe: packageRateDeluxe,
-      // package_duration: packageDuration,
-      package_details: JSON.stringify({
-        TripDetailsAndCostSummary: {
-          Itinerary: tableData,
-          CostIncludes: tabledataIncludepackages,
-          CostExcludes: tabledataCostExcludes,
-          Highlights: tabledataHighlights,
-          file: selectedFile
-        }
-      })
-    };
+
+    const formData = new FormData();
+
+    formData.append('package_name', packageName);
+    formData.append('package_total_persons', packageTotalPersons);
+    formData.append('package_category_id', packageCategoryId);
+    formData.append('package_type_id', packageTypeId);
+    formData.append('package_region_id', packageRegionId);
+    formData.append('package_description', packageDescription);
+    formData.append('package_rate_normal', packageRateNormal);
+    formData.append('package_rate_deluxe', packageRateDeluxe);
+    // formData.append('package_details', JSON.stringify({
+    //   TripDetailsAndCostSummary: {
+    //     Itinerary: tableData,
+    //     CostIncludes: tabledataIncludepackages,
+    //     CostExcludes: tabledataCostExcludes,
+    //     Highlights: tabledataHighlights,
+    //     file: selectedFile
+    //   }
+    // }));
+
+    // const newPackage = {
+    //   package_name: packageName,
+    //   package_total_persons: packageTotalPersons,
+    //   package_category_id: packageCategoryId,
+    //   package_type_id: packageTypeId,
+    //   package_region_id: packageRegionId,
+    //   package_description: packageDescription,
+    //   package_rate_normal: packageRateNormal,
+    //   package_rate_deluxe: packageRateDeluxe,
+    //   // package_duration: packageDuration,
+    //   package_details: JSON.stringify({
+    //     TripDetailsAndCostSummary: {
+    //       Itinerary: tableData,
+    //       CostIncludes: tabledataIncludepackages,
+    //       CostExcludes: tabledataCostExcludes,
+    //       Highlights: tabledataHighlights,
+    //       file: selectedFile
+    //     }
+    //   })
+    // };
 
     try {
-      const response = await axios.post("http://localhost:3000/pages/api/tourpackages", newPackage);
+      const response = await axios.post("http://localhost:3000/pages/api/tourpackages", formData);
       console.log("Package added successfully:", response.data);
       // Clear input fields after successful submission
       setPackageName("");
@@ -207,7 +228,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
         onOk={handleSubmit}
         onCancel={() => BoxStateChange(false)}
         width={1000}>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-5" method="post" encType="multipart/form-data">
           <div className="flex flex-wrap px-5 gap-2">
             <label className="font-semibold w-44">
               Package Name
@@ -508,7 +529,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
               <div>
                 <h2 className="text-lg font-semibold mt-5">Package Images</h2>
                 <label className="font-semibold px-5">
-                  <input type="file" onChange={handleFileChange} />
+                  <input type="imagefile" onChange={handleFileChange} />
                 </label>
               </div>
 
