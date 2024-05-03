@@ -95,7 +95,7 @@ function SideBar() {
               </p>
             </div>
           </Link>
-          <Link to={"/"}>
+          <Link to={"/analytics"}>
             <div
               onClick={() => setCurrOption("analytics")}
               className={`${
@@ -170,7 +170,7 @@ function SideBar() {
               </p>
             </div>
           </Link>
-          <Link to={"/"}>
+          <Link to={"/hotel"}>
             <div
               onClick={() => setCurrOption("hotel")}
               className={`${
@@ -195,7 +195,7 @@ function SideBar() {
               </p>
             </div>
           </Link>
-          <Link to={"/"}>
+          <Link to={"/carRental"}>
             <div
               onClick={() => setCurrOption("carRental")}
               className={`${
@@ -220,7 +220,7 @@ function SideBar() {
               </p>
             </div>
           </Link>
-          <Link to={"/"}>
+          <Link to={"/settings"}>
             <div
               onClick={() => setCurrOption("settings")}
               className={`${

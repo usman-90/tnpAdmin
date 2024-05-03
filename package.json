@@ -16,6 +16,7 @@
     "axios": "^1.6.8",
     "chart.js": "^4.4.2",
     "firebase": "^10.11.1",
+    "dotenv": "^16.4.5",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
@@ -23,9 +24,11 @@
     "react-query": "^3.39.3",
     "react-router-dom": "^6.22.3",
     "recharts": "^2.12.5",
+    "sweetalert2": "^11.10.8",
     "victory": "^37.0.2"
   },
   "devDependencies": {
+    "@types/node": "^20.12.8",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
