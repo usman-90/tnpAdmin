@@ -18,9 +18,8 @@ const TourBooking=()=>{
                 </div>
                 <Price/>
                 <Departure/>
-            
             </div>
-        </div>
+        </div> 
         </>
     )
 }

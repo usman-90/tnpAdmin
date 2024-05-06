@@ -1,10 +1,11 @@
-import { Button, Input, Modal, Space, Table, Upload } from "antd";
-import { UploadOutlined } from '@ant-design/icons';
+import { Button, Input, Modal, Space, Switch, Table, Upload } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 import { DeleteOutlined } from "@ant-design/icons";
 
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { UploadChangeParam, UploadFile, UploadProps } from "antd/es/upload";
+import TextArea from "antd/es/input/TextArea";
 
 interface InsertionBoxProps {
   BoxState: boolean;
@@ -24,19 +25,27 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
   const [packageRateNormal, setPackageRateNormal] = useState<string>("");
   const [packageRateDeluxe, setPackageRateDeluxe] = useState<string>("");
   const [packageTotalPersons, setPackageTotalPersons] = useState<string>("");
+  const [packageIsFeatured, setPackageIsFeatured] = useState<boolean>(false);
+  const [packageDestinationId, setPackageDestinationId] = useState<string>("");
+  const [packageIsBestSeller, setPackageIsBestSeller] =
+    useState<boolean>(false);
   const [Itinerary, setItinerary] = useState<any[]>([]);
   const [tableData, setTableData] = useState<any[]>([]);
   const [CostIncludes, setCostIncludes] = useState<string[]>([]);
   const [CostExcludes, setCostExcludes] = useState<string[]>([]);
   const [Highlights, setHighlights] = useState<string[]>([]);
-  const [tabledataIncludepackages, setTabledataIncludepackages] = useState<string[]>([]);
-  const [tabledataCostExcludes, setTabledataCostExcludes] = useState<string[]>([]);
+  const [tabledataIncludepackages, setTabledataIncludepackages] = useState<
+    string[]
+  >([]);
+  const [tabledataCostExcludes, setTabledataCostExcludes] = useState<string[]>(
+    []
+  );
   const [tabledataHighlights, setTabledataHighlights] = useState<string[]>([]);
   const [selectedFile, setSelectedFile] = useState<any>();
 
   useEffect(() => {
     console.log("Abc", selectedFile);
-  }, [selectedFile])
+  }, [selectedFile]);
 
   const handleAddPackage = () => {
     setCostIncludes([...CostIncludes, ""]);
@@ -50,8 +59,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
   };
   const handleDoneHighlights = (index: number) => {
     const newTableData = [...tabledataHighlights];
-    newTableData.push(
-      Highlights[index]);
+    newTableData.push(Highlights[index]);
     setTabledataHighlights(newTableData);
 
     const updatedPackages = [...Highlights];
@@ -61,8 +69,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
 
   const handleDoneCostExcludes = (index: number) => {
     const newTableData = [...tabledataCostExcludes];
-    newTableData.push(
-      CostExcludes[index]);
+    newTableData.push(CostExcludes[index]);
     setTabledataCostExcludes(newTableData);
 
     const updatedPackages = [...CostExcludes];
@@ -70,26 +77,30 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
     setCostExcludes(updatedPackages);
   };
 
-
   const handleDeletePackage = (indexToDelete: number) => {
-    const updatedTableData = tabledataIncludepackages.filter((item, index) => index !== indexToDelete);
+    const updatedTableData = tabledataIncludepackages.filter(
+      (item, index) => index !== indexToDelete
+    );
     setTabledataIncludepackages(updatedTableData);
   };
 
   const handleDeleteCostExcludes = (indexToDelete: number) => {
-    const updatedTableData = tabledataCostExcludes.filter((item, index) => index !== indexToDelete);
+    const updatedTableData = tabledataCostExcludes.filter(
+      (item, index) => index !== indexToDelete
+    );
     setTabledataCostExcludes(updatedTableData);
   };
 
   const handleDeleteHighlights = (indexToDelete: number) => {
-    const updatedTableData = tabledataHighlights.filter((item, index) => index !== indexToDelete);
+    const updatedTableData = tabledataHighlights.filter(
+      (item, index) => index !== indexToDelete
+    );
     setTabledataHighlights(updatedTableData);
   };
 
   const handleDoneIncludePackages = (index: number) => {
     const newTableData = [...tabledataIncludepackages];
-    newTableData.push(
-      CostIncludes[index]);
+    newTableData.push(CostIncludes[index]);
     setTabledataIncludepackages(newTableData);
 
     const updatedPackages = [...CostIncludes];
@@ -100,7 +111,6 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
   const handleAddItinerary = () => {
     setItinerary([...Itinerary, { days: "", event: "", description: "" }]);
   };
-
 
   const handleDeleteRow = (record: any) => {
     const newTableData = tableData.filter((item) => item !== record);
@@ -114,26 +124,30 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
 
   const columns = [
     {
-      title: 'Days',
-      dataIndex: 'days',
-      key: 'days',
+      title: "Days",
+      dataIndex: "days",
+      key: "days",
     },
     {
-      title: 'Event Title',
-      dataIndex: 'event',
-      key: 'event',
+      title: "Event Title",
+      dataIndex: "event",
+      key: "event",
     },
     {
-      title: 'Description',
-      dataIndex: 'description',
-      key: 'description',
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
     },
     {
-      title: 'Action',
-      key: 'action',
+      title: "Action",
+      key: "action",
       render: (text: any, record: any) => (
         <Space size="middle">
-          <Button type="link" onClick={() => handleDeleteRow(record)} icon={<DeleteOutlined />} />
+          <Button
+            type="link"
+            onClick={() => handleDeleteRow(record)}
+            icon={<DeleteOutlined />}
+          />
         </Space>
       ),
     },
@@ -145,7 +159,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
       key: newTableData.length + 1,
       days: Itinerary[index].days,
       event: Itinerary[index].event,
-      description: Itinerary[index].description
+      description: Itinerary[index].description,
     });
     setTableData(newTableData);
     // Remove the itinerary from the list
@@ -157,50 +171,42 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
   const handleSubmit = async (event: any) => {
     event.preventDefault(); // Prevent the default form submission behavior
 
-
     const formData = new FormData();
 
-    formData.append('package_name', packageName);
-    formData.append('package_total_persons', packageTotalPersons);
-    formData.append('package_category_id', packageCategoryId);
-    formData.append('package_type_id', packageTypeId);
-    formData.append('package_region_id', packageRegionId);
-    formData.append('package_description', packageDescription);
-    formData.append('package_rate_normal', packageRateNormal);
-    formData.append('package_rate_deluxe', packageRateDeluxe);
-    // formData.append('package_details', JSON.stringify({
-    //   TripDetailsAndCostSummary: {
-    //     Itinerary: tableData,
-    //     CostIncludes: tabledataIncludepackages,
-    //     CostExcludes: tabledataCostExcludes,
-    //     Highlights: tabledataHighlights,
-    //     file: selectedFile
-    //   }
-    // }));
+    formData.append("package_name", packageName);
+    formData.append("package_total_persons", packageTotalPersons);
+    formData.append("package_category_id", packageCategoryId);
+    formData.append("package_type_id", packageTypeId);
+    formData.append("package_region_id", packageRegionId);
+    formData.append("package_description", packageDescription);
+    formData.append("package_rate_normal", packageRateNormal);
+    formData.append("package_rate_deluxe", packageRateDeluxe);
+    formData.append("package_duration", packageDuration);
+    formData.append("package_isfeatured", packageIsFeatured.toString());
+    formData.append("package_bestseller", packageIsBestSeller.toString());
+    formData.append("package_description", packageDescription);
+    formData.append("package_destination_id", packageDestinationId.toString())
 
-    // const newPackage = {
-    //   package_name: packageName,
-    //   package_total_persons: packageTotalPersons,
-    //   package_category_id: packageCategoryId,
-    //   package_type_id: packageTypeId,
-    //   package_region_id: packageRegionId,
-    //   package_description: packageDescription,
-    //   package_rate_normal: packageRateNormal,
-    //   package_rate_deluxe: packageRateDeluxe,
-    //   // package_duration: packageDuration,
-    //   package_details: JSON.stringify({
-    //     TripDetailsAndCostSummary: {
-    //       Itinerary: tableData,
-    //       CostIncludes: tabledataIncludepackages,
-    //       CostExcludes: tabledataCostExcludes,
-    //       Highlights: tabledataHighlights,
-    //       file: selectedFile
-    //     }
-    //   })
-    // };
+    formData.append(
+      "package_details",
+      JSON.stringify({
+        TripDetailsAndCostSummary: {
+          Itinerary: tableData,
+          CostIncludes: tabledataIncludepackages,
+          CostExcludes: tabledataCostExcludes,
+          Highlights: tabledataHighlights,
+          Images: [],
+        },
+      })
+    );
+
+    console.log("Submit time package_details", formData);
 
     try {
-      const response = await axios.post("http://localhost:3000/pages/api/tourpackages", formData);
+      const response = await axios.post(
+        "http://localhost:3000/pages/api/tourpackages",
+        formData
+      );
       console.log("Package added successfully:", response.data);
       // Clear input fields after successful submission
       setPackageName("");
@@ -212,6 +218,9 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
       setPackageRateNormal("");
       setPackageRateDeluxe("");
       setPackageTotalPersons("");
+      setPackageIsBestSeller(false);
+      setPackageIsFeatured(false);
+      setPackageDestinationId("");
 
       BoxStateChange(false);
     } catch (error) {
@@ -227,8 +236,14 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
         visible={BoxState}
         onOk={handleSubmit}
         onCancel={() => BoxStateChange(false)}
-        width={1000}>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-5" method="post" encType="multipart/form-data">
+        width={1000}
+      >
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-5"
+          method="post"
+          encType="multipart/form-data"
+        >
           <div className="flex flex-wrap px-5 gap-2">
             <label className="font-semibold w-44">
               Package Name
@@ -300,6 +315,54 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                 required
               />
             </label>
+            <label className="font-semibold w-44">
+              Package Duration
+              <Input
+                style={{ marginTop: 5 }}
+                type="text"
+                onChange={(e) => setPackageDuration(e.target.value)}
+                value={packageDuration}
+                required
+              />
+            </label>
+            <label className="font-semibold w-44">
+              Package Destination
+              <Input
+                style={{ marginTop: 5 }}
+                type="text"
+                onChange={(e) => setPackageDestinationId(e.target.value)}
+                value={packageDestinationId}
+                required
+              />
+            </label>
+            <br />
+            <label className="font-semibold w-44 flex flex-col">
+              Package Featured
+              <Switch
+                className="w-3 mt-2"
+                onChange={(e) => setPackageIsFeatured(e.valueOf())}
+                value={packageIsFeatured}
+              />
+            </label>
+            <label className="font-semibold w-44 flex flex-col">
+              Package Best Seller
+              <Switch
+                className="w-3 mt-2"
+                onChange={(e) => setPackageIsBestSeller(e.valueOf())}
+                value={packageIsBestSeller}
+              />
+            </label>
+
+            <label className="font-semibold w-full">
+              Package Description
+              <TextArea
+                style={{ marginTop: 5 }}
+                autoSize={{ minRows: 3, maxRows: 5 }}
+                onChange={(e) => setPackageDescription(e.target.value)}
+                value={packageDescription}
+                required
+              />
+            </label>
           </div>
 
           <div>
@@ -309,7 +372,9 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
             </Button>
             {Itinerary.map((itinerary, index) => (
               <div className="" key={index}>
-                <h2 className="text-lg font-semibold">Package Itinerary {index + 1}</h2>
+                <h2 className="text-lg font-semibold">
+                  Package Itinerary {index + 1}
+                </h2>
                 <label className="font-semibold flex px-5 flex-col pt-5">
                   Days
                   <Input
@@ -345,13 +410,8 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                     />
                   </label>
                   <div className=" flex justify-center items-center gap-4">
-
-
                     <div className="flex flex-col   ">
-
-                      <label className="font-semibold  w-44">
-                        Description
-                      </label>
+                      <label className="font-semibold  w-44">Description</label>
                       <Input
                         style={{ height: 100, width: 320, marginTop: 5 }}
                         type="text"
@@ -364,13 +424,16 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                         required
                       />
                     </div>
-                    <Button className="bg-yellow-400 " onClick={() => handleDone(index)}>Done</Button>
+                    <Button
+                      className="bg-yellow-400 "
+                      onClick={() => handleDone(index)}
+                    >
+                      Done
+                    </Button>
                   </div>
-
                 </div>
               </div>
             ))}
-
 
             {tableData.length > 0 && (
               <Table columns={columns} dataSource={tableData} />
@@ -395,19 +458,25 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                       }}
                       required
                     />
-                    <Button className="bg-yellow-400 w-20 mx-auto" onClick={() => handleDoneIncludePackages(index)}>Done</Button>
+                    <Button
+                      className="bg-yellow-400 w-20 mx-auto"
+                      onClick={() => handleDoneIncludePackages(index)}
+                    >
+                      Done
+                    </Button>
                   </div>
                 ))}
               </div>
               {tabledataIncludepackages.length > 0 && (
                 <Table
-                  dataSource={tabledataIncludepackages.map((item) => ({ package: item }))}
-
+                  dataSource={tabledataIncludepackages.map((item) => ({
+                    package: item,
+                  }))}
                   columns={[
                     {
                       title: "Package",
                       dataIndex: "package",
-                      key: "package"
+                      key: "package",
                     },
                     {
                       title: "Action",
@@ -420,8 +489,8 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                           icon={<DeleteOutlined />}
                           onClick={() => handleDeletePackage(index)}
                         />
-                      )
-                    }
+                      ),
+                    },
                   ]}
                 />
               )}
@@ -445,19 +514,25 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                       }}
                       required
                     />
-                    <Button className="bg-yellow-400 w-20 mx-auto" onClick={() => handleDoneCostExcludes(index)}>Done</Button>
+                    <Button
+                      className="bg-yellow-400 w-20 mx-auto"
+                      onClick={() => handleDoneCostExcludes(index)}
+                    >
+                      Done
+                    </Button>
                   </div>
                 ))}
               </div>
               {tabledataCostExcludes.length > 0 && (
                 <Table
-                  dataSource={tabledataCostExcludes.map((item) => ({ package: item }))}
-
+                  dataSource={tabledataCostExcludes.map((item) => ({
+                    package: item,
+                  }))}
                   columns={[
                     {
                       title: "Cost Exclude",
                       dataIndex: "package",
-                      key: "package"
+                      key: "package",
                     },
                     {
                       title: "Action",
@@ -470,8 +545,8 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                           icon={<DeleteOutlined />}
                           onClick={() => handleDeleteCostExcludes(index)}
                         />
-                      )
-                    }
+                      ),
+                    },
                   ]}
                 />
               )}
@@ -495,19 +570,25 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                       }}
                       required
                     />
-                    <Button className="bg-yellow-400 w-20 mx-auto" onClick={() => handleDoneHighlights(index)}>Done</Button>
+                    <Button
+                      className="bg-yellow-400 w-20 mx-auto"
+                      onClick={() => handleDoneHighlights(index)}
+                    >
+                      Done
+                    </Button>
                   </div>
                 ))}
               </div>
               {tabledataHighlights.length > 0 && (
                 <Table
-                  dataSource={tabledataHighlights.map((item) => ({ package: item }))}
-
+                  dataSource={tabledataHighlights.map((item) => ({
+                    package: item,
+                  }))}
                   columns={[
                     {
                       title: "Highlights",
                       dataIndex: "package",
-                      key: "package"
+                      key: "package",
                     },
                     {
                       title: "Action",
@@ -520,8 +601,8 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                           icon={<DeleteOutlined />}
                           onClick={() => handleDeleteHighlights(index)}
                         />
-                      )
-                    }
+                      ),
+                    },
                   ]}
                 />
               )}
@@ -532,7 +613,6 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                   <input type="imagefile" onChange={handleFileChange} />
                 </label>
               </div>
-
             </div>
           </div>
         </form>

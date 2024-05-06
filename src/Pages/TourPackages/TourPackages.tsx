@@ -1,6 +1,6 @@
 // import React from 'react';
 import { Button } from "antd";
-import InsertionBox from "../../Components/tourpackages/InsertionBox";
+import InsertionBox from "../../Components/Tourpackages/InsertionBox";
 import { useEffect, useState } from "react";
 import { RiAddLine } from "react-icons/ri";
 import { Pagination } from "antd";
