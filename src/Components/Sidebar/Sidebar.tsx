@@ -3,7 +3,7 @@ import "../../App.css";
 
 import { MdDashboard, MdOutlineSettings } from "react-icons/md";
 import Logo from "../../../public/logo.png";
-import { FaMoon, FaRegUser } from "react-icons/fa";
+import { FaMoon, FaRegImage, FaRegUser } from "react-icons/fa";
 // import { IoWalletOutline } from "react-icons/io5";
 import { LuCalendarDays, LuWallet2 } from "react-icons/lu";
 // import { CiSettings } from "react-icons/ci";
@@ -117,6 +117,31 @@ function SideBar() {
                 } font-old overflow-hidden text-base`}
               >
                 Analytics
+              </p>
+            </div>
+          </Link>
+          <Link to={"/banners"}>
+            <div
+              onClick={() => setCurrOption("banners")}
+              className={`${
+                isCollapsed && currOption === "banners"
+                  ? "bg-white text-primary rounded-lg py-1 px-1"
+                  : ""
+              } ${
+                isCollapsed ? "mx-3 flex justify-center" : "ms-5 ps-1"
+              } flex justify-start cursor-pointer text-3xl items-center ext-white py-3 ${
+                currOption === "banners" && !isCollapsed
+                  ? "rounded-l-xl bg-white text-primary"
+                  : ""
+              } ${currOption !== "banners" ? "text-white" : ""}`}
+            >
+              <FaRegImage className="font-bold" />
+              <p
+                className={`${
+                  isCollapsed ? "w-0" : "ms-3"
+                } font-old overflow-hidden text-base`}
+              >
+                Banners
               </p>
             </div>
           </Link>

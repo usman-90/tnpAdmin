@@ -19,7 +19,7 @@ const UserPage: React.FC = () => {
     setLoading(true);
 
     let res = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL}/getUsers?page=${currentPage}&limit=${pageSize}`
+      `${process.env.REACT_APP_SERVER_URL}/admin/getUsers?page=${currentPage}&limit=${pageSize}`
     );
     setData(res.data.data);
     setLoading(false);
@@ -30,7 +30,7 @@ const UserPage: React.FC = () => {
   const DeleteUser = async (id: number) => {
     setDeleting(true);
     await axios
-      .delete(`${process.env.REACT_APP_SERVER_URL}/getUsers?id=${id}`)
+      .delete(`${process.env.REACT_APP_SERVER_URL}/admin/getUsers?id=${id}`)
       .then((res) => {
         Toast.fire({
           icon: "success",
