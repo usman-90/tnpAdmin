@@ -1,15 +1,15 @@
-import { Button, Input, Modal, Space, Table } from "antd";
+import { Button, Input, Modal, Space, Table, Upload } from "antd";
+import { UploadOutlined } from '@ant-design/icons';
 import { DeleteOutlined } from "@ant-design/icons";
 
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { UploadChangeParam, UploadFile, UploadProps } from "antd/es/upload";
 
 interface InsertionBoxProps {
   BoxState: boolean;
   BoxStateChange: (value: any) => void;
 }
-
-
 
 const InsertionBox: React.FC<InsertionBoxProps> = ({
   BoxState,
@@ -32,8 +32,11 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
   const [tabledataIncludepackages, setTabledataIncludepackages] = useState<string[]>([]);
   const [tabledataCostExcludes, setTabledataCostExcludes] = useState<string[]>([]);
   const [tabledataHighlights, setTabledataHighlights] = useState<string[]>([]);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedFile, setSelectedFile] = useState<any>();
 
+  useEffect(() => {
+    console.log("Abc", selectedFile);
+  }, [selectedFile])
 
   const handleAddPackage = () => {
     setCostIncludes([...CostIncludes, ""]);
@@ -49,7 +52,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
     const newTableData = [...tabledataHighlights];
     newTableData.push(
       Highlights[index]);
-      setTabledataHighlights(newTableData);
+    setTabledataHighlights(newTableData);
 
     const updatedPackages = [...Highlights];
     updatedPackages.splice(index, 1);
@@ -60,7 +63,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
     const newTableData = [...tabledataCostExcludes];
     newTableData.push(
       CostExcludes[index]);
-      setTabledataCostExcludes(newTableData);
+    setTabledataCostExcludes(newTableData);
 
     const updatedPackages = [...CostExcludes];
     updatedPackages.splice(index, 1);
@@ -86,7 +89,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
   const handleDoneIncludePackages = (index: number) => {
     const newTableData = [...tabledataIncludepackages];
     newTableData.push(
-     CostIncludes[index]);
+      CostIncludes[index]);
     setTabledataIncludepackages(newTableData);
 
     const updatedPackages = [...CostIncludes];
@@ -104,13 +107,10 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
     setTableData(newTableData);
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files && e.target.files[0];
-    if (file) {
-      setSelectedFile(file);
-    }
+  const handleFileChange = async (info: any): Promise<void> => {
+    const file = info?.target.files[0];
+    setSelectedFile(file);
   };
-
 
   const columns = [
     {
@@ -138,6 +138,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
       ),
     },
   ];
+
   const handleDone = (index: number) => {
     const newTableData = [...tableData];
     newTableData.push({
@@ -152,33 +153,54 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
     updatedItinerary.splice(index, 1);
     setItinerary(updatedItinerary);
   };
-  const handleSubmit = async () => {
-   
-    const newPackage = {
 
-      package_name: packageName,
-      package_total_persons: packageTotalPersons,
-      package_category_id: packageCategoryId,
-      package_type_id: packageTypeId,
-      package_region_id: packageRegionId,
-      package_description: packageDescription,
-      package_rate_normal: packageRateNormal,
-      package_rate_deluxe: packageRateDeluxe,
-      // package_duration: packageDuration,
-      package_details: JSON.stringify({
-        TripDetailsAndCostSummary: {
-          Itinerary: tableData,
-          CostIncludes: tabledataIncludepackages,
-          CostExcludes: tabledataCostExcludes,
-          Highlights: tabledataHighlights,
-          file: selectedFile
-        }
-      })
-    };
-console.log(newPackage,"newPackage")
-    // Make axios call to add package data to the database
+  const handleSubmit = async (event: any) => {
+    event.preventDefault(); // Prevent the default form submission behavior
+
+
+    const formData = new FormData();
+
+    formData.append('package_name', packageName);
+    formData.append('package_total_persons', packageTotalPersons);
+    formData.append('package_category_id', packageCategoryId);
+    formData.append('package_type_id', packageTypeId);
+    formData.append('package_region_id', packageRegionId);
+    formData.append('package_description', packageDescription);
+    formData.append('package_rate_normal', packageRateNormal);
+    formData.append('package_rate_deluxe', packageRateDeluxe);
+    // formData.append('package_details', JSON.stringify({
+    //   TripDetailsAndCostSummary: {
+    //     Itinerary: tableData,
+    //     CostIncludes: tabledataIncludepackages,
+    //     CostExcludes: tabledataCostExcludes,
+    //     Highlights: tabledataHighlights,
+    //     file: selectedFile
+    //   }
+    // }));
+
+    // const newPackage = {
+    //   package_name: packageName,
+    //   package_total_persons: packageTotalPersons,
+    //   package_category_id: packageCategoryId,
+    //   package_type_id: packageTypeId,
+    //   package_region_id: packageRegionId,
+    //   package_description: packageDescription,
+    //   package_rate_normal: packageRateNormal,
+    //   package_rate_deluxe: packageRateDeluxe,
+    //   // package_duration: packageDuration,
+    //   package_details: JSON.stringify({
+    //     TripDetailsAndCostSummary: {
+    //       Itinerary: tableData,
+    //       CostIncludes: tabledataIncludepackages,
+    //       CostExcludes: tabledataCostExcludes,
+    //       Highlights: tabledataHighlights,
+    //       file: selectedFile
+    //     }
+    //   })
+    // };
+
     try {
-      const response = await axios.post("/api/packages", newPackage);
+      const response = await axios.post("http://localhost:3000/pages/api/tourpackages", formData);
       console.log("Package added successfully:", response.data);
       // Clear input fields after successful submission
       setPackageName("");
@@ -190,6 +212,8 @@ console.log(newPackage,"newPackage")
       setPackageRateNormal("");
       setPackageRateDeluxe("");
       setPackageTotalPersons("");
+
+      BoxStateChange(false);
     } catch (error) {
       console.error("Error adding package:", error);
     }
@@ -201,13 +225,10 @@ console.log(newPackage,"newPackage")
         title="Add Package"
         centered
         visible={BoxState}
-        onOk={() => {
-          handleSubmit();
-          BoxStateChange(false);
-        }}
+        onOk={handleSubmit}
         onCancel={() => BoxStateChange(false)}
         width={1000}>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-5" method="post" encType="multipart/form-data">
           <div className="flex flex-wrap px-5 gap-2">
             <label className="font-semibold w-44">
               Package Name
@@ -280,15 +301,6 @@ console.log(newPackage,"newPackage")
               />
             </label>
           </div>
-          {/* <label className="font-semibold">
-            Package Description:
-            <Input
-              type="text"
-              onChange={(e) => setPackageDescription(e.target.value)}
-              value={packageDescription}
-              required
-            />
-          </label> */}
 
           <div>
             <h2 className="text-lg font-semibold">Package Itineraries</h2>
@@ -373,7 +385,7 @@ console.log(newPackage,"newPackage")
                   <div key={index} className="px-5 py-2 flex flex-col">
                     <label className="font-semibold">Package {index + 1}</label>
                     <Input
-                      style={{ width: "100%", marginTop: 5, marginBottom: 2}}
+                      style={{ width: "100%", marginTop: 5, marginBottom: 2 }}
                       type="text"
                       value={packageItem}
                       onChange={(e) => {
@@ -417,13 +429,13 @@ console.log(newPackage,"newPackage")
               <div>
                 <h2 className="text-lg font-semibold mt-5">Cost Exclude</h2>
                 <Button type="primary" onClick={handleAddCostExclude}>
-                  Add Cost Exclude 
+                  Add Cost Exclude
                 </Button>
                 {CostExcludes.map((packageItem, index) => (
                   <div key={index} className="px-5 py-2 flex flex-col">
                     <label className="font-semibold">Package {index + 1}</label>
                     <Input
-                      style={{ width: "100%", marginTop: 5, marginBottom: 2}}
+                      style={{ width: "100%", marginTop: 5, marginBottom: 2 }}
                       type="text"
                       value={packageItem}
                       onChange={(e) => {
@@ -463,19 +475,17 @@ console.log(newPackage,"newPackage")
                   ]}
                 />
               )}
-              
-
 
               <div>
                 <h2 className="text-lg font-semibold mt-5">Highlights</h2>
                 <Button type="primary" onClick={handleAddHighlights}>
-                  Add Highlights 
+                  Add Highlights
                 </Button>
                 {Highlights.map((packageItem, index) => (
                   <div key={index} className="px-5 py-2 flex flex-col">
                     <label className="font-semibold">Package {index + 1}</label>
                     <Input
-                      style={{ width: "100%", marginTop: 5, marginBottom: 2}}
+                      style={{ width: "100%", marginTop: 5, marginBottom: 2 }}
                       type="text"
                       value={packageItem}
                       onChange={(e) => {
@@ -516,15 +526,10 @@ console.log(newPackage,"newPackage")
                 />
               )}
 
-<div>
+              <div>
                 <h2 className="text-lg font-semibold mt-5">Package Images</h2>
                 <label className="font-semibold px-5">
-                <Input
-  style={{ width: 240, padding: "25px 10px", marginTop: 10 }}
-  type="file"
-  onChange={handleFileChange}
-  required
-/>
+                  <input type="imagefile" onChange={handleFileChange} />
                 </label>
               </div>
 
