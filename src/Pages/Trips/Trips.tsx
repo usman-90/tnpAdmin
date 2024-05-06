@@ -4,37 +4,38 @@ import axios from "axios";
 import { ImCancelCircle } from "react-icons/im";
 import { Toast } from "../../Components/SideToast";
 import Loader from "../../Components/loader";
+import { Button } from "antd";
+import { RiAddLine } from "react-icons/ri";
+import TripInsertionBox from "../../Components/TripComp/TripInsertionBox";
+
 const UserPage: React.FC = () => {
+  const [openBox, setOpenBox] = useState(false);
   const [currentPage, setCurrPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [data, setData] = useState([]);
 
   const handlePageChange = (page: number) => {
     setCurrPage(page);
   };
-  const [data, setData] = useState([]);
   const pageSize = 10;
   const totalItems = data?.length;
   const fetchData = async () => {
     setLoading(true);
-
     let res = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL}/admin/getUsers?page=${currentPage}&limit=${pageSize}`
+      `${process.env.REACT_APP_SERVER_URL}/admin/getTrips?page=${currentPage}&limit=${pageSize}`
     );
     setData(res.data.data);
     setLoading(false);
   };
-  useEffect(() => {
-    fetchData();
-  }, []);
-  const DeleteUser = async (id: number) => {
+  const DeleteTrip = async (id: number) => {
     setDeleting(true);
     await axios
-      .delete(`${process.env.REACT_APP_SERVER_URL}/admin/getUsers?id=${id}`)
+      .delete(`${process.env.REACT_APP_SERVER_URL}/admin/getTrips?id=${id}`)
       .then((res) => {
         Toast.fire({
           icon: "success",
-          title: "User Deleted successfully",
+          title: "Trip Deleted successfully",
         });
       })
       .catch((err) => {
@@ -47,12 +48,29 @@ const UserPage: React.FC = () => {
 
     fetchData();
   };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <>
       <div className="h-auto overflow-y-auto bg-white w-[95x%] relative m-4 rounded-lg  ">
         <div className="flex flex-col gap-4">
           <div className="flex flex-row justify-between  m-4  ">
-            <h1 className="sm:text-xl text-lg font-semibold">Users</h1>
+            <h1 className="sm:text-xl text-lg font-semibold">Trips</h1>
+
+            <Button
+              className="bg-[#FBAD17] h-8 w-20 text-white font-semibold flex items-center justify-center"
+              icon={<RiAddLine size={23} className="pt-0.5" />}
+              onClick={() => setOpenBox(true)}
+            >
+              Add
+            </Button>
+            <TripInsertionBox
+              BoxState={openBox}
+              BoxStateChange={setOpenBox}
+              fetchData={fetchData}
+            />
           </div>
           <div className="w-full h-[0.8px] bg-gray-300"></div>
         </div>
@@ -62,16 +80,16 @@ const UserPage: React.FC = () => {
               <thead className="text-xs text-gray-700 uppercase ">
                 <tr className="border-b  border-gray-300 ">
                   <td scope="col" className="pl-6 px-4 py-4 text-lg">
-                    First Name
+                    Trip Package Name
                   </td>
                   <td scope="col" className="pl-6 px-4 py-4 text-lg">
-                    Last Name
+                    Total Seats Limit
                   </td>
                   <td scope="col" className="px-4 py-4 text-lg">
-                    Email
+                    Trip Date
                   </td>
                   <td scope="col" className="px-4 py-4 text-lg">
-                    Login Count
+                    Seats Booked
                   </td>
                   <td scope="col" className="px-4 py-4 text-lg">
                     Remove
@@ -85,69 +103,43 @@ const UserPage: React.FC = () => {
                       scope="row"
                       className=" text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg "
                     >
-                      <p className="text-lg py-2 "> {item?.name}</p>
+                      <p className="text-lg py-2 ">
+                        {" "}
+                        {item?.tnp_packages?.package_name}
+                      </p>
                     </td>
                     <td
                       scope="row"
                       className=" text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg "
                     >
-                      <p className="text-lg py-2 "> {item?.lname}</p>
+                      <p className="text-lg py-2 ">
+                        {" "}
+                        {item?.tnp_packages?.package_total_persons}
+                      </p>
                     </td>
 
                     <td className="  pl-4 md:pr-0 pr-4 text-lg">
-                      {item.email}
+                      {new Date(item?.trip_date)?.toString()}
                     </td>
                     <td className="  pl-4 md:pr-0 pr-4 text-lg">
-                      {item.login_count}
+                      {item?.trip_booked_count}
                     </td>
-
-                    {/* <td
-                    className={` pl-4  py-2 md:pr-0 pr-4 text-lg ${
-                      item.status == "active"
-                        ? "text-green-500"
-                        : "text-orange-400"
-                    }`}
-                  >
-                    {item?.status == "active" ? "Active" : "Not Active"}
-                  </td> */}
 
                     <td className="  pl-4 py-2 md:pr-0 pr-4">
-                      <button onClick={() => DeleteUser(item.id)}>
+                      <button onClick={() => DeleteTrip(item.trip_id)}>
                         <ImCancelCircle className="text-red-700 hover:text-red-500 text-2xl" />
                       </button>
                     </td>
                   </tr>
                 ))}
-
-                {/* <tr colSpan={7} className="">
-                  <td colSpan={7} className="flex flex-row gap-2">
-                    {currentPage > 1 && (
-                      <GrLinkPrevious
-                        classNameName="mt-1 text-orange-500"
-                        onClick={handlePreviousPage}
-                      />
-                    )}
-                    {isMoreUsersAvailable ? (
-                      <button
-                        classNameName="text-center text-orange-500 w-full"
-                        onClick={handleReadMore}
-                      >
-                        Read More
-                      </button>
-                    ) : (
-                      <p className="text-center text-orange-500">
-                        No More Users
-                      </p>
-                    )}
-                  </td>
-                </tr> */}
               </tbody>
             </table>
+
             <Pagination
               current={currentPage}
               onChange={handlePageChange}
-              total={totalItems} // Total number of items
               pageSize={pageSize} // Number of items per page
+              total={totalItems} // Total number of items
               showSizeChanger={false} // Hide the size changer
             />
           </div>

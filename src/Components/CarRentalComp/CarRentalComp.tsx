@@ -2,19 +2,27 @@ import { Button, Pagination } from "antd";
 import { IoIosAdd } from "react-icons/io";
 import { BiSortAlt2 } from "react-icons/bi";
 import { useState } from "react";
+import { RiAddLine } from "react-icons/ri";
+import CarRentalInsertionBox from "./CarRentalInsetionBox";
 
 const data = [
-    { name: "Asad", email: "asad@gmail.com", flight: "Qatar",totalMembers:16 , price:10.62 },
-    { name: "Asad", email: "asad@gmail.com", flight: "Qatar",totalMembers:16 , price:10.62 },
-    { name: "Asad", email: "asad@gmail.com", flight: "Qatar",totalMembers:16 , price:10.62 },
-    { name: "Asad", email: "asad@gmail.com", flight: "Qatar",totalMembers:16 , price:10.62 },
-    { name: "Asad", email: "asad@gmail.com", flight: "Qatar",totalMembers:16 , price:10.62 },
-    { name: "Asad", email: "asad@gmail.com", flight: "Qatar",totalMembers:16 , price:10.62 },
-    { name: "Asad", email: "asad@gmail.com", flight: "Qatar",totalMembers:16 , price:10.62 },
+    { name: "Corolla", rent_date: "05 May 2024", client_name:"Maryam Khanzada" , rate_per_day: "$5/day" },
+    { name: "Corolla", rent_date: "05 May 2024", client_name:"Maryam Khanzada" , rate_per_day: "$5/day" },
+    { name: "Corolla", rent_date: "05 May 2024", client_name:"Maryam Khanzada" , rate_per_day: "$5/day" },
+    { name: "Corolla", rent_date: "05 May 2024", client_name:"Maryam Khanzada" , rate_per_day: "$5/day" },
+    { name: "Corolla", rent_date: "05 May 2024", client_name:"Maryam Khanzada" , rate_per_day: "$5/day" },
+    { name: "Corolla", rent_date: "05 May 2024", client_name:"Maryam Khanzada" , rate_per_day: "$5/day" },
+    { name: "Corolla", rent_date: "05 May 2024", client_name:"Maryam Khanzada" , rate_per_day: "$5/day" },
+    { name: "Corolla", rent_date: "05 May 2024", client_name:"Maryam Khanzada" , rate_per_day: "$5/day" },
+    { name: "Corolla", rent_date: "05 May 2024", client_name:"Maryam Khanzada" , rate_per_day: "$5/day" },
+    { name: "Corolla", rent_date: "05 May 2024", client_name:"Maryam Khanzada" , rate_per_day: "$5/day" },
+    { name: "Corolla", rent_date: "05 May 2024", client_name:"Maryam Khanzada" , rate_per_day: "$5/day" },
+    { name: "Corolla", rent_date: "05 May 2024", client_name:"Maryam Khanzada" , rate_per_day: "$5/day" },
     
   ];
 
-const LastTrips: React.FC = ()=>{
+const CarRentalComp: React.FC = ()=>{
+    const [openBox, setOpenBox] = useState(false);
     const [currPage , setCurrPage]= useState(1);
     const handlePageChange = (page: number) => {
         setCurrPage(page);
@@ -26,8 +34,14 @@ const LastTrips: React.FC = ()=>{
     return(
         <div className="w-full  bg-white p-4 flex flex-col gap-4 rounded-xl">
             <div className="flex flex-row justify-between py-4">
-                <p className="text-xl font-bold mb-4 pl-2">Last Trips</p>
-                <Button className="flex flex-row bg-orange-400 text-white "><IoIosAdd size={20}/><p>Add</p></Button>
+                <p className="text-xl font-bold mb-4 pl-2">Car Rental</p>
+                <Button
+          className="bg-[#FBAD17] h-8 w-20 text-white font-semibold flex items-center justify-center"
+          icon={<RiAddLine size={23} className="pt-0.5" />}
+          onClick={() => setOpenBox(true)}>
+          Add
+        </Button>
+        <CarRentalInsertionBox BoxState={openBox} BoxStateChange={setOpenBox} />
             </div>
             <div className="h-[0.5px] w-full bg-gray-400"></div>
             <div className="relative overflow-x-auto  justify-center items-center  ">
@@ -36,22 +50,22 @@ const LastTrips: React.FC = ()=>{
                 <tr className=" ">
                   <td scope="col" className="pl-6 px-4 py-4 font-medium ">
                     <div className="flex flex-row">
-                    Member<BiSortAlt2 size={17}/>
+                    Car Name<BiSortAlt2 size={17}/>
                     </div>
                   </td>
                   <td scope="col" className="px-4 py-4 font-medium ">
                     <div className="flex flex-row">
-                    Flight <BiSortAlt2 size={17}/>
+                    Car Rent Dtae <BiSortAlt2 size={17}/>
                     </div>
                   </td>
                   <td scope="col" className="px-4 py-4 font-medium ">
                     <div className="flex flex-row">
-                   Total Members <BiSortAlt2 size={17}/>
+                   Client Name <BiSortAlt2 size={17}/>
                     </div>
                   </td>
                   <td scope="col" className="px-4 py-4 font-medium">
                     <div className="flex flex-row">
-                    Price<BiSortAlt2 size={17}/>
+                    Rate per Day<BiSortAlt2 size={17}/>
                     </div>
                   </td>
 
@@ -65,20 +79,18 @@ const LastTrips: React.FC = ()=>{
                       scope="row"
                       className=" text-gray-900 whitespace-nowrap dark:text-white pl-6 py-2 md:pr-0 pr-4 text-lg "
                     >
-                        <div className="flex flex-row gap-2"><div className="w-10 h-10 bg-gray-200 rounded-full"></div><div className="flex flex-col text-sm"><p className="  "> {item?.name}</p><p className="text-gray-500">{item.email}</p></div></div>
+                        <div className="flex flex-row gap-2"><div className="w-10 h-10 bg-gray-200 rounded-full"></div><div className="flex flex-col text-sm pt-3"><p className="  "> {item?.name}</p></div></div>
                      
                     </td>
                    
                     <td className="  pl-4 md:pr-0 pr-4 text-sm">
-                      {item.flight}
+                      {item.rent_date}
                     </td>
                     <td className="  pl-4 md:pr-0 pr-4 text-sm ">
-                        <div className="bg-sky-400 rounded-lg text-white w-10 py-2 text-center">
-                      {item.totalMembers}
-                      </div>
+                       {item.client_name}
                     </td>
                     <td className="  pl-4 md:pr-0 pr-4 text-sm text-black">
-                        <div className="flex flex-row ">${item.price}</div>
+                        <div className="flex flex-row ">{item.rate_per_day}</div>
                      
                     </td>
                     
@@ -124,4 +136,4 @@ const LastTrips: React.FC = ()=>{
     )
 
 }
-export default LastTrips;
+export default CarRentalComp;
