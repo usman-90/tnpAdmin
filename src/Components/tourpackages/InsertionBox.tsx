@@ -191,75 +191,75 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
   const handleSubmit = async (event: any) => {
     event.preventDefault();
 
-    // const imageUrls = await uploadImages(selectedFiles);
+    const imageUrls = await uploadImages(selectedFiles);
 
     const pdfUrl = await uploadPDF(selectedPDFFile);
     
     console.log("pdfUrl", pdfUrl);
 
 
-    // const formData = new FormData();
+    const formData = new FormData();
 
-    // formData.append("package_name", packageName);
-    // formData.append("package_total_persons", packageTotalPersons);
-    // formData.append("package_category_id", packageCategoryId);
-    // formData.append("package_type_id", packageTypeId);
-    // formData.append("package_region_id", packageRegionId);
-    // formData.append("package_description", packageDescription);
-    // formData.append("package_rate_normal", packageRateNormal);
-    // formData.append("package_rate_deluxe", packageRateDeluxe);
-    // formData.append("package_duration", packageDuration);
-    // formData.append(
-    //   "package_isfeatured",
-    //   packageIsFeatured.toString() === "false" ? "" : "true"
-    // );
-    // formData.append(
-    //   "package_bestseller",
-    //   packageIsBestSeller.toString() === "false" ? "" : "true"
-    // );
-    // formData.append("package_description", packageDescription);
-    // formData.append("package_destination_id", packageDestinationId.toString());
+    formData.append("package_name", packageName);
+    formData.append("package_total_persons", packageTotalPersons);
+    formData.append("package_category_id", packageCategoryId);
+    formData.append("package_type_id", packageTypeId);
+    formData.append("package_region_id", packageRegionId);
+    formData.append("package_description", packageDescription);
+    formData.append("package_rate_normal", packageRateNormal);
+    formData.append("package_rate_deluxe", packageRateDeluxe);
+    formData.append("package_duration", packageDuration);
+    formData.append(
+      "package_isfeatured",
+      packageIsFeatured.toString() === "false" ? "" : "true"
+    );
+    formData.append(
+      "package_bestseller",
+      packageIsBestSeller.toString() === "false" ? "" : "true"
+    );
+    formData.append("package_description", packageDescription);
+    formData.append("package_destination_id", packageDestinationId.toString());
 
-    // formData.append(
-    //   "package_details",
-    //   JSON.stringify({
-    //     TripDetailsAndCostSummary: {
-    //       Itinerary: tableData,
-    //       CostIncludes: tabledataIncludepackages,
-    //       CostExcludes: tabledataCostExcludes,
-    //       Highlights: tabledataHighlights,
-    //       Images: imageUrls,
-    //       PDFUrl: pdfUrl
-    //     },
-    //   })
-    // );
+    formData.append(
+      "package_details",
+      JSON.stringify({
+        TripDetailsAndCostSummary: {
+          Itinerary: tableData,
+          CostIncludes: tabledataIncludepackages,
+          CostExcludes: tabledataCostExcludes,
+          Highlights: tabledataHighlights,
+          Images: imageUrls,
+          PDFUrl: pdfUrl
+        },
+      })
+    );
 
-    // // console.log("Submit time package_details", formData);
+    // console.log("Submit time package_details", formData);
 
-    // try {
-    //   const response = await axios.post(
-    //     "http://localhost:3000/pages/api/tourpackages",
-    //     formData
-    //   );
-    //   console.log("Package added successfully:", response.data);
-    //   // Clear input fields after successful submission
-    //   setPackageName("");
-    //   setPackageDescription("");
-    //   setPackageCategoryId("");
-    //   setPackageTypeId("");
-    //   setPackageRegionId("");
-    //   setPackageDuration("");
-    //   setPackageRateNormal("");
-    //   setPackageRateDeluxe("");
-    //   setPackageTotalPersons("");
-    //   setPackageIsBestSeller(false);
-    //   setPackageIsFeatured(false);
-    //   setPackageDestinationId("");
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/pages/api/tourpackages",
+        formData
+      );
+      console.log("Package added successfully:", response.data);
+      // Clear input fields after successful submission
+      setPackageName("");
+      setPackageDescription("");
+      setPackageCategoryId("");
+      setPackageTypeId("");
+      setPackageRegionId("");
+      setPackageDuration("");
+      setPackageRateNormal("");
+      setPackageRateDeluxe("");
+      setPackageTotalPersons("");
+      setPackageIsBestSeller(false);
+      setPackageIsFeatured(false);
+      setPackageDestinationId("");
 
-    //   BoxStateChange(false);
-    // } catch (error) {
-    //   console.error("Error adding package:", error);
-    // }
+      BoxStateChange(false);
+    } catch (error) {
+      console.error("Error adding package:", error);
+    }
   };
 
   return (
