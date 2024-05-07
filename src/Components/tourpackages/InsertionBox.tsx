@@ -1,12 +1,10 @@
 import { Button, Input, Modal, Space, Switch, Table, Upload } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
 import { DeleteOutlined } from "@ant-design/icons";
 
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { UploadChangeParam, UploadFile, UploadProps } from "antd/es/upload";
 import TextArea from "antd/es/input/TextArea";
-import { handlePackageImageUpload, uploadPackagePhotos } from "../../config/firebasemethods";
+import { handlePackageImageUpload, handlePackagePDFUpload } from "../../config/firebasemethods";
 
 interface InsertionBoxProps {
   BoxState: boolean;
@@ -43,10 +41,11 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
   );
   const [tabledataHighlights, setTabledataHighlights] = useState<string[]>([]);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [selectedPDFFile, setSelectedPDFFile] = useState<File>();
 
   useEffect(() => {
-    console.log("Abc", selectedFiles);
-  }, [selectedFiles]);
+    console.log("Abc", selectedPDFFile);
+  }, [selectedPDFFile]);
 
   const handleAddPackage = () => {
     setCostIncludes([...CostIncludes, ""]);
@@ -123,6 +122,10 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
     setSelectedFiles(Array.from(info?.target.files));
   };
 
+  const handleFilePDFChange = async (info: any): Promise<void> => {
+    setSelectedPDFFile(info?.target);
+  }
+
   const columns = [
     {
       title: "Days",
@@ -170,77 +173,93 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
     setItinerary(updatedItinerary);
   };
 
-  const uploadImages = async (imagesList : File[]) => {
+  const uploadImages = async (imagesList: File[]) => {
     let updatedImages = null;
     updatedImages = await Promise.all(
       imagesList?.map(async (imageFile) => {
         return await handlePackageImageUpload(imageFile);
-      }),
+      })
     );
     return updatedImages;
-  }
+  };
+
+  const uploadPDF = async (pdfFile?: File) => {
+    let updatedPDF = await handlePackagePDFUpload(pdfFile);
+    return updatedPDF;
+  };
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
 
-    const imageUrls = await uploadImages(selectedFiles);
-    console.log("imageUrls", imageUrls);
+    // const imageUrls = await uploadImages(selectedFiles);
 
-    const formData = new FormData();
+    const pdfUrl = await uploadPDF(selectedPDFFile);
+    
+    console.log("pdfUrl", pdfUrl);
 
-    formData.append("package_name", packageName);
-    formData.append("package_total_persons", packageTotalPersons);
-    formData.append("package_category_id", packageCategoryId);
-    formData.append("package_type_id", packageTypeId);
-    formData.append("package_region_id", packageRegionId);
-    formData.append("package_description", packageDescription);
-    formData.append("package_rate_normal", packageRateNormal);
-    formData.append("package_rate_deluxe", packageRateDeluxe);
-    formData.append("package_duration", packageDuration);
-    formData.append("package_isfeatured", packageIsFeatured.toString() === "false" ? "" : "true");
-    formData.append("package_bestseller", packageIsBestSeller.toString() === "false" ? "" : "true");
-    formData.append("package_description", packageDescription);
-    formData.append("package_destination_id", packageDestinationId.toString())
 
-    formData.append(
-      "package_details",
-      JSON.stringify({
-        TripDetailsAndCostSummary: {
-          Itinerary: tableData,
-          CostIncludes: tabledataIncludepackages,
-          CostExcludes: tabledataCostExcludes,
-          Highlights: tabledataHighlights,
-          Images: imageUrls,
-        },
-      })
-    );
+    // const formData = new FormData();
 
-    // console.log("Submit time package_details", formData);
+    // formData.append("package_name", packageName);
+    // formData.append("package_total_persons", packageTotalPersons);
+    // formData.append("package_category_id", packageCategoryId);
+    // formData.append("package_type_id", packageTypeId);
+    // formData.append("package_region_id", packageRegionId);
+    // formData.append("package_description", packageDescription);
+    // formData.append("package_rate_normal", packageRateNormal);
+    // formData.append("package_rate_deluxe", packageRateDeluxe);
+    // formData.append("package_duration", packageDuration);
+    // formData.append(
+    //   "package_isfeatured",
+    //   packageIsFeatured.toString() === "false" ? "" : "true"
+    // );
+    // formData.append(
+    //   "package_bestseller",
+    //   packageIsBestSeller.toString() === "false" ? "" : "true"
+    // );
+    // formData.append("package_description", packageDescription);
+    // formData.append("package_destination_id", packageDestinationId.toString());
 
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/pages/api/tourpackages",
-        formData
-      );
-      console.log("Package added successfully:", response.data);
-      // Clear input fields after successful submission
-      setPackageName("");
-      setPackageDescription("");
-      setPackageCategoryId("");
-      setPackageTypeId("");
-      setPackageRegionId("");
-      setPackageDuration("");
-      setPackageRateNormal("");
-      setPackageRateDeluxe("");
-      setPackageTotalPersons("");
-      setPackageIsBestSeller(false);
-      setPackageIsFeatured(false);
-      setPackageDestinationId("");
+    // formData.append(
+    //   "package_details",
+    //   JSON.stringify({
+    //     TripDetailsAndCostSummary: {
+    //       Itinerary: tableData,
+    //       CostIncludes: tabledataIncludepackages,
+    //       CostExcludes: tabledataCostExcludes,
+    //       Highlights: tabledataHighlights,
+    //       Images: imageUrls,
+    //       PDFUrl: pdfUrl
+    //     },
+    //   })
+    // );
 
-      BoxStateChange(false);
-    } catch (error) {
-      console.error("Error adding package:", error);
-    }
+    // // console.log("Submit time package_details", formData);
+
+    // try {
+    //   const response = await axios.post(
+    //     "http://localhost:3000/pages/api/tourpackages",
+    //     formData
+    //   );
+    //   console.log("Package added successfully:", response.data);
+    //   // Clear input fields after successful submission
+    //   setPackageName("");
+    //   setPackageDescription("");
+    //   setPackageCategoryId("");
+    //   setPackageTypeId("");
+    //   setPackageRegionId("");
+    //   setPackageDuration("");
+    //   setPackageRateNormal("");
+    //   setPackageRateDeluxe("");
+    //   setPackageTotalPersons("");
+    //   setPackageIsBestSeller(false);
+    //   setPackageIsFeatured(false);
+    //   setPackageDestinationId("");
+
+    //   BoxStateChange(false);
+    // } catch (error) {
+    //   console.error("Error adding package:", error);
+    // }
   };
 
   return (
@@ -461,7 +480,9 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                 </Button>
                 {CostIncludes.map((packageItem, index) => (
                   <div key={index} className="px-5 py-2 flex flex-col">
-                    <label className="font-semibold">Package {tabledataIncludepackages.length + index + 1}</label>
+                    <label className="font-semibold">
+                      Package {tabledataIncludepackages.length + index + 1}
+                    </label>
                     <Input
                       style={{ width: "100%", marginTop: 5, marginBottom: 2 }}
                       type="text"
@@ -517,7 +538,9 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                 </Button>
                 {CostExcludes.map((packageItem, index) => (
                   <div key={index} className="px-5 py-2 flex flex-col">
-                    <label className="font-semibold">Package {tabledataCostExcludes.length + index + 1}</label>
+                    <label className="font-semibold">
+                      Package {tabledataCostExcludes.length + index + 1}
+                    </label>
                     <Input
                       style={{ width: "100%", marginTop: 5, marginBottom: 2 }}
                       type="text"
@@ -573,7 +596,9 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                 </Button>
                 {Highlights.map((packageItem, index) => (
                   <div key={index} className="px-5 py-2 flex flex-col">
-                    <label className="font-semibold">Package {tabledataHighlights.length + index + 1}</label>
+                    <label className="font-semibold">
+                      Package {tabledataHighlights.length + index + 1}
+                    </label>
                     <Input
                       style={{ width: "100%", marginTop: 5, marginBottom: 2 }}
                       type="text"
@@ -625,7 +650,23 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
               <div>
                 <h2 className="text-lg font-semibold mt-5">Package Images</h2>
                 <label className="font-semibold px-5">
-                  <input type="file" accept="image/*" onChange={handleFileChange} multiple={true} />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    multiple={true}
+                  />
+                </label>
+              </div>
+
+              <div>
+                <h2 className="text-lg font-semibold mt-5">Upload PDF</h2>
+                <label className="font-semibold px-5">
+                  <input
+                    type="file"
+                    accept=".docx,application/pdf"
+                    onChange={handleFilePDFChange}
+                  />
                 </label>
               </div>
             </div>

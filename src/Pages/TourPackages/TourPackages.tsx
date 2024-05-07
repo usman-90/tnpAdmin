@@ -5,7 +5,7 @@ import { RiAddLine } from "react-icons/ri";
 import { Pagination } from "antd";
 import axios from "axios";
 import Loader from "../../Components/loader";
-import InsertionBox from "../../Components/tourpackages/InsertionBox";
+import InsertionBox from "../../Components/Tourpackages/InsertionBox";
 
 export default function TourPackages() {
   const [currentPage, setCurrPage] = useState(1);

@@ -57,10 +57,10 @@ export const updateBanner = async (file: File, previousName: string) => {
 };
 
 
-export const uploadPackagePhotos = async (file: File) => {
+export const uploadPackagePhotos = async (file: File, directory: string) => {
   const storage = getStorage(app);
   return new Promise((resolve, reject) => {
-    const storageRef = ref(storage, `photos/packages/${file.name}`);
+    const storageRef = ref(storage, `packages${directory}/${file.name}`);
     console.log(file, "inf irebase calls");
     uploadBytes(storageRef, file)
       .then((snapshot: any) => {
@@ -82,7 +82,20 @@ export const uploadPackagePhotos = async (file: File) => {
 
 export const handlePackageImageUpload = async (file: File) => {
   try {
-    return await uploadPackagePhotos(file);
+    return await uploadPackagePhotos(file, '/images');
+  } catch (error) {
+    console.log("Error uploading image:", error);
+    return null;
+  }
+};
+
+export const handlePackagePDFUpload = async (file?: File) => {
+  if (!file) {
+    console.log("Error no file provided for pdf");
+    return null;
+  }
+  try {
+    return await uploadPackagePhotos(file, '/pdf');
   } catch (error) {
     console.log("Error uploading image:", error);
     return null;
