@@ -55,3 +55,36 @@ export const updateBanner = async (file: File, previousName: string) => {
       });
   });
 };
+
+
+export const uploadPackagePhotos = async (file: File) => {
+  const storage = getStorage(app);
+  return new Promise((resolve, reject) => {
+    const storageRef = ref(storage, `photos/packages/${file.name}`);
+    console.log(file, "inf irebase calls");
+    uploadBytes(storageRef, file)
+      .then((snapshot: any) => {
+        getDownloadURL(snapshot.ref)
+          .then((downloadURL) => {
+            console.log("File available at", downloadURL);
+            resolve(downloadURL);
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
+
+
+export const handlePackageImageUpload = async (file: File) => {
+  try {
+    return await uploadPackagePhotos(file);
+  } catch (error) {
+    console.log("Error uploading image:", error);
+    return null;
+  }
+};

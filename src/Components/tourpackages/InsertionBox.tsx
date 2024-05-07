@@ -6,6 +6,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { UploadChangeParam, UploadFile, UploadProps } from "antd/es/upload";
 import TextArea from "antd/es/input/TextArea";
+import { handlePackageImageUpload, uploadPackagePhotos } from "../../config/firebasemethods";
 
 interface InsertionBoxProps {
   BoxState: boolean;
@@ -41,11 +42,11 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
     []
   );
   const [tabledataHighlights, setTabledataHighlights] = useState<string[]>([]);
-  const [selectedFile, setSelectedFile] = useState<any>();
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
   useEffect(() => {
-    console.log("Abc", selectedFile);
-  }, [selectedFile]);
+    console.log("Abc", selectedFiles);
+  }, [selectedFiles]);
 
   const handleAddPackage = () => {
     setCostIncludes([...CostIncludes, ""]);
@@ -109,7 +110,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
   };
 
   const handleAddItinerary = () => {
-    setItinerary([...Itinerary, { days: "", event: "", description: "" }]);
+    setItinerary([...Itinerary, { day: "", event: "", description: "" }]);
   };
 
   const handleDeleteRow = (record: any) => {
@@ -118,15 +119,15 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
   };
 
   const handleFileChange = async (info: any): Promise<void> => {
-    const file = info?.target.files[0];
-    setSelectedFile(file);
+    // const files = info?.target.files;
+    setSelectedFiles(Array.from(info?.target.files));
   };
 
   const columns = [
     {
       title: "Days",
-      dataIndex: "days",
-      key: "days",
+      dataIndex: "day",
+      key: "day",
     },
     {
       title: "Event Title",
@@ -155,9 +156,10 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
 
   const handleDone = (index: number) => {
     const newTableData = [...tableData];
+    console.log("Item added", newTableData);
     newTableData.push({
       key: newTableData.length + 1,
-      days: Itinerary[index].days,
+      day: "Day " + Itinerary[index].day,
       event: Itinerary[index].event,
       description: Itinerary[index].description,
     });
@@ -168,8 +170,21 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
     setItinerary(updatedItinerary);
   };
 
+  const uploadImages = async (imagesList : File[]) => {
+    let updatedImages = null;
+    updatedImages = await Promise.all(
+      imagesList?.map(async (imageFile) => {
+        return await handlePackageImageUpload(imageFile);
+      }),
+    );
+    return updatedImages;
+  }
+
   const handleSubmit = async (event: any) => {
-    event.preventDefault(); // Prevent the default form submission behavior
+    event.preventDefault();
+
+    const imageUrls = await uploadImages(selectedFiles);
+    console.log("imageUrls", imageUrls);
 
     const formData = new FormData();
 
@@ -182,8 +197,8 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
     formData.append("package_rate_normal", packageRateNormal);
     formData.append("package_rate_deluxe", packageRateDeluxe);
     formData.append("package_duration", packageDuration);
-    formData.append("package_isfeatured", packageIsFeatured.toString());
-    formData.append("package_bestseller", packageIsBestSeller.toString());
+    formData.append("package_isfeatured", packageIsFeatured.toString() === "false" ? "" : "true");
+    formData.append("package_bestseller", packageIsBestSeller.toString() === "false" ? "" : "true");
     formData.append("package_description", packageDescription);
     formData.append("package_destination_id", packageDestinationId.toString())
 
@@ -195,12 +210,12 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
           CostIncludes: tabledataIncludepackages,
           CostExcludes: tabledataCostExcludes,
           Highlights: tabledataHighlights,
-          Images: [],
+          Images: imageUrls,
         },
       })
     );
 
-    console.log("Submit time package_details", formData);
+    // console.log("Submit time package_details", formData);
 
     try {
       const response = await axios.post(
@@ -376,16 +391,16 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                   Package Itinerary {index + 1}
                 </h2>
                 <label className="font-semibold flex px-5 flex-col pt-5">
-                  Days
+                  Day
                   <Input
                     style={{ width: 144, marginTop: 5 }}
                     type="number"
                     onChange={(e) => {
                       const newItinerary = [...Itinerary];
-                      newItinerary[index].days = e.target.value;
+                      newItinerary[index].day = e.target.value;
                       setItinerary(newItinerary);
                     }}
-                    value={itinerary.days}
+                    value={itinerary.day}
                     required
                   />
                 </label>
@@ -446,7 +461,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                 </Button>
                 {CostIncludes.map((packageItem, index) => (
                   <div key={index} className="px-5 py-2 flex flex-col">
-                    <label className="font-semibold">Package {index + 1}</label>
+                    <label className="font-semibold">Package {tabledataIncludepackages.length + index + 1}</label>
                     <Input
                       style={{ width: "100%", marginTop: 5, marginBottom: 2 }}
                       type="text"
@@ -502,7 +517,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                 </Button>
                 {CostExcludes.map((packageItem, index) => (
                   <div key={index} className="px-5 py-2 flex flex-col">
-                    <label className="font-semibold">Package {index + 1}</label>
+                    <label className="font-semibold">Package {tabledataCostExcludes.length + index + 1}</label>
                     <Input
                       style={{ width: "100%", marginTop: 5, marginBottom: 2 }}
                       type="text"
@@ -558,7 +573,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                 </Button>
                 {Highlights.map((packageItem, index) => (
                   <div key={index} className="px-5 py-2 flex flex-col">
-                    <label className="font-semibold">Package {index + 1}</label>
+                    <label className="font-semibold">Package {tabledataHighlights.length + index + 1}</label>
                     <Input
                       style={{ width: "100%", marginTop: 5, marginBottom: 2 }}
                       type="text"
@@ -610,7 +625,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
               <div>
                 <h2 className="text-lg font-semibold mt-5">Package Images</h2>
                 <label className="font-semibold px-5">
-                  <input type="imagefile" onChange={handleFileChange} />
+                  <input type="file" accept="image/*" onChange={handleFileChange} multiple={true} />
                 </label>
               </div>
             </div>

@@ -1,16 +1,16 @@
 // import React from 'react';
 import { Button } from "antd";
-import InsertionBox from "../../Components/Tourpackages/InsertionBox";
 import { useEffect, useState } from "react";
 import { RiAddLine } from "react-icons/ri";
 import { Pagination } from "antd";
 import axios from "axios";
 import Loader from "../../Components/loader";
+import InsertionBox from "../../Components/tourpackages/InsertionBox";
 
 export default function TourPackages() {
   const [currentPage, setCurrPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [deleting, setDeleting] = useState(false);
+  // const [deleting, setDeleting] = useState(false);
   const [data, setData] = useState([]);
   const handlePageChange = (page: number) => {
     setCurrPage(page);
@@ -162,7 +162,7 @@ export default function TourPackages() {
         </div>
       </div>
       {loading && <Loader message="Fetching Data" />}
-      {deleting && <Loader message="Deleting Data" />}
+      {/* {deleting && <Loader message="Deleting Data" />} */}
     </>
   );
 }

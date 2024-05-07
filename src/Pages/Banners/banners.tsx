@@ -98,16 +98,16 @@ const Banners: React.FC = () => {
             <table className="text-md text-left text-gray-500 m-auto lg:w-full md:w-full h-full">
               <thead className="text-xs text-gray-700 uppercase ">
                 <tr className="border-b  border-gray-300 ">
-                  <td scope="col" className="pl-6 px-4 py-4 text-lg">
+                  <td scope="col" className="pl-6 px-4 py-4 text-lg font-bold">
                     Page Name
                   </td>
-                  <td scope="col" className="pl-6 px-4 py-4 text-lg">
+                  <td scope="col" className="pl-6 px-4 py-4 text-lg font-bold">
                     Banner Name
                   </td>
-                  <td scope="col" className="pl-6 px-4 py-4 text-lg">
+                  <td scope="col" className="pl-6 px-4 py-4 text-lg font-bold">
                     Bnaner Image
                   </td>
-                  <td scope="col" className="px-4 py-4 text-lg">
+                  <td scope="col" className="px-4 py-4 text-lg font-bold">
                     Change
                   </td>
                 </tr>
@@ -140,7 +140,7 @@ const Banners: React.FC = () => {
                       </Link>
                     </td>
 
-                    <td className="  pl-4 py-2 md:pr-0 pr-4">
+                    <td className="pl-4 py-2 md:pr-0 pr-4">
                       <button onClick={() => DeleteTrip(item.trip_id)}>
                         <input
                           id="file-upload"
