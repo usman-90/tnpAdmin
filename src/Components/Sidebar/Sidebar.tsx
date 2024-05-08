@@ -270,6 +270,34 @@ function SideBar() {
               </p>
             </div>
           </Link>
+
+          <Link to={"/testimonials"}>
+            <div
+              onClick={() => setCurrOption("testimonials")}
+              className={`${
+                isCollapsed && currOption === "testimonials"
+                  ? "bg-white text-primary rounded-lg py-1 px-1"
+                  : ""
+              } ${
+                isCollapsed ? "mx-3 flex justify-center" : "ms-5 ps-1"
+              } flex cursor-pointer justify-start  text-3xl items-center txt-white py-3 ${
+                currOption === "testimonials" && !isCollapsed
+                  ? "rounded-l-xl bg-white text-primary"
+                  : ""
+              } ${currOption !== "testimonials" ? "text-white" : ""}`}
+            >
+              <BsTree />
+              <p
+                className={`${
+                  isCollapsed ? "w-0" : "ms-3"
+                } font-old overflow-hidden text-base`}
+              >
+                Testimonials
+              </p>
+            </div>
+          </Link>
+          
+
         </div>
 
         <div className="flex flex-col items-center bg-white rounded-lg mx-2 py-2">

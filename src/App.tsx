@@ -12,6 +12,7 @@ import Hotel from "./Pages/Hotel/Hotel";
 import Settings from "./Pages/Settings/Settings";
 import Analytics from "./Pages/Analytics/Analytics";
 import Banners from "./Pages/Banners/banners";
+import Testimonials from "./Pages/Testimonials/Testimonials";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -38,6 +39,7 @@ const App: React.FC = () => {
             <Route path="hotel" element={<Hotel />} />
             <Route path="settings" element={<Settings />} />
             <Route path="analytics" element={<Analytics />} />
+            <Route path="testimonials" element={<Testimonials />} />
           </Route>
         </Routes>
       </QueryClientProvider>
