@@ -45,7 +45,7 @@ export default function TourPackages() {
           >
             Add
           </Button>
-          <InsertionBox BoxState={openBox} BoxStateChange={setOpenBox} />
+          <InsertionBox BoxState={openBox} BoxStateChange={setOpenBox} updatePackages={fetchData} />
         </div>
         <div className=" justify-center items-center w-full h-auto">
           <div className="relative justify-center items-center">

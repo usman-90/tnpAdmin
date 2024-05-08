@@ -9,11 +9,13 @@ import { handlePackageImageUpload, handlePackagePDFUpload } from "../../config/f
 interface InsertionBoxProps {
   BoxState: boolean;
   BoxStateChange: (value: any) => void;
+  updatePackages: () => void;
 }
 
 const InsertionBox: React.FC<InsertionBoxProps> = ({
   BoxState,
   BoxStateChange,
+  updatePackages
 }) => {
   const [packageName, setPackageName] = useState<string>("");
   const [packageDescription, setPackageDescription] = useState<string>("");
@@ -123,7 +125,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
   };
 
   const handleFilePDFChange = async (info: any): Promise<void> => {
-    setSelectedPDFFile(info?.target);
+    setSelectedPDFFile(info?.target.files[0]);
   }
 
   const columns = [
@@ -192,10 +194,10 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
     event.preventDefault();
 
     const imageUrls = await uploadImages(selectedFiles);
-
+    
     const pdfUrl = await uploadPDF(selectedPDFFile);
     
-    console.log("pdfUrl", pdfUrl);
+    console.log("both urls", imageUrls, pdfUrl);
 
 
     const formData = new FormData();
@@ -237,11 +239,9 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
     // console.log("Submit time package_details", formData);
 
     try {
-      const response = await axios.post(
-        "http://localhost:3000/pages/api/tourpackages",
-        formData
-      );
+      const response = await axios.post("http://localhost:3000/pages/api/tourpackages", formData);
       console.log("Package added successfully:", response.data);
+      updatePackages();
       // Clear input fields after successful submission
       setPackageName("");
       setPackageDescription("");
@@ -407,7 +407,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
             {Itinerary.map((itinerary, index) => (
               <div className="" key={index}>
                 <h2 className="text-lg font-semibold">
-                  Package Itinerary {index + 1}
+                  Itinerary {tableData.length + index + 1}
                 </h2>
                 <label className="font-semibold flex px-5 flex-col pt-5">
                   Day
@@ -426,14 +426,14 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                 <div className="flex gap-48 px-5 mt-5">
                   <label className="font-semibold w-44">
                     Event Title
-                    <Input
+                    <TextArea
                       style={{
                         height: 100,
                         width: 320,
                         marginRight: 10,
                         marginTop: 5,
                       }}
-                      type="text"
+                      autoSize={{ minRows: 1, maxRows: 5 }}
                       onChange={(e) => {
                         const newItinerary = [...Itinerary];
                         newItinerary[index].event = e.target.value;
@@ -446,9 +446,9 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                   <div className=" flex justify-center items-center gap-4">
                     <div className="flex flex-col   ">
                       <label className="font-semibold  w-44">Description</label>
-                      <Input
+                      <TextArea
                         style={{ height: 100, width: 320, marginTop: 5 }}
-                        type="text"
+                        autoSize={{ minRows: 4, maxRows: 5 }}
                         onChange={(e) => {
                           const newItinerary = [...Itinerary];
                           newItinerary[index].description = e.target.value;
@@ -474,7 +474,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
             )}
             <div>
               <div>
-                <h2 className="text-lg font-semibold">Cost Include </h2>
+                <h2 className="text-lg font-semibold">Cost Include</h2>
                 <Button type="primary" onClick={handleAddPackage}>
                   Add Cost Include
                 </Button>

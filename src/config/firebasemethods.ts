@@ -60,7 +60,9 @@ export const updateBanner = async (file: File, previousName: string) => {
 export const uploadPackagePhotos = async (file: File, directory: string) => {
   const storage = getStorage(app);
   return new Promise((resolve, reject) => {
-    const storageRef = ref(storage, `packages${directory}/${file.name}`);
+    const uploadUrl = `packages${directory}/${file.name}`;
+    console.log("uploadUrl", uploadUrl);
+    const storageRef = ref(storage, uploadUrl);
     console.log(file, "inf irebase calls");
     uploadBytes(storageRef, file)
       .then((snapshot: any) => {
