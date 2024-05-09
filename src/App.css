@@ -5,3 +5,8 @@
 .myblue{
   color:"#00ADEE"
 }
+:root {
+  color-scheme: only light;
+}
+
+
