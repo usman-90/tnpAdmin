@@ -105,7 +105,7 @@ export const handlePackagePDFUpload = async (file?: File) => {
     }
 };
 
-export const uploadImageAndGetURL = async (path, file) => {
+export const uploadImageAndGetURL = async (path: string, file: File) => {
     const imagesRef = ref(storage, `images/${path}`);
     await uploadBytes(imagesRef, file);
     console.log("Uploaded an image");
