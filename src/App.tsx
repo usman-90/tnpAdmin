@@ -13,6 +13,7 @@ import Settings from "./Pages/Settings/Settings";
 import Analytics from "./Pages/Analytics/Analytics";
 import Banners from "./Pages/Banners/banners";
 import Testimonials from "./Pages/Testimonials/Testimonials";
+import Destinations from "./Pages/Destinations/Destinations";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,6 +41,7 @@ const App: React.FC = () => {
             <Route path="settings" element={<Settings />} />
             <Route path="analytics" element={<Analytics />} />
             <Route path="testimonials" element={<Testimonials />} />
+            <Route path="destinations" element={<Destinations />} />
           </Route>
         </Routes>
       </QueryClientProvider>
