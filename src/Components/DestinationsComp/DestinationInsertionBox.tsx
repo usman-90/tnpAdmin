@@ -142,7 +142,7 @@ const handleMenuClickCategory = (e: any) => {
         BoxStateChange(false);
         fetchData();
       } catch (error) {
-        console.error("Error creating Destination:", error);
+        console.error("Error creating destination:", error);
       }
   };
 
