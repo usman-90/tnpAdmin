@@ -54,7 +54,7 @@ const UserPage: React.FC = () => {
 
   return (
     <>
-      <div className="h-auto overflow-y-auto bg-white w-[95x%] relative m-4 rounded-lg  ">
+      <div className="h-auto -y-auto bg-white w-[95x%] relative m-4 rounded-lg  ">
         <div className="flex flex-col gap-4">
           <div className="flex flex-row justify-between  m-4  ">
             <h1 className="sm:text-xl text-lg font-semibold">Trips</h1>
@@ -101,9 +101,9 @@ const UserPage: React.FC = () => {
                   <tr className="bg-white border-b hover:bg-gray-50">
                     <td
                       scope="row"
-                      className=" text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg "
+                      className=" text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-xs "
                     >
-                      <p className="text-lg py-2 ">
+                      <p className="text-sm py-2 ">
                         {" "}
                         {item?.tnp_packages?.package_name}
                       </p>
@@ -112,22 +112,22 @@ const UserPage: React.FC = () => {
                       scope="row"
                       className=" text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg "
                     >
-                      <p className="text-lg py-2 ">
+                      <p className="text-sm py-2 ">
                         {" "}
                         {item?.tnp_packages?.package_total_persons}
                       </p>
                     </td>
 
-                    <td className="  pl-4 md:pr-0 pr-4 text-lg">
+                    <td className="  pl-4 md:pr-0 pr-4 text-sm">
                       {new Date(item?.trip_date)?.toString()}
                     </td>
-                    <td className="  pl-4 md:pr-0 pr-4 text-lg">
+                    <td className="  pl-4 md:pr-0 pr-4 text-sm">
                       {item?.trip_booked_count}
                     </td>
 
                     <td className="  pl-4 py-2 md:pr-0 pr-4">
                       <button onClick={() => DeleteTrip(item.trip_id)}>
-                        <ImCancelCircle className="text-red-700 hover:text-red-500 text-2xl" />
+                        <ImCancelCircle className="text-red-700 hover:text-red-500 text-xl" />
                       </button>
                     </td>
                   </tr>
