@@ -14,6 +14,7 @@ import Analytics from "./Pages/Analytics/Analytics";
 import Banners from "./Pages/Banners/banners";
 import Testimonials from "./Pages/Testimonials/Testimonials";
 import Destinations from "./Pages/Destinations/Destinations";
+import CarBookings from "./Pages/CarBookings";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -37,6 +38,7 @@ const App: React.FC = () => {
             <Route path="trips" element={<Trips />} />
             <Route path="banners" element={<Banners />} />
             <Route path="carRental" element={<CarRental />} />
+            <Route path="carbookings" element={<CarBookings />} />
             <Route path="hotel" element={<Hotel />} />
             <Route path="settings" element={<Settings />} />
             <Route path="analytics" element={<Analytics />} />

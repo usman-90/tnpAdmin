@@ -35,7 +35,7 @@ export default function TourPackages() {
   }, []);
   return (
     <>
-      <div className=" bg-white rounded-xl h-svh py-4">
+      <div className=" bg-white rounded-xl w-[max-content] h-svh py-4">
         <div className="w-full px-6 flex items-center justify-between border-b py-3 border-gray-300">
           <h2 className=" text-lg font-extrabold">Packages</h2>
           <Button

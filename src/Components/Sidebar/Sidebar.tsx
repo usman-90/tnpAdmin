@@ -224,18 +224,18 @@ function SideBar() {
           </Link>
           <Link to={"/carRental"}>
             <div
-              onClick={() => setCurrOption("carRental")}
+              onClick={() => setCurrOption("cars")}
               className={`${
-                isCollapsed && currOption === "carRental"
+                isCollapsed && currOption === "cars"
                   ? "bg-white text-primary rounded-lg py-1 px-1"
                   : ""
               }cursor-pointer ${
                 isCollapsed ? "mx-3 flex justify-center" : "ms-5 ps-1"
               } flex justify-start text-3xl items-center txt-white py-3 ${
-                currOption === "carRental" && !isCollapsed
+                currOption === "cars" && !isCollapsed
                   ? "rounded-l-xl bg-white text-primary"
                   : ""
-              } ${currOption !== "carRental" ? "text-white" : ""}`}
+              } ${currOption !== "cars" ? "text-white" : ""}`}
             >
               <ImFileText />
               <p
@@ -243,7 +243,32 @@ function SideBar() {
                   isCollapsed ? "w-0 hidden" : "ms-3"
                 } font-old overflow-hidden text-base`}
               >
-                Car Rental
+                Cars 
+              </p>
+            </div>
+          </Link>
+          <Link to={"/carbookings"}>
+            <div
+              onClick={() => setCurrOption("carbookings")}
+              className={`${
+                isCollapsed && currOption === "carbookings"
+                  ? "bg-white text-primary rounded-lg py-1 px-1"
+                  : ""
+              } ${
+                isCollapsed ? "mx-3 flex justify-center" : "ms-5 ps-1"
+              } flex cursor-pointer justify-start  text-3xl items-center txt-white py-3 ${
+                currOption === "carbookings" && !isCollapsed
+                  ? "rounded-l-xl bg-white text-primary"
+                  : ""
+              } ${currOption !== "carbookings" ? "text-white" : ""}`}
+            >
+              <BsTree />
+              <p
+                className={`${
+                  isCollapsed ? "w-0" : "ms-3"
+                } font-old overflow-hidden text-base`}
+              >
+              Car Bookings 
               </p>
             </div>
           </Link>

@@ -4,48 +4,45 @@ import { message, Space } from 'antd';
 import { BiSortAlt2 } from "react-icons/bi";
 import { useEffect, useState } from "react";
 import { RiAddLine } from "react-icons/ri";
-import CarRentalInsertionBox from "./CarRentalInsetionBox";
 import axios from "axios";
 import { MdDelete } from "react-icons/md";
 import { Link } from "react-router-dom";
 
-const CarRentalComp: React.FC = () => {
-    const [openBox, setOpenBox] = useState(false);
+const CarBookings: React.FC = () => {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    const [selectedCar, setSelectedCar] = useState("");
+    const [selectedBooking, setSelectedBooking] = useState("");
     const [messageApi, contextHolder] = message.useMessage();
-    const [cars, setCars] = useState<any[]>([]);
-    const [totalCars, setTotalCars] = useState(0);
+    const [bookings, setBookings] = useState<any[]>([]);
+    const [totalBookings, setTotalBookings] = useState(0);
     const [currPage, setCurrPage] = useState(1);
     const handlePageChange = (page: number) => {
         setCurrPage(page);
     };
 
-    const fetchCars = async () => {
-        const res = await axios.get(process.env.REACT_APP_SERVER_URL + "/car/all", {
+    const fetchBookings = async () => {
+        const res = await axios.get(process.env.REACT_APP_SERVER_URL + "/car/booking", {
             params: {
                 page: currPage,
             },
         });
-        setCars(res?.data?.cars);
-        setTotalCars(res?.data?.totalCars);
+        setBookings(res?.data?.bookings);
+        setTotalBookings(res?.data?.totalBookings);
         console.log(res?.data);
     };
 
-    console.log(cars);
+    console.log(bookings);
 
-    console.log("LLLLLLLLLL", isLoading)
     useEffect(() => {
         setIsLoading(true)
-        fetchCars();
+        fetchBookings();
         setIsLoading(false)
     }, [currPage]);
 
-    const handleDelete = async (carId: string) => {
-        const res = await axios.delete(process.env.REACT_APP_SERVER_URL + "/car/one", {
+    const handleDelete = async (bookingId: string) => {
+        const res = await axios.delete(process.env.REACT_APP_SERVER_URL + "/car/booking", {
             params: {
-                carId
+               bookingId 
             }
         })
 
@@ -61,15 +58,7 @@ const CarRentalComp: React.FC = () => {
         <div className="w-full relative  bg-white p-4 flex flex-col gap-4 rounded-xl">
             {contextHolder}
             <div className="flex flex-row justify-between py-4">
-                <p className="text-xl font-bold mb-4 pl-2">Cars</p>
-                <Button
-                    className="bg-[#FBAD17] h-8 w-20 text-white font-semibold flex items-center justify-center"
-                    icon={<RiAddLine size={23} className="pt-0.5" />}
-                    onClick={() => setOpenBox(true)}
-                >
-                    Add
-                </Button>
-                <CarRentalInsertionBox setIsLoading={setIsLoading} fetchCars={fetchCars} BoxState={openBox} BoxStateChange={setOpenBox} />
+                <p className="text-xl font-bold mb-4 pl-2">Car Bookings</p>
             </div>
             <div className="h-[0.5px] w-full bg-gray-400"></div>
             <div className="relative overflow-x-auto  justify-center items-center  ">
@@ -85,7 +74,7 @@ const CarRentalComp: React.FC = () => {
                         <tr className=" ">
                             <td scope="col" className="pl-6 px-4 py-4 font-medium ">
                                 <div className="flex flex-row">
-                                    Image
+                                Booking Id
                                 </div>
                             </td>
                             <td scope="col" className="pl-6 px-4 py-4 font-medium ">
@@ -94,49 +83,25 @@ const CarRentalComp: React.FC = () => {
                                 </div>
                             </td>
                             <td scope="col" className="px-4 py-4 font-medium ">
-                                <div className="flex flex-row">Color</div>
+                                <div className="flex flex-row">Customer name</div>
                             </td>
                             <td scope="col" className="px-4 py-4 font-medium">
-                                <div className="flex flex-row">Price Per Day</div>
+                                <div className="flex flex-row">Pick up date </div>
                             </td>
                             <td scope="col" className="px-4 py-4 font-medium">
-                                <div className="flex flex-row">Car Class</div>
+                                <div className="flex flex-row">Drop off date</div>
                             </td>
                             <td scope="col" className="px-4 py-4 font-medium ">
-                                <div className="flex flex-row">Engine</div>
+                                <div className="flex flex-row">Pickup Location</div>
                             </td>
                             <td scope="col" className="px-4 py-4 font-medium">
-                                <div className="flex flex-row">Fuel Type</div>
-                            </td>
-                            <td scope="col" className="px-4 py-4 font-medium">
-                                <div className="flex flex-row">Make</div>
-                            </td>
-                            <td scope="col" className="px-4 py-4 font-medium">
-                                <div className="flex flex-row">Mileage</div>
-                            </td>
-                            <td scope="col" className="px-4 py-4 font-medium">
-                                <div className="flex flex-row">Model</div>
-                            </td>
-                            <td scope="col" className="px-4 py-4 font-medium">
-                                <div className="flex flex-row">Transmission</div>
-                            </td>
-                            <td scope="col" className="px-4 py-4 font-medium">
-                                <div className="flex flex-row">Year</div>
-                            </td>
-                            <td scope="col" className="px-4 py-4 font-medium">
-                                <div className="flex flex-row">Price per km</div>
-                            </td>
-                            <td scope="col" className="px-4 py-4 font-medium">
-                                <div className="flex flex-row">Car rooms</div>
-                            </td>
-                            <td scope="col" className="px-4 py-4 font-medium">
-                                <div className="flex flex-row">Delete</div>
+                                <div className="flex flex-row">Drop off location</div>
                             </td>
                         </tr>
                     </thead>
                     <tbody>
                         {
-                            !cars.length && (
+                            !bookings.length && (
                                 <tr className="w-[100vw]  flex justify-center">
                                     <td colSpan={7}>
                                         <Empty />
@@ -144,68 +109,55 @@ const CarRentalComp: React.FC = () => {
                                 </tr>
                             )
                         }
-                        {cars?.map((car: any, i: number) => (
+                        {bookings?.map((b: any, i: number) => (
                             <tr
                                 key={255 + i}
                                 className="bg-white dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                             >
 
-                                <td className="  pl-4 md:pr-0 pr-4 text-sm text-black">
-                                    <Link to={car?.car_image} target="_blank">
-                                        <img className="w-10 h-10 bg-gray-200 rounded-full" src={car?.car_image}></img>
-                                    </Link>
-                                </td>
                                 <td
                                     scope="row"
                                     className=" text-gray-900 whitespace-nowrap dark:text-white pl-6 py-2 md:pr-0 pr-4 text-lg "
                                 >
                                     <div className="flex flex-row gap-2">
                                         <div className="flex flex-col text-sm pt-3">
-                                            <p className="  "> {car?.car_name}</p>
+                                            <p className="  "> {b?.car_booking_id}</p>
                                         </div>
                                     </div>
                                 </td>
                                 <td className="  pl-4 md:pr-0 pr-4 text-sm text-black">
-                                    <div className="flex flex-row ">{car?.color}</div>
+                                    <div className="flex flex-row ">{b?.tnp_cars?.car_name}</div>
                                 </td>
 
                                 <td className="  pl-4 md:pr-0 pr-4 text-sm">
-                                    {car?.pricePerDay}
+                                    {b?.tnp_user?.name}
                                 </td>
                                 <td className="  pl-4 md:pr-0 pr-4 text-sm ">
-                                    {car?.tnp_car_class?.class_name}
+                                    {new Date(b?.pickup_date).toDateString()}
                                 </td>
-                                <td className="  pl-4 md:pr-0 pr-4 text-sm">{car?.engine}</td>
-                                <td className="  pl-4 md:pr-0 pr-4 text-sm">{car?.fuelType}</td>
-                                <td className="  pl-4 md:pr-0 pr-4 text-sm">{car?.make}</td>
-                                <td className="  pl-4 md:pr-0 pr-4 text-sm">{car?.mileage}</td>
-                                <td className="  pl-4 md:pr-0 pr-4 text-sm">{car?.model}</td>
-                                <td className="  pl-4 md:pr-0 pr-4 text-sm">
-                                    {car?.transmission}
-                                </td>
-                                <td className="  pl-4 md:pr-0 pr-4 text-sm">{car?.year}</td>
-                                <td className="  pl-4 md:pr-0 pr-4 text-sm">{car?.pricePerKm}</td>
-                                <td className="  pl-4 md:pr-0 pr-4 text-sm">{car?.carRoom}</td>
+                                <td className="  pl-4 md:pr-0 pr-4 text-sm">{new Date(b?.dropoff_date).toDateString()}</td>
+                                <td className="  pl-4 md:pr-0 pr-4 text-sm">{b?.pickup_location}</td>
+                                <td className="  pl-4 md:pr-0 pr-4 text-sm">{b?.dropoff_location}</td>
                                 <td onClick={() => {
-                                    setSelectedCar(car?.car_id)
+                                    setSelectedBooking(b?.car_booking_id)
                                     setIsDeleteModalOpen(true)
                                 }} className="  pl-4 md:pr-0 pr-4 text-md text-red-500 cursor-pointer "><MdDelete /></td>
                             </tr>
                         ))}
                         <Modal
-                            title="Delete Car"
+                            title="Delete Car Booking"
                             centered
                             open={isDeleteModalOpen}
                             onOk={async () => {
                                 setIsLoading(true)
-                                const res = await handleDelete(selectedCar);
+                                const res = await handleDelete(selectedBooking);
                                 if (res) {
                                     setIsDeleteModalOpen(false);
                                     messageApi.open({
                                         type: 'success',
-                                        content: 'Car deleted successfully!',
+                                        content: 'Car Booking deleted successfully!',
                                     });
-                                    fetchCars()
+                                    fetchBookings()
                                     setIsLoading(false)
                                     return;
                                 }
@@ -219,7 +171,7 @@ const CarRentalComp: React.FC = () => {
                             width={1000}
                         >
                             <p className="text-red-500">
-                                Are you sure? All the bookings of this car will also be deleted.
+                                Are you sure? 
                             </p>
                         </Modal>
 
@@ -249,14 +201,14 @@ const CarRentalComp: React.FC = () => {
                 </table>
             </div>
             <Pagination
-                className={`${totalCars < pageSize ? "hidden" : "block"}`}
+                className={`${totalBookings < pageSize ? "hidden" : "block"}`}
                 current={currPage}
                 onChange={handlePageChange}
-                total={totalCars} // Total number of items
+                total={totalBookings} // Total number of items
                 pageSize={pageSize} // Number of items per page
                 showSizeChanger={false} // Hide the size changer
             />
         </div>
     );
 };
-export default CarRentalComp;
+export default CarBookings;
