@@ -309,8 +309,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
     // console.log("Submit time package_details", formData);
 
     try {
-      const response = await axios.post(
-        "http://localhost:3000/pages/api/tourpackages",
+      const response = await axios.post(process.env.REACT_APP_SERVER_URL + "/tourpackages",
         formData
       );
       console.log("Package added successfully:", response.data);
