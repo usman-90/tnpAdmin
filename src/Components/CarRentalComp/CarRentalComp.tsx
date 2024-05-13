@@ -1,7 +1,5 @@
 import { Button, Empty, Modal, Pagination, Spin } from "antd";
-import { message, Space } from 'antd';
-// import { IoIosAdd } from "react-icons/io";
-import { BiSortAlt2 } from "react-icons/bi";
+import { message } from 'antd';
 import { useEffect, useState } from "react";
 import { RiAddLine } from "react-icons/ri";
 import CarRentalInsertionBox from "./CarRentalInsetionBox";

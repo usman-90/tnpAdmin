@@ -32,7 +32,7 @@ const Destinations: React.FC = () => {
     setDeleting(true);
     await axios
       .delete(`${process.env.REACT_APP_SERVER_URL}/admin/getDestinations?id=${id}`)
-      .then((res) => {
+      .then((_) => {
         Toast.fire({
           icon: "success",
           title: "Destination Deleted successfully",

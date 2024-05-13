@@ -1,4 +1,4 @@
-import { Button, Input, Modal, Space, Switch, Table, Upload } from "antd";
+import { Button, Input, Modal, Space, Switch, Table } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -152,21 +152,21 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
 
   const handleDeletePackage = (indexToDelete: number) => {
     const updatedTableData = tabledataIncludepackages.filter(
-      (item, index) => index !== indexToDelete
+      (_, index) => index !== indexToDelete
     );
     setTabledataIncludepackages(updatedTableData);
   };
 
   const handleDeleteCostExcludes = (indexToDelete: number) => {
     const updatedTableData = tabledataCostExcludes.filter(
-      (item, index) => index !== indexToDelete
+      (_, index) => index !== indexToDelete
     );
     setTabledataCostExcludes(updatedTableData);
   };
 
   const handleDeleteHighlights = (indexToDelete: number) => {
     const updatedTableData = tabledataHighlights.filter(
-      (item, index) => index !== indexToDelete
+      (_, index) => index !== indexToDelete
     );
     setTabledataHighlights(updatedTableData);
   };
@@ -218,7 +218,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
     {
       title: "Action",
       key: "action",
-      render: (text: any, record: any) => (
+      render: (_: any, record: any) => (
         <Space size="middle">
           <Button
             type="link"
@@ -639,7 +639,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                       title: "Action",
                       dataIndex: "",
                       key: "action",
-                      render: (_text: any, record: any, index: number) => (
+                      render: (_text: any, _: any, index: number) => (
                         <Button
                           type="link"
                           danger
@@ -696,7 +696,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                       title: "Action",
                       dataIndex: "",
                       key: "action",
-                      render: (_text: any, record: any, index: number) => (
+                      render: (_text: any, _: any, index: number) => (
                         <Button
                           type="link"
                           danger
@@ -753,7 +753,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                       title: "Action",
                       dataIndex: "",
                       key: "action",
-                      render: (_text: any, record: any, index: number) => (
+                      render: (_text: any, _: any, index: number) => (
                         <Button
                           type="link"
                           danger

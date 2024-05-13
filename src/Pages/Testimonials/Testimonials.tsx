@@ -6,7 +6,6 @@ import { Toast } from "../../Components/SideToast";
 import Loader from "../../Components/loader";
 import { Button } from "antd";
 import { RiAddLine } from "react-icons/ri";
-import TripInsertionBox from "../../Components/TripComp/TripInsertionBox";
 import TestimonialAddBox from "../../Components/TestimonialComp/TestimonialAddBox";
 
 const Testimonials: React.FC = () => {
@@ -33,7 +32,7 @@ const Testimonials: React.FC = () => {
     setDeleting(true);
     await axios
       .delete(`${process.env.REACT_APP_SERVER_URL}/admin/getTestimonials?id=${id}`)
-      .then((res) => {
+      .then((_) => {
         Toast.fire({
           icon: "success",
           title: "Testimonial Deleted successfully",
