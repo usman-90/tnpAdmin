@@ -1,10 +1,15 @@
 import { Button, Input, Modal, Space, Switch, Table, Upload } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
-
 import axios from "axios";
 import { useEffect, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
-import { handlePackageImageUpload, handlePackagePDFUpload } from "../../config/firebasemethods";
+import {
+  handlePackageImageUpload,
+  handlePackagePDFUpload,
+} from "../../config/firebasemethods";
+import { getTourPackagesTypes } from "../../apifunctions/packageTypes";
+import { getTourPackagesRegion } from "../../apifunctions/packageRegion";
+import { getTourPackagesDestination } from "../../apifunctions/packageDestination";
 
 interface InsertionBoxProps {
   BoxState: boolean;
@@ -12,10 +17,26 @@ interface InsertionBoxProps {
   updatePackages: () => void;
 }
 
+interface PackageTypeStructure {
+  package_type_id: number;
+  package_type_name: string;
+  package_type_value: string;
+}
+
+interface PackageRegionStructure {
+  region_id: number;
+  region_name: string;
+}
+
+interface PackageDestinationStructure {
+  destination_id: number;
+  destination_name: string;
+}
+
 const InsertionBox: React.FC<InsertionBoxProps> = ({
   BoxState,
   BoxStateChange,
-  updatePackages
+  updatePackages,
 }) => {
   const [packageName, setPackageName] = useState<string>("");
   const [packageDescription, setPackageDescription] = useState<string>("");
@@ -44,10 +65,60 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
   const [tabledataHighlights, setTabledataHighlights] = useState<string[]>([]);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [selectedPDFFile, setSelectedPDFFile] = useState<File>();
+  // const [categories, setCategories] = useState<string[]>([]);
+  const [packageType, setPackageType] = useState<PackageTypeStructure[]>([]);
+  const [packageRegion, setPackageRegion] = useState<PackageRegionStructure[]>(
+    []
+  );
+  const [packageDestination, setPackageDestination] = useState<
+    PackageDestinationStructure[]
+  >([]);
 
   useEffect(() => {
-    console.log("Abc", selectedPDFFile);
+    // console.log("Abc", selectedPDFFile);
   }, [selectedPDFFile]);
+
+  useEffect(() => {
+    async function fetchTypes() {
+      try {
+        const types = await getTourPackagesTypes();
+        // console.log("types==>", types.data);
+        setPackageType(types.data);
+      } catch (error) {
+        // console.error("Error fetching PackagesTypes:", error);
+      }
+    }
+
+    fetchTypes();
+  }, []);
+
+  useEffect(() => {
+    async function fetchRegion() {
+      try {
+        const region = await getTourPackagesRegion();
+        // console.log("region 2==>", region.data);
+        setPackageRegion(region.data);
+      } catch (error) {
+        // console.error("Error fetching PackagesRegion:", error);
+      }
+    }
+
+    fetchRegion();
+  }, []);
+
+  useEffect(() => {
+    async function fetchDestination() {
+      try {
+        const destination = await getTourPackagesDestination();
+        // console.log("region 3==>", destination.data);
+        setPackageDestination(destination.data);
+      } catch (error) {
+        // console.error("Error fetching PackagesDestination:", error);
+      }
+    }
+
+    fetchDestination();
+  }, []);
 
   const handleAddPackage = () => {
     setCostIncludes([...CostIncludes, ""]);
@@ -126,7 +197,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
 
   const handleFilePDFChange = async (info: any): Promise<void> => {
     setSelectedPDFFile(info?.target.files[0]);
-  }
+  };
 
   const columns = [
     {
@@ -194,11 +265,10 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
     event.preventDefault();
 
     const imageUrls = await uploadImages(selectedFiles);
-    
-    const pdfUrl = await uploadPDF(selectedPDFFile);
-    
-    console.log("both urls", imageUrls, pdfUrl);
 
+    const pdfUrl = await uploadPDF(selectedPDFFile);
+
+    console.log("both urls", imageUrls, pdfUrl);
 
     const formData = new FormData();
 
@@ -231,7 +301,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
           CostExcludes: tabledataCostExcludes,
           Highlights: tabledataHighlights,
           Images: imageUrls,
-          PDFUrl: pdfUrl
+          PDFUrl: pdfUrl,
         },
       })
     );
@@ -239,7 +309,10 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
     // console.log("Submit time package_details", formData);
 
     try {
-      const response = await axios.post("http://localhost:3000/pages/api/tourpackages", formData);
+      const response = await axios.post(
+        "http://localhost:3000/pages/api/tourpackages",
+        formData
+      );
       console.log("Package added successfully:", response.data);
       updatePackages();
       // Clear input fields after successful submission
@@ -258,9 +331,13 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
 
       BoxStateChange(false);
     } catch (error) {
-      console.error("Error adding package:", error);
+      // console.error("Error adding package:", error);
     }
   };
+
+  useEffect(() => {
+    // console.log("p.t==>", packageType);
+  }, [packageType]);
 
   return (
     <>
@@ -270,14 +347,12 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
         visible={BoxState}
         onOk={handleSubmit}
         onCancel={() => BoxStateChange(false)}
-        width={1000}
-      >
+        width={1000}>
         <form
           onSubmit={handleSubmit}
           className="flex flex-col gap-5"
           method="post"
-          encType="multipart/form-data"
-        >
+          encType="multipart/form-data">
           <div className="flex flex-wrap px-5 gap-2">
             <label className="font-semibold w-44">
               Package Name
@@ -299,36 +374,72 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                 required
               />
             </label>
+
             <label className="font-semibold w-44">
               Package Category
-              <Input
-                style={{ marginTop: 5 }}
-                type="text"
+              <select
+                style={{
+                  marginTop: 5,
+                  border: "1px solid #d9d9d9",
+                  width: "100%",
+                  padding: "6px 7px",
+                  borderRadius: "5px",
+                }}
                 onChange={(e) => setPackageCategoryId(e.target.value)}
                 value={packageCategoryId}
-                required
-              />
+                required>
+                <option value="">Select</option>
+                <option value="standard">Standard</option>
+                <option value="deluxe">Deluxe</option>
+              </select>
             </label>
+
             <label className="font-semibold w-44">
               Package Type
-              <Input
-                style={{ marginTop: 5 }}
-                type="text"
+              <select
+                style={{
+                  marginTop: 5,
+                  border: "1px solid #d9d9d9",
+                  width: "100%",
+                  padding: "6px 7px",
+                  borderRadius: "5px",
+                }}
                 onChange={(e) => setPackageTypeId(e.target.value)}
                 value={packageTypeId}
-                required
-              />
+                required>
+                <option value="">Select</option>
+                {packageType?.map((type, index) => (
+                  <option key={index} value={type.package_type_name}>
+                    {type.package_type_value.charAt(0).toUpperCase() +
+                      type.package_type_value.slice(1)}
+                  </option>
+                ))}
+              </select>
             </label>
+
             <label className="font-semibold w-44">
               Package Region
-              <Input
-                style={{ marginTop: 5 }}
-                type="text"
-                onChange={(e) => setPackageRegionId(e.target.value)}
-                value={packageRegionId}
-                required
-              />
+              <select
+                style={{
+                  marginTop: 5,
+                  border: "1px solid #d9d9d9",
+                  width: "100%",
+                  padding: "6px 7px",
+                  borderRadius: "5px",
+                }}
+                onChange={(e) => setPackageTypeId(e.target.value)}
+                value={packageTypeId}
+                required>
+                <option value="">Select</option>
+                {packageRegion?.map((region, index) => (
+                  <option key={index} value={region.region_id}>
+                    {region.region_name.charAt(0).toUpperCase() +
+                      region.region_name.slice(1)}
+                  </option>
+                ))}
+              </select>
             </label>
+
             <label className="font-semibold w-44">
               Package Rates Normal
               <Input
@@ -361,14 +472,26 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
             </label>
             <label className="font-semibold w-44">
               Package Destination
-              <Input
-                style={{ marginTop: 5 }}
-                type="text"
+              <select
+                style={{
+                  marginTop: 5,
+                  border: "1px solid #d9d9d9",
+                  width: "100%",
+                  padding: "6px 7px",
+                  borderRadius: "5px",
+                }}
                 onChange={(e) => setPackageDestinationId(e.target.value)}
                 value={packageDestinationId}
-                required
-              />
+                required>
+                <option value="">Select</option>
+                {packageDestination.map((destination, index) => (
+                  <option key={index} value={destination.destination_id}>
+                    {destination.destination_name}
+                  </option>
+                ))}
+              </select>
             </label>
+
             <br />
             <label className="font-semibold w-44 flex flex-col">
               Package Featured
@@ -460,8 +583,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                     </div>
                     <Button
                       className="bg-yellow-400 "
-                      onClick={() => handleDone(index)}
-                    >
+                      onClick={() => handleDone(index)}>
                       Done
                     </Button>
                   </div>
@@ -496,8 +618,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                     />
                     <Button
                       className="bg-yellow-400 w-20 mx-auto"
-                      onClick={() => handleDoneIncludePackages(index)}
-                    >
+                      onClick={() => handleDoneIncludePackages(index)}>
                       Done
                     </Button>
                   </div>
@@ -554,8 +675,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                     />
                     <Button
                       className="bg-yellow-400 w-20 mx-auto"
-                      onClick={() => handleDoneCostExcludes(index)}
-                    >
+                      onClick={() => handleDoneCostExcludes(index)}>
                       Done
                     </Button>
                   </div>
@@ -612,8 +732,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                     />
                     <Button
                       className="bg-yellow-400 w-20 mx-auto"
-                      onClick={() => handleDoneHighlights(index)}
-                    >
+                      onClick={() => handleDoneHighlights(index)}>
                       Done
                     </Button>
                   </div>
