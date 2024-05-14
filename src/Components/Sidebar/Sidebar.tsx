@@ -6,14 +6,9 @@ import Logo from "../../../public/logo.png";
 import { FaMoon, FaRegImage, FaRegUser } from "react-icons/fa";
 // import { IoWalletOutline } from "react-icons/io5";
 import { LuCalendarDays, LuWallet2 } from "react-icons/lu";
-// import { CiSettings } from "react-icons/ci";
-import { PiChartLineLight } from "react-icons/pi";
+// import { PiChartLineLight } from "react-icons/pi";
 import { ImFileText } from "react-icons/im";
-// import { TiUserOutline } from "react-icons/ti";
-// import { Avatar } from "antd";
-// import { IoIosNotificationsOutline } from "react-icons/io";
 import { Link } from "react-router-dom";
-// import { TbPackages } from "react-icons/tb";
 import { BsTree } from "react-icons/bs";
 import { MdRateReview } from "react-icons/md";
 import { MdOutlineAreaChart } from "react-icons/md";
@@ -25,7 +20,7 @@ function SideBar() {
   return (
     <>
       <div
-        className={`h-full flex flex-col justify-between  min-h-[100vh] py-5 rounded-xl m-3 ${
+        className={`flex flex-col justify-between py-5 rounded-xl m-3 ${
           isCollapsed ? "w-20" : "w-60"
         } bg-primary animate-width`}
       >
@@ -97,7 +92,7 @@ function SideBar() {
               </p>
             </div>
           </Link>
-          <Link to={"/analytics"}>
+          {/* <Link to={"/analytics"}>
             <div
               onClick={() => setCurrOption("analytics")}
               className={`${
@@ -121,7 +116,7 @@ function SideBar() {
                 Analytics
               </p>
             </div>
-          </Link>
+          </Link> */}
           <Link to={"/banners"}>
             <div
               onClick={() => setCurrOption("banners")}
