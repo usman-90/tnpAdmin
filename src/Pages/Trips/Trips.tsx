@@ -32,7 +32,7 @@ const UserPage: React.FC = () => {
     setDeleting(true);
     await axios
       .delete(`${process.env.REACT_APP_SERVER_URL}/admin/getTrips?id=${id}`)
-      .then((res) => {
+      .then((_) => {
         Toast.fire({
           icon: "success",
           title: "Trip Deleted successfully",

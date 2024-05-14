@@ -1,15 +1,8 @@
-import { Button, Input, Modal, Select, Space, Table, message } from "antd";
-import { DeleteOutlined } from "@ant-design/icons";
+import { Input, Modal, Select, message } from "antd";
 
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { uploadImageAndGetURL } from "../../config/firebasemethods";
-
-interface InsertionBoxProps {
-    BoxState: boolean;
-    BoxStateChange: (value: any) => void;
-    fetchCars: () => void
-}
 
 interface CarDetails {
     car_name: string;
@@ -35,7 +28,6 @@ const CarRentalInsertionBox: React.FC<any> = ({
     setIsLoading
 }) => {
     const [carClasses, setCarClasses] = useState([]);
-    const [carImage, setCarimage] = useState({});
     const [messageApi, contextHolder] = message.useMessage();
     const [carDetails, setCarDetails] = useState<CarDetails>({
         car_name: "",

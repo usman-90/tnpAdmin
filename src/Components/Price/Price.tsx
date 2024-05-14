@@ -5,7 +5,7 @@ import type { SliderSingleProps } from 'antd';
 const Price: React.FC = () => {
   const [selectedRange, setSelectedRange] = useState([500, 1500]);
 
-  const handleChange = (value: [number, number]) => {
+  const handleChange = (value: number[]) => {
     setSelectedRange(value);
   };
 
@@ -30,4 +30,3 @@ const Price: React.FC = () => {
 };
 
 export default Price;
-

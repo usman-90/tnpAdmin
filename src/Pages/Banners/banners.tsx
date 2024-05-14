@@ -1,14 +1,9 @@
 import { useEffect, useState } from "react";
-import { Pagination, Upload } from "antd";
+import { Pagination } from "antd";
 import axios from "axios";
-import { ImCancelCircle } from "react-icons/im";
 import { Toast } from "../../Components/SideToast";
 import Loader from "../../Components/loader";
-import { Button } from "antd";
-import { RiAddLine } from "react-icons/ri";
-import TripInsertionBox from "../../Components/TripComp/TripInsertionBox";
-import { TiUploadOutline } from "react-icons/ti";
-import { updateBanner, uploadBanner } from "../../config/firebasemethods";
+import { updateBanner } from "../../config/firebasemethods";
 import { Link } from "react-router-dom";
 const Banners: React.FC = () => {
   const [currentPage, setCurrPage] = useState(1);
@@ -30,8 +25,8 @@ const Banners: React.FC = () => {
     setData(res.data.data);
     setLoading(false);
   };
-  const DeleteTrip = async (id: number) => {
-    setDeleting(true);
+  const DeleteTrip = async (_: number) => {
+    // setDeleting(true);
     // await axios
     //   .delete(`${process.env.REACT_APP_SERVER_URL}/admin/getTrips?id=${id}`)
     //   .then((res) => {
@@ -67,7 +62,7 @@ const Banners: React.FC = () => {
         name: file.name,
         url: resultUrl,
       })
-      .then((res) => {
+      .then((_) => {
         Toast.fire({
           icon: "success",
           title: "Banner Updated successfully",

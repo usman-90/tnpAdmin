@@ -1,27 +1,91 @@
-import { Button, Input, Modal, Space, Switch, Table, Upload } from "antd";
+import { Button, Input, Modal, Space, Switch, Table } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
-
 import axios from "axios";
 import { useEffect, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
-import { handlePackageImageUpload, handlePackagePDFUpload } from "../../config/firebasemethods";
+import {
+  handlePackageImageUpload,
+  handlePackagePDFUpload,
+} from "../../config/firebasemethods";
+import { getTourPackagesTypes } from "../../apifunctions/packageTypes";
+import { getTourPackagesDestination } from "../../apifunctions/packageDestination";
 
 interface InsertionBoxProps {
   BoxState: boolean;
   BoxStateChange: (value: any) => void;
   updatePackages: () => void;
+  editingItem: any;
+  setEditingItem: (editingItem: any) => void;
+}
+
+interface PackageTypeStructure {
+  package_type_id: number;
+  package_type_name: string;
+  package_type_value: string;
+}
+
+interface PackageDestinationStructure {
+  destination_id: number;
+  destination_name: string;
+}
+
+interface TripDetails {
+  TripDetailsAndCostSummary: {
+    CostIncludes: string[];
+    CostExcludes: string[];
+    Itinerary: {
+      day: string;
+      event: string;
+      description: string;
+    }[];
+    Highlights: string[];
+    Images: string[];
+    PDFUrl: string;
+  };
 }
 
 const InsertionBox: React.FC<InsertionBoxProps> = ({
   BoxState,
   BoxStateChange,
-  updatePackages
+  updatePackages,
+  editingItem,
+  setEditingItem,
 }) => {
+  const columns = [
+    {
+      title: "Days",
+      dataIndex: "day",
+      key: "day",
+    },
+    {
+      title: "Event Title",
+      dataIndex: "event",
+      key: "event",
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (_: any, record: any) => (
+        <Space size="middle">
+          <Button
+            type="link"
+            onClick={() => handleDeleteRow(record)}
+            icon={<DeleteOutlined />}
+          />
+        </Space>
+      ),
+    },
+  ];
   const [packageName, setPackageName] = useState<string>("");
   const [packageDescription, setPackageDescription] = useState<string>("");
-  const [packageCategoryId, setPackageCategoryId] = useState<string>("");
+  // const [packageCategoryId, setPackageCategoryId] = useState<string>("");
   const [packageTypeId, setPackageTypeId] = useState<string>("");
-  const [packageRegionId, setPackageRegionId] = useState<string>("");
+  // const [packageRegionId, setPackageRegionId] = useState<string>("");
   const [packageDuration, setPackageDuration] = useState<string>("");
   const [packageRateNormal, setPackageRateNormal] = useState<string>("");
   const [packageRateDeluxe, setPackageRateDeluxe] = useState<string>("");
@@ -44,10 +108,88 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
   const [tabledataHighlights, setTabledataHighlights] = useState<string[]>([]);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [selectedPDFFile, setSelectedPDFFile] = useState<File>();
+  const [packageType, setPackageType] = useState<PackageTypeStructure[]>([]);
+  // const [packageRegion, setPackageRegion] = useState<PackageRegionStructure[]>([]);
+  const [packageDestination, setPackageDestination] = useState<
+    PackageDestinationStructure[]
+  >([]);
 
   useEffect(() => {
-    console.log("Abc", selectedPDFFile);
-  }, [selectedPDFFile]);
+    if (Object.keys(editingItem).length < 1) {
+      return;
+    } else {
+      setPackageName(editingItem.package_name);
+      setPackageDescription(editingItem.package_description);
+      // setPackageCategoryId(editingItem.package_category_id);
+      setPackageTypeId(editingItem.package_type_id);
+      // setPackageRegionId(editingItem.package_region_id);
+      setPackageDuration(editingItem.package_duration);
+      setPackageRateNormal(editingItem.package_rate_normal);
+      setPackageRateDeluxe(editingItem.package_rate_deluxe);
+      setPackageTotalPersons(editingItem.package_total_persons);
+      setPackageIsFeatured(editingItem.package_isfeatured);
+      setPackageIsBestSeller(editingItem.package_bestseller);
+      setPackageDestinationId(editingItem.package_destination_id);
+
+      const tripDetails: TripDetails = JSON.parse(editingItem.package_details);
+      console.log("tripDetails", tripDetails);
+
+      setTableData(tripDetails.TripDetailsAndCostSummary.Itinerary);
+      setCostIncludes(tripDetails.TripDetailsAndCostSummary.CostIncludes);
+      setCostExcludes(tripDetails.TripDetailsAndCostSummary.CostExcludes);
+      setHighlights(tripDetails.TripDetailsAndCostSummary.Highlights);
+    }
+  }, [editingItem]);
+
+  useEffect(() => {
+    async function fetchTypes() {
+      try {
+        const types = await getTourPackagesTypes();
+        // console.log("types==>", types.data);
+        setPackageType(types.data);
+      } catch (error) {
+        // console.error("Error fetching PackagesTypes:", error);
+      }
+    }
+
+    fetchTypes();
+  }, []);
+
+  const handleDailogClose = () => {
+    // Clear input fields after successful submission
+    setPackageName("");
+    setPackageDescription("");
+    setPackageTypeId("");
+    setPackageDuration("");
+    setPackageRateNormal("");
+    setPackageRateDeluxe("");
+    setPackageTotalPersons("");
+    setPackageIsBestSeller(false);
+    setPackageIsFeatured(false);
+    setPackageDestinationId("");
+
+    setTableData([]);
+    setCostExcludes([]);
+    setCostIncludes([]);
+    setHighlights([]);
+    setEditingItem({});
+
+    BoxStateChange(false);
+  };
+
+  useEffect(() => {
+    async function fetchDestination() {
+      try {
+        const destination = await getTourPackagesDestination();
+        // console.log("region 3==>", destination.data);
+        setPackageDestination(destination.data);
+      } catch (error) {
+        console.error("Error fetching Destination:", error);
+      }
+    }
+
+    fetchDestination();
+  }, []);
 
   const handleAddPackage = () => {
     setCostIncludes([...CostIncludes, ""]);
@@ -81,21 +223,21 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
 
   const handleDeletePackage = (indexToDelete: number) => {
     const updatedTableData = tabledataIncludepackages.filter(
-      (item, index) => index !== indexToDelete
+      (_, index) => index !== indexToDelete
     );
     setTabledataIncludepackages(updatedTableData);
   };
 
   const handleDeleteCostExcludes = (indexToDelete: number) => {
     const updatedTableData = tabledataCostExcludes.filter(
-      (item, index) => index !== indexToDelete
+      (_, index) => index !== indexToDelete
     );
     setTabledataCostExcludes(updatedTableData);
   };
 
   const handleDeleteHighlights = (indexToDelete: number) => {
     const updatedTableData = tabledataHighlights.filter(
-      (item, index) => index !== indexToDelete
+      (_, index) => index !== indexToDelete
     );
     setTabledataHighlights(updatedTableData);
   };
@@ -126,38 +268,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
 
   const handleFilePDFChange = async (info: any): Promise<void> => {
     setSelectedPDFFile(info?.target.files[0]);
-  }
-
-  const columns = [
-    {
-      title: "Days",
-      dataIndex: "day",
-      key: "day",
-    },
-    {
-      title: "Event Title",
-      dataIndex: "event",
-      key: "event",
-    },
-    {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
-    },
-    {
-      title: "Action",
-      key: "action",
-      render: (text: any, record: any) => (
-        <Space size="middle">
-          <Button
-            type="link"
-            onClick={() => handleDeleteRow(record)}
-            icon={<DeleteOutlined />}
-          />
-        </Space>
-      ),
-    },
-  ];
+  };
 
   const handleDone = (index: number) => {
     const newTableData = [...tableData];
@@ -193,20 +304,27 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
   const handleSubmit = async (event: any) => {
     event.preventDefault();
 
-    const imageUrls = await uploadImages(selectedFiles);
-    
-    const pdfUrl = await uploadPDF(selectedPDFFile);
-    
-    console.log("both urls", imageUrls, pdfUrl);
+    const imageUrls =
+      Object.keys(editingItem).length < 1
+        ? await uploadImages(selectedFiles)
+        : JSON.parse(editingItem.package_details).TripDetailsAndCostSummary
+            .Images;
 
+    const pdfUrl =
+      Object.keys(editingItem).length < 1
+        ? await uploadPDF(selectedPDFFile)
+        : JSON.parse(editingItem.package_details).TripDetailsAndCostSummary
+            .PDFUrl;
+
+    // console.log("both urls", imageUrls, pdfUrl);
 
     const formData = new FormData();
-
+    formData.append("package_id", editingItem?.package_id);
     formData.append("package_name", packageName);
     formData.append("package_total_persons", packageTotalPersons);
-    formData.append("package_category_id", packageCategoryId);
+    // formData.append("package_category_id", packageCategoryId);
     formData.append("package_type_id", packageTypeId);
-    formData.append("package_region_id", packageRegionId);
+    // formData.append("package_region_id", packageRegionId);
     formData.append("package_description", packageDescription);
     formData.append("package_rate_normal", packageRateNormal);
     formData.append("package_rate_deluxe", packageRateDeluxe);
@@ -231,7 +349,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
           CostExcludes: tabledataCostExcludes,
           Highlights: tabledataHighlights,
           Images: imageUrls,
-          PDFUrl: pdfUrl
+          PDFUrl: pdfUrl,
         },
       })
     );
@@ -239,15 +357,24 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
     // console.log("Submit time package_details", formData);
 
     try {
-      const response = await axios.post("http://localhost:3000/pages/api/tourpackages", formData);
-      console.log("Package added successfully:", response.data);
+      if (Object.keys(editingItem).length > 0) {
+        const response = await axios.put(
+          process.env.REACT_APP_SERVER_URL + "/tourpackages",
+          formData
+        );
+        console.log("Package updated successfully:", response.data);
+      } else {
+        const response = await axios.post(
+          process.env.REACT_APP_SERVER_URL + "/tourpackages",
+          formData
+        );
+        console.log("Package added successfully:", response.data);
+      }
+      //Clear input fields after success
       updatePackages();
-      // Clear input fields after successful submission
       setPackageName("");
       setPackageDescription("");
-      setPackageCategoryId("");
       setPackageTypeId("");
-      setPackageRegionId("");
       setPackageDuration("");
       setPackageRateNormal("");
       setPackageRateDeluxe("");
@@ -262,14 +389,19 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
     }
   };
 
+  useEffect(() => {
+    // console.log("p.t==>", packageType);
+  }, [packageType]);
+
   return (
     <>
       <Modal
         title="Add Package"
         centered
-        visible={BoxState}
+        open={BoxState}
         onOk={handleSubmit}
-        onCancel={() => BoxStateChange(false)}
+        destroyOnClose={true}
+        onCancel={handleDailogClose}
         width={1000}
       >
         <form
@@ -299,36 +431,73 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                 required
               />
             </label>
-            <label className="font-semibold w-44">
+
+            {/* <label className="font-semibold w-44">
               Package Category
-              <Input
-                style={{ marginTop: 5 }}
-                type="text"
+              <select
+                style={{
+                  marginTop: 5,
+                  border: "1px solid #d9d9d9",
+                  width: "100%",
+                  padding: "6px 7px",
+                  borderRadius: "5px",
+                }}
                 onChange={(e) => setPackageCategoryId(e.target.value)}
                 value={packageCategoryId}
-                required
-              />
-            </label>
+                required>
+                <option value="">Select</option>
+                <option value="standard">Standard</option>
+                <option value="deluxe">Deluxe</option>
+              </select>
+            </label> */}
+
             <label className="font-semibold w-44">
               Package Type
-              <Input
-                style={{ marginTop: 5 }}
-                type="text"
+              <select
+                style={{
+                  marginTop: 5,
+                  border: "1px solid #d9d9d9",
+                  width: "100%",
+                  padding: "6px 7px",
+                  borderRadius: "5px",
+                }}
                 onChange={(e) => setPackageTypeId(e.target.value)}
                 value={packageTypeId}
                 required
-              />
+              >
+                <option value="">Select</option>
+                {packageType?.map((type, index) => (
+                  <option key={index} value={type.package_type_id}>
+                    {type.package_type_value.charAt(0).toUpperCase() +
+                      type.package_type_value.slice(1)}
+                  </option>
+                ))}
+              </select>
             </label>
-            <label className="font-semibold w-44">
+
+            {/* <label className="font-semibold w-44">
               Package Region
-              <Input
-                style={{ marginTop: 5 }}
-                type="text"
-                onChange={(e) => setPackageRegionId(e.target.value)}
-                value={packageRegionId}
-                required
-              />
-            </label>
+              <select
+                style={{
+                  marginTop: 5,
+                  border: "1px solid #d9d9d9",
+                  width: "100%",
+                  padding: "6px 7px",
+                  borderRadius: "5px",
+                }}
+                onChange={(e) => setPackageTypeId(e.target.value)}
+                value={packageRegion}
+                required>
+                <option value="">Select</option>
+                {packageRegion?.map((region, index) => (
+                  <option key={index} value={region.region_id}>
+                    {region.region_name.charAt(0).toUpperCase() +
+                      region.region_name.slice(1)}
+                  </option>
+                ))}
+              </select>
+            </label> */}
+
             <label className="font-semibold w-44">
               Package Rates Normal
               <Input
@@ -361,14 +530,27 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
             </label>
             <label className="font-semibold w-44">
               Package Destination
-              <Input
-                style={{ marginTop: 5 }}
-                type="text"
+              <select
+                style={{
+                  marginTop: 5,
+                  border: "1px solid #d9d9d9",
+                  width: "100%",
+                  padding: "6px 7px",
+                  borderRadius: "5px",
+                }}
                 onChange={(e) => setPackageDestinationId(e.target.value)}
                 value={packageDestinationId}
                 required
-              />
+              >
+                <option value="">Select</option>
+                {packageDestination.map((destination, index) => (
+                  <option key={index} value={destination.destination_id}>
+                    {destination.destination_name}
+                  </option>
+                ))}
+              </select>
             </label>
+
             <br />
             <label className="font-semibold w-44 flex flex-col">
               Package Featured
@@ -518,7 +700,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                       title: "Action",
                       dataIndex: "",
                       key: "action",
-                      render: (_text: any, record: any, index: number) => (
+                      render: (_text: any, _: any, index: number) => (
                         <Button
                           type="link"
                           danger
@@ -576,7 +758,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                       title: "Action",
                       dataIndex: "",
                       key: "action",
-                      render: (_text: any, record: any, index: number) => (
+                      render: (_text: any, _: any, index: number) => (
                         <Button
                           type="link"
                           danger
@@ -634,7 +816,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                       title: "Action",
                       dataIndex: "",
                       key: "action",
-                      render: (_text: any, record: any, index: number) => (
+                      render: (_text: any, _: any, index: number) => (
                         <Button
                           type="link"
                           danger
@@ -646,29 +828,32 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                   ]}
                 />
               )}
-
-              <div>
-                <h2 className="text-lg font-semibold mt-5">Package Images</h2>
-                <label className="font-semibold px-5">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    multiple={true}
-                  />
-                </label>
-              </div>
-
-              <div>
-                <h2 className="text-lg font-semibold mt-5">Upload PDF</h2>
-                <label className="font-semibold px-5">
-                  <input
-                    type="file"
-                    accept=".docx,application/pdf"
-                    onChange={handleFilePDFChange}
-                  />
-                </label>
-              </div>
+              {Object.keys(editingItem).length < 1 && (
+                <div>
+                  <h2 className="text-lg font-semibold mt-5">Package Images</h2>
+                  <label className="font-semibold px-5">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      multiple={true}
+                    />
+                  </label>
+                </div>
+              )}
+              {/* {console.log("editingItem",editingItem)} */}
+              {Object.keys(editingItem).length < 1 && (
+                <div>
+                  <h2 className="text-lg font-semibold mt-5">Upload PDF</h2>
+                  <label className="font-semibold px-5">
+                    <input
+                      type="file"
+                      accept=".docx,application/pdf"
+                      onChange={handleFilePDFChange}
+                    />
+                  </label>
+                </div>
+              )}
             </div>
           </div>
         </form>

@@ -6,15 +6,12 @@ import Logo from "../../../public/logo.png";
 import { FaMoon, FaRegImage, FaRegUser } from "react-icons/fa";
 // import { IoWalletOutline } from "react-icons/io5";
 import { LuCalendarDays, LuWallet2 } from "react-icons/lu";
-// import { CiSettings } from "react-icons/ci";
-import { PiChartLineLight } from "react-icons/pi";
+// import { PiChartLineLight } from "react-icons/pi";
 import { ImFileText } from "react-icons/im";
-// import { TiUserOutline } from "react-icons/ti";
-// import { Avatar } from "antd";
-// import { IoIosNotificationsOutline } from "react-icons/io";
 import { Link } from "react-router-dom";
-// import { TbPackages } from "react-icons/tb";
 import { BsTree } from "react-icons/bs";
+import { MdRateReview } from "react-icons/md";
+import { MdOutlineAreaChart } from "react-icons/md";
 
 function SideBar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -23,7 +20,7 @@ function SideBar() {
   return (
     <>
       <div
-        className={`h-full flex flex-col justify-between  min-h-[100vh] py-5 rounded-xl m-3 ${
+        className={`flex flex-col justify-between py-5 rounded-xl m-3 ${
           isCollapsed ? "w-20" : "w-60"
         } bg-primary animate-width`}
       >
@@ -95,7 +92,7 @@ function SideBar() {
               </p>
             </div>
           </Link>
-          <Link to={"/analytics"}>
+          {/* <Link to={"/analytics"}>
             <div
               onClick={() => setCurrOption("analytics")}
               className={`${
@@ -119,7 +116,7 @@ function SideBar() {
                 Analytics
               </p>
             </div>
-          </Link>
+          </Link> */}
           <Link to={"/banners"}>
             <div
               onClick={() => setCurrOption("banners")}
@@ -270,6 +267,56 @@ function SideBar() {
               </p>
             </div>
           </Link>
+          <Link to={"/testimonials"}>
+            <div
+              onClick={() => setCurrOption("testimonials")}
+              className={`${
+                isCollapsed && currOption === "testimonials"
+                  ? "bg-white text-primary rounded-lg py-1 px-1"
+                  : ""
+              } ${
+                isCollapsed ? "mx-3 flex justify-center" : "ms-5 ps-1"
+              } flex cursor-pointer justify-start  text-3xl items-center txt-white py-3 ${
+                currOption === "testimonials" && !isCollapsed
+                  ? "rounded-l-xl bg-white text-primary"
+                  : ""
+              } ${currOption !== "testimonials" ? "text-white" : ""}`}
+            >
+              <MdRateReview  />
+              <p
+                className={`${
+                  isCollapsed ? "w-0" : "ms-3"
+                } font-old overflow-hidden text-base`}
+              >
+                Testimonials
+              </p>
+            </div>
+          </Link>
+          <Link to={"/destinations"}>
+            <div
+              onClick={() => setCurrOption("destinations")}
+              className={`${
+                isCollapsed && currOption === "destinations"
+                  ? "bg-white text-primary rounded-lg py-1 px-1"
+                  : ""
+              } ${
+                isCollapsed ? "mx-3 flex justify-center" : "ms-5 ps-1"
+              } flex cursor-pointer justify-start  text-3xl items-center txt-white py-3 ${
+                currOption === "destinations" && !isCollapsed
+                  ? "rounded-l-xl bg-white text-primary"
+                  : ""
+              } ${currOption !== "destinations" ? "text-white" : ""}`}
+            >
+              <MdOutlineAreaChart />
+              <p
+                className={`${
+                  isCollapsed ? "w-0" : "ms-3"
+                } font-old overflow-hidden text-base`}
+              >
+                Destinations
+              </p>
+            </div>
+          </Link>
           <Link to={"/settings"}>
             <div
               onClick={() => setCurrOption("settings")}
@@ -296,33 +343,8 @@ function SideBar() {
             </div>
           </Link>
 
-          <Link to={"/testimonials"}>
-            <div
-              onClick={() => setCurrOption("testimonials")}
-              className={`${
-                isCollapsed && currOption === "testimonials"
-                  ? "bg-white text-primary rounded-lg py-1 px-1"
-                  : ""
-              } ${
-                isCollapsed ? "mx-3 flex justify-center" : "ms-5 ps-1"
-              } flex cursor-pointer justify-start  text-3xl items-center txt-white py-3 ${
-                currOption === "testimonials" && !isCollapsed
-                  ? "rounded-l-xl bg-white text-primary"
-                  : ""
-              } ${currOption !== "testimonials" ? "text-white" : ""}`}
-            >
-              <BsTree />
-              <p
-                className={`${
-                  isCollapsed ? "w-0" : "ms-3"
-                } font-old overflow-hidden text-base`}
-              >
-                Testimonials
-              </p>
-            </div>
-          </Link>
+    
           
-
         </div>
 
         <div className="flex flex-col items-center bg-white rounded-lg mx-2 py-2">

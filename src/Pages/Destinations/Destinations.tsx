@@ -6,9 +6,9 @@ import { Toast } from "../../Components/SideToast";
 import Loader from "../../Components/loader";
 import { Button } from "antd";
 import { RiAddLine } from "react-icons/ri";
-import TestimonialAddBox from "../../Components/TestimonialComp/TestimonialAddBox";
+import DestinationInsertionBox from "../../Components/DestinationsComp/DestinationInsertionBox";
 
-const Testimonials: React.FC = () => {
+const Destinations: React.FC = () => {
   const [openBox, setOpenBox] = useState(false);
   const [currentPage, setCurrPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -23,19 +23,19 @@ const Testimonials: React.FC = () => {
   const fetchData = async () => {
     setLoading(true);
     let res = await axios.get(
-      `${process.env.REACT_APP_SERVER_URL}/admin/getTestimonials?page=${currentPage}&limit=${pageSize}`
+      `${process.env.REACT_APP_SERVER_URL}/admin/getDestinations`
     );
     setData(res.data.data);
     setLoading(false);
   };
-  const DeleteTrip = async (id: number) => {
+  const DeleteDestination = async (id: number) => {
     setDeleting(true);
     await axios
-      .delete(`${process.env.REACT_APP_SERVER_URL}/admin/getTestimonials?id=${id}`)
+      .delete(`${process.env.REACT_APP_SERVER_URL}/admin/getDestinations?id=${id}`)
       .then((_) => {
         Toast.fire({
           icon: "success",
-          title: "Testimonial Deleted successfully",
+          title: "Destination Deleted successfully",
         });
       })
       .catch((err) => {
@@ -51,13 +51,14 @@ const Testimonials: React.FC = () => {
   useEffect(() => {
     fetchData();
   }, []);
+  console.log("destination here",data);
 
   return (
     <>
       <div className="h-auto overflow-y-auto bg-white w-[95x%] relative m-4 rounded-lg  ">
         <div className="flex flex-col gap-4">
           <div className="flex flex-row justify-between  m-4  ">
-            <h1 className="sm:text-xl text-lg font-semibold">Testimonials</h1>
+            <h1 className="sm:text-xl text-lg font-semibold">Destinations</h1>
 
             <Button
               className="bg-[#FBAD17] h-8 w-20 text-white font-semibold flex items-center justify-center"
@@ -66,7 +67,7 @@ const Testimonials: React.FC = () => {
             >
               Add
             </Button>
-            <TestimonialAddBox
+            <DestinationInsertionBox
               BoxState={openBox}
               BoxStateChange={setOpenBox}
               fetchData={fetchData}
@@ -80,13 +81,16 @@ const Testimonials: React.FC = () => {
               <thead className="text-xs text-gray-700 uppercase ">
                 <tr className="border-b  border-gray-300 ">
                   <td scope="col" className="pl-6 px-4 py-4 text-lg">
-                    User Name 
+                    Destination Category
                   </td>
                   <td scope="col" className="pl-6 px-4 py-4 text-lg">
-                    User Email
+                    Destination Region
                   </td>
                   <td scope="col" className="px-4 py-4 text-lg">
-                    Testimonial's Description
+                    Destination Name
+                  </td>
+                  <td scope="col" className="px-4 py-4 text-lg">
+                    Destination Minimum Tour Days
                   </td>
                   <td scope="col" className="px-4 py-4 text-lg">
                     Remove
@@ -102,7 +106,7 @@ const Testimonials: React.FC = () => {
                     >
                       <p className="text-lg py-2 ">
                         {" "}
-                        {item?.testimonial_user_name}
+                        {item?.destination_category_name}
                       </p>
                     </td>
                     <td
@@ -111,15 +115,30 @@ const Testimonials: React.FC = () => {
                     >
                       <p className="text-lg py-2 ">
                         {" "}
-                        {item?.testimonial_user_email}
+                        {item?.destination_region_name}
                       </p>
                     </td>
-                    <td className="  pl-4 md:pr-0 pr-4 text-lg">
-                      {item?.testimonial_description}
+                    <td
+                      scope="row"
+                      className=" text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg "
+                    >
+                      <p className="text-lg py-2 ">
+                        {" "}
+                        {item?.destination_name}
+                      </p>
                     </td>
-
+                    <td
+                      scope="row"
+                      className=" text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg "
+                    >
+                      <p className="text-lg py-2 ">
+                        {" "}
+                        {item?.destination_minimum_tour_days}
+                      </p>
+                    </td>
+                    
                     <td className="  pl-4 py-2 md:pr-0 pr-4">
-                      <button onClick={() => DeleteTrip(item.testimonial_id)}>
+                      <button onClick={() => DeleteDestination(item.destination_id)}>
                         <ImCancelCircle className="text-red-700 hover:text-red-500 text-2xl" />
                       </button>
                     </td>
@@ -143,4 +162,4 @@ const Testimonials: React.FC = () => {
     </>
   );
 };
-export default Testimonials;
+export default Destinations;
