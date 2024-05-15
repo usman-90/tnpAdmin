@@ -32,12 +32,12 @@ export default function TourPackages() {
     setLoading(false);
   };
 
-  const onEditClick = (value : number) => {
-    const index = data.findIndex(e => e.package_id === value)
+  const onEditClick = (value: number) => {
+    const index = data.findIndex((e) => e.package_id === value);
     console.log("edit got click", index);
     setEditingItem(data[index]);
     setOpenBox(true);
-  }
+  };
 
   useEffect(() => {
     fetchData();
@@ -65,17 +65,17 @@ export default function TourPackages() {
         <div className=" justify-center items-center w-full">
           <div className="relative justify-center items-center overflow-x-auto overflow-y-hidden">
             <table className="text-md text-left text-gray-500 m-auto md:w-full">
-              <thead className="text-xs text-gray-700 uppercase ">
+              <thead className="text-xs text-gray-700 uppercase w-full">
                 <tr>
                   <td
                     scope="col"
-                    className="pl-6 px-4 py-4 text-md font-semibold"
+                    className="pl-6 px-4 py-4 font-semibold text-lg"
                   >
                     Package Name
                   </td>
-                  <td scope="col" className="px-4 py-4 font-bold text-lg ">
+                  {/* <td scope="col" className="px-4 py-4 font-bold text-lg ">
                     Description
-                  </td>
+                  </td> */}
                   <td scope="col" className="px-4 py-4 font-bold text-lg">
                     Max Persons
                   </td>
@@ -122,12 +122,15 @@ export default function TourPackages() {
                       className=" text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg "
                     >
                       <div className="flex flex-row gap-2">
-                        <p className="text-sm py-2 "> {item?.package_name}</p>
+                        <p className="text-sm py-2 text-md">
+                          {" "}
+                          {item?.package_name}
+                        </p>
                       </div>
                     </td>
-                    <td className="  pl-4 md:pr-0 pr-4 text-md">
+                    {/* <td className="pl-4 md:pr-0 pr-4 text-md">
                       {item.package_description.slice(0, 100) + "..."}
-                    </td>
+                    </td> */}
                     <td className="  pl-4 md:pr-0 pr-4 text-md">
                       {item.package_total_persons}
                     </td>
@@ -164,7 +167,11 @@ export default function TourPackages() {
                     </td>
                     <td className="pl-4 md:pr-0 pr-4 text-md">
                       <div className="flex justify-center items-center">
-                        <FaEdit color="green" onClick={() => onEditClick(item.package_id)} /> | <AiOutlineDelete color="red" />
+                        <FaEdit
+                          color="green"
+                          onClick={() => onEditClick(item.package_id)}
+                        />{" "}
+                        | <AiOutlineDelete color="red" />
                       </div>
                     </td>
                     {/* <td className="  pl-4 md:pr-0 pr-4 text-md">

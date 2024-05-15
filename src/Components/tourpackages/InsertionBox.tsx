@@ -135,9 +135,9 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
       console.log("tripDetails", tripDetails);
 
       setTableData(tripDetails.TripDetailsAndCostSummary.Itinerary);
-      setCostIncludes(tripDetails.TripDetailsAndCostSummary.CostIncludes);
-      setCostExcludes(tripDetails.TripDetailsAndCostSummary.CostExcludes);
-      setHighlights(tripDetails.TripDetailsAndCostSummary.Highlights);
+      setTabledataIncludepackages(tripDetails.TripDetailsAndCostSummary.CostIncludes);
+      setTabledataCostExcludes(tripDetails.TripDetailsAndCostSummary.CostExcludes);
+      setTabledataHighlights(tripDetails.TripDetailsAndCostSummary.Highlights);
     }
   }, [editingItem]);
 
