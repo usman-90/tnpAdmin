@@ -27,26 +27,34 @@ const queryClient = new QueryClient({
 });
 
 const App: React.FC = () => {
+
+    let user = window.localStorage.getItem("userData")
+
     return (
         <BrowserRouter>
             <QueryClientProvider client={queryClient}>
                 <Routes>
-                    <Route path="login" element={<Login />} />
-                    <Route path="/" element={<Layout />}>
-                        <Route path="" element={<Dashboard />} />
-                        <Route path="users" element={<UserPage />} />
-                        <Route path="departure" element={<Departure />} />
-                        <Route path="packages" element={<TourPackages />} />
-                        <Route path="trips" element={<Trips />} />
-                        <Route path="banners" element={<Banners />} />
-                        <Route path="carRental" element={<CarRental />} />
-                        <Route path="carbookings" element={<CarBookings />} />
-                        <Route path="hotel" element={<Hotel />} />
-                        <Route path="settings" element={<Settings />} />
-                        <Route path="analytics" element={<Analytics />} />
-                        <Route path="testimonials" element={<Testimonials />} />
-                        <Route path="destinations" element={<Destinations />} />
-                    </Route>
+                    {
+                        !user ? (
+                            <Route path="/" element={<Login />} />
+                        ) : (
+                            <Route path="/auth" element={<Layout />}>
+                                <Route path="dashboard" element={<Dashboard />} />
+                                <Route path="users" element={<UserPage />} />
+                                <Route path="departure" element={<Departure />} />
+                                <Route path="packages" element={<TourPackages />} />
+                                <Route path="trips" element={<Trips />} />
+                                <Route path="banners" element={<Banners />} />
+                                <Route path="carRental" element={<CarRental />} />
+                                <Route path="carbookings" element={<CarBookings />} />
+                                <Route path="hotel" element={<Hotel />} />
+                                <Route path="settings" element={<Settings />} />
+                                <Route path="analytics" element={<Analytics />} />
+                                <Route path="testimonials" element={<Testimonials />} />
+                                <Route path="destinations" element={<Destinations />} />
+                            </Route>
+                        )
+                    }
                 </Routes>
             </QueryClientProvider>
         </BrowserRouter>

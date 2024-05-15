@@ -45,14 +45,14 @@ export default function Form() {
 
       window.localStorage.setItem(
         "userData",
-        JSON.stringify(response?.data?.userData)
+        JSON.stringify(response?.data?.data)
       );
-      console.log("yeah2", response?.data?.userData);
+      console.log("yeah2", response?.data?.data);
       messageApi.open({
         type: "success",
         content: "Logged in successfully",
       });
-      navigate("/");
+      window.location.assign("/auth/dashboard");
     } catch (error) {
       messageApi.open({
         type: "error",
