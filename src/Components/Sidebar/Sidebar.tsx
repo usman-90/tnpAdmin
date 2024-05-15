@@ -24,23 +24,25 @@ function SideBar() {
           isCollapsed ? "w-20" : "w-60"
         } bg-primary animate-width`}
       >
-        <div className="">
-          <div className="flex items-center justify-start px-5 cursor-pointer">
-            <div
-              className="flex justify-start w-10 h-10 items-center"
-              onClick={() => setIsCollapsed(!isCollapsed)}
-            >
-              <img src={Logo} className="w-full h-full" />
-            </div>
+        <div>
+          <Link to={"/"}>
+            <div className="flex items-center justify-start px-5 cursor-pointer">
+              <div
+                className="flex justify-start w-10 h-10 items-center"
+                onClick={() => setIsCollapsed(!isCollapsed)}
+              >
+                <img src={Logo} className="w-full h-full" />
+              </div>
 
-            <p
-              className={`${
-                isCollapsed ? "w-0" : "ms-3"
-              } text-white font-bold overflow-hidden text-lg`}
-            >
-              Triply
-            </p>
-          </div>
+              <p
+                className={`${
+                  isCollapsed ? "w-0" : "ms-3"
+                } text-white font-bold overflow-hidden text-lg`}
+              >
+                Triply
+              </p>
+            </div>
+          </Link>
 
           <Link to={"/"}>
             <div
@@ -238,7 +240,7 @@ function SideBar() {
                   isCollapsed ? "w-0 hidden" : "ms-3"
                 } font-old overflow-hidden text-base`}
               >
-                Cars 
+                Cars
               </p>
             </div>
           </Link>
@@ -263,7 +265,7 @@ function SideBar() {
                   isCollapsed ? "w-0" : "ms-3"
                 } font-old overflow-hidden text-base`}
               >
-              Car Bookings 
+                Car Bookings
               </p>
             </div>
           </Link>
@@ -282,7 +284,7 @@ function SideBar() {
                   : ""
               } ${currOption !== "testimonials" ? "text-white" : ""}`}
             >
-              <MdRateReview  />
+              <MdRateReview />
               <p
                 className={`${
                   isCollapsed ? "w-0" : "ms-3"
@@ -342,9 +344,6 @@ function SideBar() {
               </p>
             </div>
           </Link>
-
-    
-          
         </div>
 
         <div className="flex flex-col items-center bg-white rounded-lg mx-2 py-2">
