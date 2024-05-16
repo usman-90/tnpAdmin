@@ -1,11 +1,11 @@
 import { message } from "antd";
 import axios from "axios";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+// import { useNavigate } from "react-router-dom";
 
-export default function Form() {
+const Form : React.FC = () => {
   const [messageApi] = message.useMessage();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -111,3 +111,5 @@ export default function Form() {
     </div>
   );
 }
+
+export default Form;
