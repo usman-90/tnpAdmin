@@ -135,8 +135,12 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
       console.log("tripDetails", tripDetails);
 
       setTableData(tripDetails.TripDetailsAndCostSummary.Itinerary);
-      setTabledataIncludepackages(tripDetails.TripDetailsAndCostSummary.CostIncludes);
-      setTabledataCostExcludes(tripDetails.TripDetailsAndCostSummary.CostExcludes);
+      setTabledataIncludepackages(
+        tripDetails.TripDetailsAndCostSummary.CostIncludes
+      );
+      setTabledataCostExcludes(
+        tripDetails.TripDetailsAndCostSummary.CostExcludes
+      );
       setTabledataHighlights(tripDetails.TripDetailsAndCostSummary.Highlights);
     }
   }, [editingItem]);
@@ -295,7 +299,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
     );
     return updatedImages;
   };
-
+  
   const uploadPDF = async (pdfFile?: File) => {
     let updatedPDF = await handlePackagePDFUpload(pdfFile);
     return updatedPDF;

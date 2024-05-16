@@ -7,6 +7,22 @@ import Loader from "../../Components/loader";
 import InsertionBox from "../../Components/Tourpackages/InsertionBox";
 import { FaEdit } from "react-icons/fa";
 import { AiOutlineDelete } from "react-icons/ai";
+import { deletePackagePhoto } from "../../config/firebasemethods";
+
+interface TripDetails {
+  TripDetailsAndCostSummary: {
+    CostIncludes: string[];
+    CostExcludes: string[];
+    Itinerary: {
+      day: string;
+      event: string;
+      description: string;
+    }[];
+    Highlights: string[];
+    Images: string[];
+    PDFUrl: string;
+  };
+}
 
 export default function TourPackages() {
   const [currentPage, setCurrPage] = useState(1);
@@ -18,19 +34,26 @@ export default function TourPackages() {
   };
   const [editingItem, setEditingItem] = useState({});
   const [openBox, setOpenBox] = useState(false);
-  const pageSize = 6;
-  const totalItems = data.length;
+  const pageSize = 8;
+  const [totalItems, setTotalItems] = useState(0);
 
   const fetchData = async () => {
     setLoading(true);
     let res = await axios.get(
       `${process.env.REACT_APP_SERVER_URL}/tourpackages/filter?offset=${
-        currentPage - 1
+        currentPage
       }&limit=${pageSize}`
     );
+    console.log("response getPackages", res);
+    setTotalItems(res.data.totalCount);
     setData(res.data.data);
     setLoading(false);
   };
+
+  useEffect(() => {
+    fetchData();
+  }, [currentPage]);
+  
 
   const onEditClick = (value: number) => {
     const index = data.findIndex((e) => e.package_id === value);
@@ -38,6 +61,25 @@ export default function TourPackages() {
     setEditingItem(data[index]);
     setOpenBox(true);
   };
+
+  const onDeleteClick = (value: number) => {
+    const index = data.findIndex(e => e.package_id === value);
+    console.log("install", index, data);
+    const tripDetails: TripDetails = data[0]?.package_details && JSON.parse(data[0]?.package_details);
+    handleDeleteImages(tripDetails.TripDetailsAndCostSummary.Images);
+
+    setOpenBox(true);
+  }
+
+  const handleDeleteImages = async (imagesList: string[]) => {
+    let updatedImages = null;
+    updatedImages = await Promise.all(
+      imagesList?.map(async (imageFile) => {
+        return await deletePackagePhoto(imageFile);
+      })
+    );
+    return updatedImages;
+  }
 
   useEffect(() => {
     fetchData();
@@ -171,7 +213,7 @@ export default function TourPackages() {
                           color="green"
                           onClick={() => onEditClick(item.package_id)}
                         />{" "}
-                        | <AiOutlineDelete color="red" />
+                        | <AiOutlineDelete color="red" onClick={()=> onDeleteClick(item.package_id)} />
                       </div>
                     </td>
                     {/* <td className="  pl-4 md:pr-0 pr-4 text-md">

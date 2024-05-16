@@ -82,6 +82,18 @@ export const uploadPackagePhotos = async (file: File, directory: string) => {
     });
 };
 
+export const deletePackagePhoto = async (photoUrl: string) => {
+    const storage = getStorage(app);
+    const photoRef = ref(storage, photoUrl);
+    try {
+        await deleteObject(photoRef);
+        console.log("File deleted successfully");
+        return true;
+    } catch (error) {
+        console.error("Error deleting file:", error);
+        return false;
+    }
+};
 
 export const handlePackageImageUpload = async (file: File) => {
     try {
