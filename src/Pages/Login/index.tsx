@@ -8,7 +8,7 @@ const Login = () => {
   return (
     <div className="container overflow-[none] mx-auto">
       {contextHolder}
-      <div className="flex justify-center px-6 my-12">
+      <div className="flex items-center justify-center px-6 my-12">
         <div className="w-full xl:w-3/4 lg:w-11/12 flex">
           <img
             className="w-[80%] h-[30rem] bg-gray-400 hidden lg:block lg:w-1/2 bg-cover rounded-l-lg"
