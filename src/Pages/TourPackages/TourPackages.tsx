@@ -8,6 +8,7 @@ import InsertionBox from "../../Components/Tourpackages/InsertionBox";
 import { FaEdit } from "react-icons/fa";
 import { AiOutlineDelete } from "react-icons/ai";
 import { deletePackagePhoto } from "../../config/firebasemethods";
+import DeleteModel from "../../Components/CarRentalComp/DeleteModel";
 
 interface TripDetails {
   TripDetailsAndCostSummary: {
@@ -36,6 +37,7 @@ export default function TourPackages() {
   const [openBox, setOpenBox] = useState(false);
   const pageSize = 8;
   const [totalItems, setTotalItems] = useState(0);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const fetchData = async () => {
     setLoading(true);
@@ -64,8 +66,8 @@ export default function TourPackages() {
 
   const onDeleteClick = (value: number) => {
     const index = data.findIndex(e => e.package_id === value);
-    console.log("install", index, data);
-    const tripDetails: TripDetails = data[0]?.package_details && JSON.parse(data[0]?.package_details);
+    // console.log("install", index, data);
+    const tripDetails: TripDetails = data[index]?.package_details && JSON.parse(data[index]?.package_details);
     handleDeleteImages(tripDetails.TripDetailsAndCostSummary.Images);
 
     setOpenBox(true);
@@ -179,7 +181,6 @@ export default function TourPackages() {
                     <td className="  pl-4 md:pr-0 pr-4 text-md">
                       {item.package_duration}
                     </td>
-
                     <td className="  pl-4 md:pr-0 pr-4 text-md">
                       {item.tnp_package_types.package_type_name}
                     </td>
@@ -213,7 +214,7 @@ export default function TourPackages() {
                           color="green"
                           onClick={() => onEditClick(item.package_id)}
                         />{" "}
-                        | <AiOutlineDelete color="red" onClick={()=> onDeleteClick(item.package_id)} />
+                        | <AiOutlineDelete color="red" /* onClick={()=> onDeleteClick(item.package_id)}*/ />
                       </div>
                     </td>
                     {/* <td className="  pl-4 md:pr-0 pr-4 text-md">
@@ -226,11 +227,12 @@ export default function TourPackages() {
             <Pagination
               current={currentPage}
               onChange={handlePageChange}
-              total={totalItems} // Total number of items
-              pageSize={pageSize} // Number of items per page
-              showSizeChanger={false} // Hide the size changer
+              total={totalItems} 
+              pageSize={pageSize}
+              showSizeChanger={false}
             />
           </div>
+          <DeleteModel onDeleteHandle={onDeleteClick} isDeleteModalOpen={isDeleteModalOpen} setIsDeleteModalOpen={setIsDeleteModalOpen} packageItem={editingItem} />
         </div>
       </div>
       {loading && <Loader message="Fetching Data" />}
