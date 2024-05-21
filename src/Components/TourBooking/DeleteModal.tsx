@@ -8,11 +8,11 @@ interface Props {
     packageItem: any;
 }
 
-const DeleteModel: React.FC<Props> = ({isDeleteModalOpen, onDeleteHandle, setIsDeleteModalOpen, packageItem}) => {
+const DeleteModal: React.FC<Props> = ({isDeleteModalOpen, onDeleteHandle, setIsDeleteModalOpen, packageItem}) => {
   return (
     <div>
       <Modal
-        title="Delete Car"
+        title="Delete Package"
         centered
         open={isDeleteModalOpen}
         onOk={() => onDeleteHandle(packageItem)}
@@ -20,11 +20,11 @@ const DeleteModel: React.FC<Props> = ({isDeleteModalOpen, onDeleteHandle, setIsD
         width={600}
       >
         <p className="text-red-500">
-          Are you sure? All the bookings of this car will also be deleted.
+          Are you sure? All the trips related to this package will also be deleted.
         </p>
       </Modal>
     </div>
   );
 };
 
-export default DeleteModel;
+export default DeleteModal;

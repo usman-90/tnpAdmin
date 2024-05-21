@@ -8,7 +8,7 @@ import InsertionBox from "../../Components/Tourpackages/InsertionBox";
 import { FaEdit } from "react-icons/fa";
 import { AiOutlineDelete } from "react-icons/ai";
 import { deletePackagePhoto } from "../../config/firebasemethods";
-import DeleteModel from "../../Components/CarRentalComp/DeleteModel";
+import DeleteModal from "../../Components/TourBooking/DeleteModal";
 
 interface TripDetails {
   TripDetailsAndCostSummary: {
@@ -33,7 +33,7 @@ export default function TourPackages() {
   const handlePageChange = (page: number) => {
     setCurrPage(page);
   };
-  const [editingItem, setEditingItem] = useState({});
+  const [editingItem, setEditingItem] = useState<any>({});
   const [openBox, setOpenBox] = useState(false);
   const pageSize = 8;
   const [totalItems, setTotalItems] = useState(0);
@@ -43,7 +43,7 @@ export default function TourPackages() {
     setLoading(true);
     let res = await axios.get(
       `${process.env.REACT_APP_SERVER_URL}/tourpackages/filter?offset=${
-        currentPage
+        currentPage-1
       }&limit=${pageSize}`
     );
     console.log("response getPackages", res);
@@ -53,6 +53,7 @@ export default function TourPackages() {
   };
 
   useEffect(() => {
+    console.log("Current page", currentPage);
     fetchData();
   }, [currentPage]);
   
@@ -65,12 +66,19 @@ export default function TourPackages() {
   };
 
   const onDeleteClick = (value: number) => {
+
     const index = data.findIndex(e => e.package_id === value);
     // console.log("install", index, data);
-    const tripDetails: TripDetails = data[index]?.package_details && JSON.parse(data[index]?.package_details);
-    handleDeleteImages(tripDetails.TripDetailsAndCostSummary.Images);
+    setEditingItem(data[index]);
+    // const tripDetails: TripDetails = data[index]?.package_details && JSON.parse(data[index]?.package_details);
+    setIsDeleteModalOpen(true);
+  }
 
-    setOpenBox(true);
+  const startDelete = () => {
+
+    console.log("startDelete");
+    const tripDetails: TripDetails = editingItem.package_details && editingItem?.package_details;
+    handleDeleteImages(tripDetails.TripDetailsAndCostSummary.Images);
   }
 
   const handleDeleteImages = async (imagesList: string[]) => {
@@ -214,7 +222,7 @@ export default function TourPackages() {
                           color="green"
                           onClick={() => onEditClick(item.package_id)}
                         />{" "}
-                        | <AiOutlineDelete color="red" /* onClick={()=> onDeleteClick(item.package_id)}*/ />
+                        | <AiOutlineDelete color="red" onClick={()=> onDeleteClick(item.package_id)} />
                       </div>
                     </td>
                     {/* <td className="  pl-4 md:pr-0 pr-4 text-md">
@@ -232,7 +240,7 @@ export default function TourPackages() {
               showSizeChanger={false}
             />
           </div>
-          <DeleteModel onDeleteHandle={onDeleteClick} isDeleteModalOpen={isDeleteModalOpen} setIsDeleteModalOpen={setIsDeleteModalOpen} packageItem={editingItem} />
+          <DeleteModal onDeleteHandle={startDelete} isDeleteModalOpen={isDeleteModalOpen} setIsDeleteModalOpen={setIsDeleteModalOpen} packageItem={editingItem} />
         </div>
       </div>
       {loading && <Loader message="Fetching Data" />}
