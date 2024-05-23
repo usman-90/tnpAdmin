@@ -39,7 +39,7 @@ const Form : React.FC = () => {
     formDataB.append('password', formData.password);
     try {
       const response = await axios.post(
-        process.env.REACT_APP_SERVER_URL + "/admin/login",
+        `${process.env.REACT_APP_SERVER_URL}/admin/login`,
         formDataB
       );
 
