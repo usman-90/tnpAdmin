@@ -62,8 +62,7 @@ const UserPage: React.FC = () => {
             <Button
               className="bg-[#FBAD17] h-8 w-20 text-white font-semibold flex items-center justify-center"
               icon={<RiAddLine size={23} className="pt-0.5" />}
-              onClick={() => setOpenBox(true)}
-            >
+              onClick={() => setOpenBox(true)}>
               Add
             </Button>
             <TripInsertionBox
@@ -101,8 +100,7 @@ const UserPage: React.FC = () => {
                   <tr className="bg-white border-b hover:bg-gray-50">
                     <td
                       scope="row"
-                      className=" text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-xs "
-                    >
+                      className=" text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-xs ">
                       <p className="text-sm py-2 ">
                         {" "}
                         {item?.tnp_packages?.package_name}
@@ -110,8 +108,7 @@ const UserPage: React.FC = () => {
                     </td>
                     <td
                       scope="row"
-                      className=" text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg "
-                    >
+                      className=" text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg ">
                       <p className="text-sm py-2 ">
                         {" "}
                         {item?.tnp_packages?.package_total_persons}

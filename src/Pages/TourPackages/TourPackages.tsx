@@ -8,7 +8,7 @@ import InsertionBox from "../../Components/Tourpackages/InsertionBox";
 import { FaEdit } from "react-icons/fa";
 import { AiOutlineDelete } from "react-icons/ai";
 import { deletePackagePhoto } from "../../config/firebasemethods";
-import DeleteModal from "../../Components/TourBooking/DeleteModal";
+import DeleteModal from "../../Components/Tourpackages/DeleteModal";
 
 interface TripDetails {
   TripDetailsAndCostSummary: {
