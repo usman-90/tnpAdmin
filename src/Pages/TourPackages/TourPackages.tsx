@@ -9,6 +9,7 @@ import { FaEdit } from "react-icons/fa";
 import { AiOutlineDelete } from "react-icons/ai";
 import { deletePackagePhoto } from "../../config/firebasemethods";
 import DeleteModal from "../../Components/TourBooking/DeleteModal";
+import { Toast } from "../../Components/SideToast";
 
 interface TripDetails {
   TripDetailsAndCostSummary: {
@@ -43,7 +44,7 @@ export default function TourPackages() {
     setLoading(true);
     let res = await axios.get(
       `${process.env.REACT_APP_SERVER_URL}/tourpackages/filter?offset=${
-        currentPage-1
+        currentPage - 1
       }&limit=${pageSize}`
     );
     console.log("response getPackages", res);
@@ -56,7 +57,6 @@ export default function TourPackages() {
     console.log("Current page", currentPage);
     fetchData();
   }, [currentPage]);
-  
 
   const onEditClick = (value: number) => {
     const index = data.findIndex((e) => e.package_id === value);
@@ -66,21 +66,76 @@ export default function TourPackages() {
   };
 
   const onDeleteClick = (value: number) => {
-
-    const index = data.findIndex(e => e.package_id === value);
+    const index = data.findIndex((e) => e.package_id === value);
     // console.log("install", index, data);
     setEditingItem(data[index]);
     // const tripDetails: TripDetails = data[index]?.package_details && JSON.parse(data[index]?.package_details);
     setIsDeleteModalOpen(true);
-  }
+  };
 
-  const startDelete = () => {
+  // const startDelete = () => {
 
+  //   console.log("startDelete");
+  //   const tripDetails: TripDetails = editingItem.package_details && editingItem?.package_details;
+  //   handleDeleteImages(tripDetails.TripDetailsAndCostSummary.Images);
+  // }
+
+  const startDelete = async () => {
     console.log("startDelete");
-    const tripDetails: TripDetails = editingItem.package_details && editingItem?.package_details;
-    handleDeleteImages(tripDetails.TripDetailsAndCostSummary.Images);
-  }
-
+  
+    // Parse package_details if it is a JSON string
+    let packageDetails;
+    try {
+      packageDetails = JSON.parse(editingItem.package_details);
+    } catch (e) {
+      packageDetails = editingItem.package_details;
+    }
+  
+    // Check if packageDetails contains TripDetailsAndCostSummary and Images
+    if (packageDetails?.TripDetailsAndCostSummary?.Images) {
+      const images = packageDetails.TripDetailsAndCostSummary.Images;
+      if (images.length > 0) {
+        try {
+          // Delete images first
+          await handleDeleteImages(images);
+          console.log("Images deleted successfully.");
+        } catch (error) {
+          console.error("Error deleting images:", error);
+          // Log the error but proceed with package deletion
+        }
+      } else {
+        console.log("No images found in package details.");
+      }
+    } else {
+      console.log("No images found in package details.");
+    }
+  
+    // Proceed with package deletion API call
+    const response = await axios.delete(
+      `${process.env.REACT_APP_SERVER_URL}/tourpackages`,
+      {
+        params: { id: editingItem.package_id },
+      }
+    );
+  
+    if (response.status === 200) {
+      console.log("Package deleted successfully.");
+      Toast.fire({
+        icon: "success",
+        title: "Trip deleted successfully",
+      });
+      fetchData(); 
+    } else {
+      console.error("Failed to delete package:", response.data);
+      Toast.fire({
+        icon: "error",
+        title: "Error in deleting package",
+      });
+    }
+    
+    setIsDeleteModalOpen(false);
+  };
+  
   const handleDeleteImages = async (imagesList: string[]) => {
     let updatedImages = null;
     updatedImages = await Promise.all(
@@ -89,7 +144,7 @@ export default function TourPackages() {
       })
     );
     return updatedImages;
-  }
+  };
 
   useEffect(() => {
     fetchData();
@@ -222,7 +277,11 @@ export default function TourPackages() {
                           color="green"
                           onClick={() => onEditClick(item.package_id)}
                         />{" "}
-                        | <AiOutlineDelete color="red" onClick={()=> onDeleteClick(item.package_id)} />
+                        |{" "}
+                        <AiOutlineDelete
+                          color="red"
+                          onClick={() => onDeleteClick(item.package_id)}
+                        />
                       </div>
                     </td>
                     {/* <td className="  pl-4 md:pr-0 pr-4 text-md">
@@ -235,12 +294,17 @@ export default function TourPackages() {
             <Pagination
               current={currentPage}
               onChange={handlePageChange}
-              total={totalItems} 
+              total={totalItems}
               pageSize={pageSize}
               showSizeChanger={false}
             />
           </div>
-          <DeleteModal onDeleteHandle={startDelete} isDeleteModalOpen={isDeleteModalOpen} setIsDeleteModalOpen={setIsDeleteModalOpen} packageItem={editingItem} />
+          <DeleteModal
+            onDeleteHandle={startDelete}
+            isDeleteModalOpen={isDeleteModalOpen}
+            setIsDeleteModalOpen={setIsDeleteModalOpen}
+            packageItem={editingItem}
+          />
         </div>
       </div>
       {loading && <Loader message="Fetching Data" />}
