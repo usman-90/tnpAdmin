@@ -325,7 +325,6 @@ function SideBar() {
                 Settings
               </p>
             </div>
-            {/* //logout here */}
           </Link>
         </div>
 

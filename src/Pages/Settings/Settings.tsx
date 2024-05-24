@@ -17,7 +17,7 @@ export default function Settings() {
         <p
           className={`${
             isCollapsed ? "w-0" : "ms-3"
-          } font-old overflow-hidden text-white text-base`}>
+          }overflow-hidden text-white items-center flex justify-center text-base px-3`}>
           Logout
         </p>
       </div>
