@@ -9,6 +9,7 @@ import { FaEdit } from "react-icons/fa";
 import { AiOutlineDelete } from "react-icons/ai";
 import { deletePackagePhoto } from "../../config/firebasemethods";
 import DeleteModal from "../../Components/Tourpackages/DeleteModal";
+import { Toast } from "../../Components/SideToast";
 
 interface TripDetails {
   TripDetailsAndCostSummary: {
@@ -72,13 +73,69 @@ export default function TourPackages() {
     setIsDeleteModalOpen(true);
   };
 
-  const startDelete = () => {
-    console.log("startDelete");
-    const tripDetails: TripDetails =
-      editingItem.package_details && editingItem?.package_details;
-    handleDeleteImages(tripDetails.TripDetailsAndCostSummary.Images);
-  };
+  // const startDelete = () => {
 
+  //   console.log("startDelete");
+  //   const tripDetails: TripDetails = editingItem.package_details && editingItem?.package_details;
+  //   handleDeleteImages(tripDetails.TripDetailsAndCostSummary.Images);
+  // }
+
+  const startDelete = async () => {
+    console.log("startDelete");
+  
+    // Parse package_details if it is a JSON string
+    let packageDetails;
+    try {
+      packageDetails = JSON.parse(editingItem.package_details);
+    } catch (e) {
+      packageDetails = editingItem.package_details;
+    }
+  
+    // Check if packageDetails contains TripDetailsAndCostSummary and Images
+    if (packageDetails?.TripDetailsAndCostSummary?.Images) {
+      const images = packageDetails.TripDetailsAndCostSummary.Images;
+      if (images.length > 0) {
+        try {
+          // Delete images first
+          await handleDeleteImages(images);
+          console.log("Images deleted successfully.");
+        } catch (error) {
+          console.error("Error deleting images:", error);
+          // Log the error but proceed with package deletion
+        }
+      } else {
+        console.log("No images found in package details.");
+      }
+    } else {
+      console.log("No images found in package details.");
+    }
+  
+    // Proceed with package deletion API call
+    const response = await axios.delete(
+      `${process.env.REACT_APP_SERVER_URL}/tourpackages`,
+      {
+        params: { id: editingItem.package_id },
+      }
+    );
+  
+    if (response.status === 200) {
+      console.log("Package deleted successfully.");
+      Toast.fire({
+        icon: "success",
+        title: "Trip deleted successfully",
+      });
+      fetchData(); 
+    } else {
+      console.error("Failed to delete package:", response.data);
+      Toast.fire({
+        icon: "error",
+        title: "Error in deleting package",
+      });
+    }
+    
+    setIsDeleteModalOpen(false);
+  };
+  
   const handleDeleteImages = async (imagesList: string[]) => {
     let updatedImages = null;
     updatedImages = await Promise.all(
