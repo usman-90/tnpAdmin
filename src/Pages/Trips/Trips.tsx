@@ -73,6 +73,7 @@ const UserPage: React.FC = () => {
       <div className="h-auto -y-auto bg-white w-[95%] relative m-4 rounded-lg">
         <div className="relative z-10 h-0 w-full">
           {loading && <Loader message="Fetching Data" />}
+          {deleting && <Loader message="Deleting Data" />}
         </div>
         <div className="flex flex-col gap-4">
           <div className="flex flex-row justify-between m-4">
@@ -158,7 +159,6 @@ const UserPage: React.FC = () => {
           </div>
         </div>
       </div>
-      {deleting && <Loader message="Deleting Data" />}
 
       <DeleteModal
         isDeleteModalOpen={isDeleteModalOpen}

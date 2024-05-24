@@ -82,6 +82,7 @@ const Banners: React.FC = () => {
     <>
       <div className="relative z-10 h-0 w-full">
         {loading && <Loader message="Fetching Data" />}
+        {deleting && <Loader message="Updating Data" />}
       </div>
       <div className="h-auto overflow-y-auto bg-white w-[95x%] relative m-4 rounded-lg  ">
         <div className="flex flex-col gap-4">
@@ -166,7 +167,6 @@ const Banners: React.FC = () => {
           </div>
         </div>
       </div>
-      {deleting && <Loader message="Updating Data" />}
     </>
   );
 };

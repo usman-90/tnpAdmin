@@ -70,6 +70,7 @@ const Destinations: React.FC = () => {
     <>
       <div className="relative z-10 h-0 w-full">
         {loading && <Loader message="Fetching Data" />}
+        {deleting && <Loader message="Deleting Data" />}
       </div>
       <div className="h-auto overflow-y-auto bg-white w-[95%] relative m-4 rounded-lg">
         <div className="flex flex-col gap-4">
@@ -164,7 +165,6 @@ const Destinations: React.FC = () => {
           </div>
         </div>
       </div>
-      {deleting && <Loader message="Deleting Data" />}
       <DeleteModal
         isDeleteModalOpen={isDeleteModalOpen}
         setIsDeleteModalOpen={setIsDeleteModalOpen}
