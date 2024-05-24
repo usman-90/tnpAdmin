@@ -43,7 +43,7 @@ export default function TourPackages() {
     setLoading(true);
     let res = await axios.get(
       `${process.env.REACT_APP_SERVER_URL}/tourpackages/filter?offset=${
-        currentPage-1
+        currentPage - 1
       }&limit=${pageSize}`
     );
     console.log("response getPackages", res);
@@ -56,7 +56,6 @@ export default function TourPackages() {
     console.log("Current page", currentPage);
     fetchData();
   }, [currentPage]);
-  
 
   const onEditClick = (value: number) => {
     const index = data.findIndex((e) => e.package_id === value);
@@ -66,20 +65,19 @@ export default function TourPackages() {
   };
 
   const onDeleteClick = (value: number) => {
-
-    const index = data.findIndex(e => e.package_id === value);
+    const index = data.findIndex((e) => e.package_id === value);
     // console.log("install", index, data);
     setEditingItem(data[index]);
     // const tripDetails: TripDetails = data[index]?.package_details && JSON.parse(data[index]?.package_details);
     setIsDeleteModalOpen(true);
-  }
+  };
 
   const startDelete = () => {
-
     console.log("startDelete");
-    const tripDetails: TripDetails = editingItem.package_details && editingItem?.package_details;
+    const tripDetails: TripDetails =
+      editingItem.package_details && editingItem?.package_details;
     handleDeleteImages(tripDetails.TripDetailsAndCostSummary.Images);
-  }
+  };
 
   const handleDeleteImages = async (imagesList: string[]) => {
     let updatedImages = null;
@@ -89,21 +87,23 @@ export default function TourPackages() {
       })
     );
     return updatedImages;
-  }
+  };
 
   useEffect(() => {
     fetchData();
   }, []);
   return (
     <>
+      <div className="relative z-10 h-0 w-full">
+        {loading && <Loader message="Fetching Data" />}
+      </div>
       <div className=" bg-white rounded-xl w-full h-svh py-4">
         <div className="w-full px-6 flex items-center justify-between border-b py-3 border-gray-300">
           <h2 className=" text-lg font-extrabold">Packages</h2>
           <Button
             className="bg-[#FBAD17] h-8 w-20 text-white font-semibold flex items-center justify-center"
             icon={<RiAddLine size={23} className="pt-0.5" />}
-            onClick={() => setOpenBox(true)}
-          >
+            onClick={() => setOpenBox(true)}>
             Add
           </Button>
           <InsertionBox
@@ -121,8 +121,7 @@ export default function TourPackages() {
                 <tr>
                   <td
                     scope="col"
-                    className="pl-6 px-4 py-4 font-semibold text-lg"
-                  >
+                    className="pl-6 px-4 py-4 font-semibold text-lg">
                     Package Name
                   </td>
                   {/* <td scope="col" className="px-4 py-4 font-bold text-lg ">
@@ -171,8 +170,7 @@ export default function TourPackages() {
                   <tr className="bg-white border-b hover:bg-gray-50">
                     <td
                       scope="row"
-                      className=" text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg "
-                    >
+                      className=" text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg ">
                       <div className="flex flex-row gap-2">
                         <p className="text-sm py-2 text-md">
                           {" "}
@@ -222,7 +220,11 @@ export default function TourPackages() {
                           color="green"
                           onClick={() => onEditClick(item.package_id)}
                         />{" "}
-                        | <AiOutlineDelete color="red" onClick={()=> onDeleteClick(item.package_id)} />
+                        |{" "}
+                        <AiOutlineDelete
+                          color="red"
+                          onClick={() => onDeleteClick(item.package_id)}
+                        />
                       </div>
                     </td>
                     {/* <td className="  pl-4 md:pr-0 pr-4 text-md">
@@ -235,15 +237,19 @@ export default function TourPackages() {
             <Pagination
               current={currentPage}
               onChange={handlePageChange}
-              total={totalItems} 
+              total={totalItems}
               pageSize={pageSize}
               showSizeChanger={false}
             />
           </div>
-          <DeleteModal onDeleteHandle={startDelete} isDeleteModalOpen={isDeleteModalOpen} setIsDeleteModalOpen={setIsDeleteModalOpen} packageItem={editingItem} />
+          <DeleteModal
+            onDeleteHandle={startDelete}
+            isDeleteModalOpen={isDeleteModalOpen}
+            setIsDeleteModalOpen={setIsDeleteModalOpen}
+            packageItem={editingItem}
+          />
         </div>
       </div>
-      {loading && <Loader message="Fetching Data" />}
       {/* {deleting && <Loader message="Deleting Data" />} */}
     </>
   );

@@ -80,6 +80,9 @@ const Banners: React.FC = () => {
   };
   return (
     <>
+      <div className="relative z-10 h-0 w-full">
+        {loading && <Loader message="Fetching Data" />}
+      </div>
       <div className="h-auto overflow-y-auto bg-white w-[95x%] relative m-4 rounded-lg  ">
         <div className="flex flex-col gap-4">
           <div className="flex flex-row justify-between  m-4  ">
@@ -112,25 +115,21 @@ const Banners: React.FC = () => {
                   <tr className="bg-white border-b hover:bg-gray-50">
                     <td
                       scope="row"
-                      className=" text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg "
-                    >
+                      className=" text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg ">
                       <p className="text-lg py-2 "> {item?.tnp_banner_page}</p>
                     </td>
                     <td
                       scope="row"
-                      className=" text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg "
-                    >
+                      className=" text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg ">
                       <p className="text-lg py-2 "> {item?.tnp_banner_name}</p>
                     </td>
                     <td
                       scope="row"
-                      className=" text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg "
-                    >
+                      className=" text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg ">
                       <Link
                         target="_blank"
                         to={item?.tnp_banner_url}
-                        className="text-lg py-2 text-blue-800 font-bold hover:text-red-600"
-                      >
+                        className="text-lg py-2 text-blue-800 font-bold hover:text-red-600">
                         {item?.tnp_banner_url.slice(0, 50) + " ..."}
                       </Link>
                     </td>
@@ -167,7 +166,6 @@ const Banners: React.FC = () => {
           </div>
         </div>
       </div>
-      {loading && <Loader message="Fetching Data" />}
       {deleting && <Loader message="Updating Data" />}
     </>
   );

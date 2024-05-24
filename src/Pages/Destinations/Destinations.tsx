@@ -42,7 +42,9 @@ const Destinations: React.FC = () => {
   const deleteDestination = async (item: any) => {
     setDeleting(true);
     await axios
-      .delete(`${process.env.REACT_APP_SERVER_URL}/admin/getDestinations?id=${item.destination_id}`)
+      .delete(
+        `${process.env.REACT_APP_SERVER_URL}/admin/getDestinations?id=${item.destination_id}`
+      )
       .then((_) => {
         Toast.fire({
           icon: "success",
@@ -66,6 +68,9 @@ const Destinations: React.FC = () => {
 
   return (
     <>
+      <div className="relative z-10 h-0 w-full">
+        {loading && <Loader message="Fetching Data" />}
+      </div>
       <div className="h-auto overflow-y-auto bg-white w-[95%] relative m-4 rounded-lg">
         <div className="flex flex-col gap-4">
           <div className="flex flex-row justify-between  m-4">
@@ -74,8 +79,7 @@ const Destinations: React.FC = () => {
             <Button
               className="bg-[#FBAD17] h-8 w-20 text-white font-semibold flex items-center justify-center"
               icon={<RiAddLine size={23} className="pt-0.5" />}
-              onClick={() => setOpenBox(true)}
-            >
+              onClick={() => setOpenBox(true)}>
               Add
             </Button>
             <DestinationInsertionBox
@@ -110,35 +114,31 @@ const Destinations: React.FC = () => {
               </thead>
               <tbody>
                 {data?.map((item: any) => (
-                  <tr className="bg-white border-b hover:bg-gray-50" key={item.destination_id}>
+                  <tr
+                    className="bg-white border-b hover:bg-gray-50"
+                    key={item.destination_id}>
                     <td
                       scope="row"
-                      className="text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg"
-                    >
+                      className="text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg">
                       <p className="text-lg py-2">
                         {item?.destination_category_name}
                       </p>
                     </td>
                     <td
                       scope="row"
-                      className="text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg"
-                    >
+                      className="text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg">
                       <p className="text-lg py-2">
                         {item?.destination_region_name}
                       </p>
                     </td>
                     <td
                       scope="row"
-                      className="text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg"
-                    >
-                      <p className="text-lg py-2">
-                        {item?.destination_name}
-                      </p>
+                      className="text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg">
+                      <p className="text-lg py-2">{item?.destination_name}</p>
                     </td>
                     <td
                       scope="row"
-                      className="text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg"
-                    >
+                      className="text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg">
                       <p className="text-lg py-2">
                         {item?.destination_minimum_tour_days}
                       </p>
@@ -164,7 +164,6 @@ const Destinations: React.FC = () => {
           </div>
         </div>
       </div>
-      {loading && <Loader message="Fetching Data" />}
       {deleting && <Loader message="Deleting Data" />}
       <DeleteModal
         isDeleteModalOpen={isDeleteModalOpen}

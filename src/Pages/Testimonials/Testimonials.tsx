@@ -45,7 +45,9 @@ const Testimonials: React.FC = () => {
   const confirmDelete = async (testimonial: any) => {
     setDeleting(true);
     try {
-      await axios.delete(`${process.env.REACT_APP_SERVER_URL}/admin/getTestimonials?id=${testimonial.testimonial_id}`);
+      await axios.delete(
+        `${process.env.REACT_APP_SERVER_URL}/admin/getTestimonials?id=${testimonial.testimonial_id}`
+      );
       Toast.fire({
         icon: "success",
         title: "Testimonial deleted successfully",
@@ -69,6 +71,9 @@ const Testimonials: React.FC = () => {
 
   return (
     <>
+      <div className="relative z-10 h-0 w-full">
+        {loading && <Loader message="Fetching Data" />}
+      </div>
       <div className="h-auto overflow-y-auto bg-white w-[95%] relative m-4 rounded-lg">
         <div className="flex flex-col gap-4">
           <div className="flex flex-row justify-between m-4">
@@ -76,8 +81,7 @@ const Testimonials: React.FC = () => {
             <Button
               className="bg-[#FBAD17] h-8 w-20 text-white font-semibold flex items-center justify-center"
               icon={<RiAddLine size={23} className="pt-0.5" />}
-              onClick={() => setOpenBox(true)}
-            >
+              onClick={() => setOpenBox(true)}>
               Add
             </Button>
             <TestimonialAddBox
@@ -93,22 +97,42 @@ const Testimonials: React.FC = () => {
             <table className="text-md text-left text-gray-500 m-auto lg:w-full md:w-full h-full">
               <thead className="text-xs text-gray-700 uppercase">
                 <tr className="border-b border-gray-300">
-                  <td scope="col" className="pl-6 px-4 py-4 text-lg">User Name</td>
-                  <td scope="col" className="pl-6 px-4 py-4 text-lg">User Email</td>
-                  <td scope="col" className="px-4 py-4 text-lg">Testimonial's Description</td>
-                  <td scope="col" className="px-4 py-4 text-lg">Remove</td>
+                  <td scope="col" className="pl-6 px-4 py-4 text-lg">
+                    User Name
+                  </td>
+                  <td scope="col" className="pl-6 px-4 py-4 text-lg">
+                    User Email
+                  </td>
+                  <td scope="col" className="px-4 py-4 text-lg">
+                    Testimonial's Description
+                  </td>
+                  <td scope="col" className="px-4 py-4 text-lg">
+                    Remove
+                  </td>
                 </tr>
               </thead>
               <tbody>
                 {data?.map((item: any) => (
-                  <tr className="bg-white border-b hover:bg-gray-50" key={item.testimonial_id}>
-                    <td scope="row" className="text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg">
-                      <p className="text-lg py-2">{item.testimonial_user_name}</p>
+                  <tr
+                    className="bg-white border-b hover:bg-gray-50"
+                    key={item.testimonial_id}>
+                    <td
+                      scope="row"
+                      className="text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg">
+                      <p className="text-lg py-2">
+                        {item.testimonial_user_name}
+                      </p>
                     </td>
-                    <td scope="row" className="text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg">
-                      <p className="text-lg py-2">{item.testimonial_user_email}</p>
+                    <td
+                      scope="row"
+                      className="text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg">
+                      <p className="text-lg py-2">
+                        {item.testimonial_user_email}
+                      </p>
                     </td>
-                    <td className="pl-4 md:pr-0 pr-4 text-lg">{item.testimonial_description}</td>
+                    <td className="pl-4 md:pr-0 pr-4 text-lg">
+                      {item.testimonial_description}
+                    </td>
                     <td className="pl-4 py-2 md:pr-0 pr-4">
                       <button onClick={() => onDeleteClick(item)}>
                         <ImCancelCircle className="text-red-700 hover:text-red-500 text-2xl" />
@@ -129,7 +153,6 @@ const Testimonials: React.FC = () => {
           </div>
         </div>
       </div>
-      {loading && <Loader message="Fetching Data" />}
       {deleting && <Loader message="Deleting Data" />}
 
       <DeleteModal

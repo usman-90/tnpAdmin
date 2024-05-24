@@ -49,6 +49,9 @@ const UserPage: React.FC = () => {
   };
   return (
     <>
+      <div className="relative z-10 h-0 w-full">
+        {loading && <Loader message="Fetching Data" />}
+      </div>
       <div className="h-auto overflow-y-auto bg-white w-[95x%] relative m-4 rounded-lg  ">
         <div className="flex flex-col gap-4">
           <div className="flex flex-row justify-between  m-4  ">
@@ -83,14 +86,12 @@ const UserPage: React.FC = () => {
                   <tr className="bg-white border-b hover:bg-gray-50">
                     <td
                       scope="row"
-                      className=" text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg "
-                    >
+                      className=" text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg ">
                       <p className="text-lg py-2 "> {item?.name}</p>
                     </td>
                     <td
                       scope="row"
-                      className=" text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg "
-                    >
+                      className=" text-gray-900 whitespace-nowrap pl-6 py-2 md:pr-0 pr-4 text-lg ">
                       <p className="text-lg py-2 "> {item?.lname}</p>
                     </td>
 
@@ -153,7 +154,6 @@ const UserPage: React.FC = () => {
           </div>
         </div>
       </div>
-      {loading && <Loader message="Fetching Data" />}
       {deleting && <Loader message="Deleting Data" />}
     </>
   );
