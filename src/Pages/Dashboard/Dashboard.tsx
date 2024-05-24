@@ -1,5 +1,5 @@
 import LastTrips from "../../Components/LastTrips/LastTrips";
-import TourBooking from "../../Components/TourBooking/TourBooking";
+// import TourBooking from "../../Components/TourBooking/TourBooking";
 import BoxComponent from "../../Components/box/Box";
 import LineBarGraph from "../../Components/graph/graph";
 import GradientProgressBar from "../../Components/progress/progress";
