@@ -16,6 +16,7 @@ interface InsertionBoxProps {
   updatePackages: () => void;
   editingItem: any;
   setEditingItem: (editingItem: any) => void;
+  setInsertionDataLoader: (value: boolean) => void;
 }
 
 interface PackageTypeStructure {
@@ -50,6 +51,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
   updatePackages,
   editingItem,
   setEditingItem,
+  setInsertionDataLoader,
 }) => {
   const columns = [
     {
@@ -299,13 +301,15 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
     );
     return updatedImages;
   };
-  
+
   const uploadPDF = async (pdfFile?: File) => {
     let updatedPDF = await handlePackagePDFUpload(pdfFile);
     return updatedPDF;
   };
 
   const handleSubmit = async (event: any) => {
+    BoxStateChange(false);
+    setInsertionDataLoader(true);
     event.preventDefault();
 
     const imageUrls =
@@ -386,8 +390,6 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
       setPackageIsBestSeller(false);
       setPackageIsFeatured(false);
       setPackageDestinationId("");
-
-      BoxStateChange(false);
     } catch (error) {
       console.error("Error adding package:", error);
     }
@@ -406,14 +408,12 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
         onOk={handleSubmit}
         destroyOnClose={true}
         onCancel={handleDailogClose}
-        width={1000}
-      >
+        width={1000}>
         <form
           onSubmit={handleSubmit}
           className="flex flex-col gap-5"
           method="post"
-          encType="multipart/form-data"
-        >
+          encType="multipart/form-data">
           <div className="flex flex-wrap px-5 gap-2">
             <label className="font-semibold w-44">
               Package Name
@@ -467,8 +467,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                 }}
                 onChange={(e) => setPackageTypeId(e.target.value)}
                 value={packageTypeId}
-                required
-              >
+                required>
                 <option value="">Select</option>
                 {packageType?.map((type, index) => (
                   <option key={index} value={type.package_type_id}>
@@ -544,8 +543,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                 }}
                 onChange={(e) => setPackageDestinationId(e.target.value)}
                 value={packageDestinationId}
-                required
-              >
+                required>
                 <option value="">Select</option>
                 {packageDestination.map((destination, index) => (
                   <option key={index} value={destination.destination_id}>
@@ -646,8 +644,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                     </div>
                     <Button
                       className="bg-yellow-400 "
-                      onClick={() => handleDone(index)}
-                    >
+                      onClick={() => handleDone(index)}>
                       Done
                     </Button>
                   </div>
@@ -682,8 +679,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                     />
                     <Button
                       className="bg-yellow-400 w-20 mx-auto"
-                      onClick={() => handleDoneIncludePackages(index)}
-                    >
+                      onClick={() => handleDoneIncludePackages(index)}>
                       Done
                     </Button>
                   </div>
@@ -740,8 +736,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                     />
                     <Button
                       className="bg-yellow-400 w-20 mx-auto"
-                      onClick={() => handleDoneCostExcludes(index)}
-                    >
+                      onClick={() => handleDoneCostExcludes(index)}>
                       Done
                     </Button>
                   </div>
@@ -798,8 +793,7 @@ const InsertionBox: React.FC<InsertionBoxProps> = ({
                     />
                     <Button
                       className="bg-yellow-400 w-20 mx-auto"
-                      onClick={() => handleDoneHighlights(index)}
-                    >
+                      onClick={() => handleDoneHighlights(index)}>
                       Done
                     </Button>
                   </div>
