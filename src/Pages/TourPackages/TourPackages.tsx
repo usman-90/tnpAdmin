@@ -60,7 +60,7 @@ export default function TourPackages() {
 
   const startDelete = async () => {
     console.log("startDelete");
-    // setIsDeleteModalOpen(false);
+    setIsDeleteModalOpen(false);
     setDeletingLoading(true);
 
     let packageDetails;
