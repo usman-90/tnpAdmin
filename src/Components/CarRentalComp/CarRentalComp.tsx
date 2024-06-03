@@ -6,6 +6,9 @@ import CarRentalInsertionBox from "./CarRentalInsetionBox";
 import axios from "axios";
 import { MdDelete } from "react-icons/md";
 import { Link } from "react-router-dom";
+import Loader from "../loader";
+import { FaEdit } from "react-icons/fa";
+import { AiOutlineDelete } from "react-icons/ai";
 
 const CarRentalComp: React.FC = () => {
   const [openBox, setOpenBox] = useState(false);
@@ -16,6 +19,7 @@ const CarRentalComp: React.FC = () => {
   const [cars, setCars] = useState<any[]>([]);
   const [totalCars, setTotalCars] = useState(0);
   const [currPage, setCurrPage] = useState(1);
+  const [editingItem, setEditingItem] = useState<any>({});
   const handlePageChange = (page: number) => {
     setCurrPage(page);
   };
@@ -58,6 +62,14 @@ const CarRentalComp: React.FC = () => {
 
   const pageSize = 8;
 
+  const EditCar =(value: number)=>{
+    const index = cars.findIndex((e)=>e.car_id === value);
+    // const car = cars.find((e)=>e.car_id === value);
+    console.log("This car will be edited", index );
+    setEditingItem(cars[index]);
+    setOpenBox(true);
+  }
+
   return (
     <div className="w-full relative bg-white p-4 flex flex-col gap-4 rounded-xl">
       {contextHolder}
@@ -75,6 +87,8 @@ const CarRentalComp: React.FC = () => {
           fetchCars={fetchCars}
           BoxState={openBox}
           BoxStateChange={setOpenBox}
+          setEditingItem={setEditingItem}
+          editingItem={editingItem}
         />
       </div>
       <div className="h-[0.5px] w-full bg-gray-400"></div>
@@ -130,7 +144,7 @@ const CarRentalComp: React.FC = () => {
                 <div className="flex flex-row">Car rooms</div>
               </td>
               <td scope="col" className="px-4 py-4 font-medium">
-                <div className="flex flex-row">Delete</div>
+                <div className="flex flex-row">Actions</div>
               </td>
             </tr>
           </thead>
@@ -188,7 +202,7 @@ const CarRentalComp: React.FC = () => {
                   {car?.pricePerKm}
                 </td>
                 <td className="  pl-4 md:pr-0 pr-4 text-sm">{car?.carRoom}</td>
-                <td
+                {/* <td
                   onClick={() => {
                     setSelectedCar(car?.car_id);
                     setIsDeleteModalOpen(true);
@@ -196,7 +210,21 @@ const CarRentalComp: React.FC = () => {
                   className="  pl-4 md:pr-0 pr-4 text-md text-red-500 cursor-pointer "
                 >
                   <MdDelete />
-                </td>
+                </td> */}
+                 <div className="flex justify-center items-center">
+                        <FaEdit
+                          color="green"
+                          onClick={()=>EditCar(car?.car_id)}
+                        />{" "}
+                        |{" "}
+                        <AiOutlineDelete
+                          color="red"
+                          onClick={() => {
+                            setSelectedCar(car?.car_id);
+                            setIsDeleteModalOpen(true);
+                          }}
+                        />
+                      </div>
               </tr>
             ))}
             <Modal
